@@ -14,12 +14,18 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2017",
+    "target": "es2020",
     "module": "es2020",
-    "lib": [
-      "es2018",
-      "dom"
-    ]
+    "lib": ["es2020", "dom"],
+    "paths": {
+      "@core/*": ["./src/app/core/*"],
+      "@components/pages/*": ["./src/app/components/pages/*"],
+      "@components/features/*": ["./src/app/components/features/*"],
+      "@components/entities/*": ["./src/app/components/entities/*"],
+      "@guards/*": ["./src/app/guards/*"],
+      "@shared/*": ["./src/app/shared/*"],
+      "@services/*": ["./src/app/services/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
