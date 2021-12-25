@@ -25,7 +25,10 @@
       "@guards/*": ["./src/app/guards/*"],
       "@shared/*": ["./src/app/shared/*"],
       "@services/*": ["./src/app/services/*"]
-    }
+    },
+    "noUnusedLocals": false,
+    "strictPropertyInitialization": false,
+    "strictNullChecks": false
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
