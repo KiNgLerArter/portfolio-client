@@ -19,9 +19,7 @@
     "lib": ["es2020", "dom"],
     "paths": {
       "@core/*": ["./src/app/core/*"],
-      "@components/pages/*": ["./src/app/components/pages/*"],
-      "@components/features/*": ["./src/app/components/features/*"],
-      "@components/entities/*": ["./src/app/components/entities/*"],
+      "@components/*": ["./src/app/components/*"],
       "@guards/*": ["./src/app/guards/*"],
       "@shared/*": ["./src/app/shared/*"],
       "@services/*": ["./src/app/services/*"]
