@@ -1,7 +1,7 @@
 export interface Message {
   id: string;
   userId: string;
-  repliedMessageId: string;
+  repliedMessageId?: string;
   body: string;
-  date: number;
+  created_at: number;
 }

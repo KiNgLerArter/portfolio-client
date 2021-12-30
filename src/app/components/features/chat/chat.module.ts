@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChatComponent } from './chat/chat.component';
+import { ChatComponent } from './chat.component';
 
 const declarationsToExport = [ChatComponent];
 
@@ -9,4 +9,4 @@ const declarationsToExport = [ChatComponent];
   imports: [CommonModule],
   exports: [...declarationsToExport],
 })
-export class FeaturesModule {}
+export class ChatModule {}
