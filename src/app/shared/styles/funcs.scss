@@ -1,0 +1,166 @@
+@use "sass:math";
+
+$spaceAmounts: (
+  0,
+  2,
+  4,
+  5,
+  6,
+  8,
+  10,
+  11,
+  12,
+  14,
+  22,
+  24,
+  26,
+  32,
+  34,
+  36,
+  46,
+  48,
+  16,
+  20,
+  30,
+  40,
+  50,
+  56,
+  57,
+  60,
+  64,
+  120
+);
+$sizes: (
+  2,
+  4,
+  5,
+  6,
+  8,
+  10,
+  11,
+  12,
+  14,
+  22,
+  24,
+  26,
+  32,
+  34,
+  36,
+  46,
+  48,
+  16,
+  20,
+  30,
+  40,
+  50,
+  56,
+  60,
+  64,
+  70,
+  80,
+  90,
+  100
+);
+$sides: (top, bottom, left, right);
+$flexSides: (center, flex-start, flex-end, space-around, space-between);
+$styles: (black-70, black-40);
+
+@each $justifySide in $flexSides {
+  @each $alignSide in $flexSides {
+    @if $justifySide == $alignSide {
+      .flex--#{$justifySide} {
+        display: flex !important;
+        justify-content: #{$justifySide} !important;
+        align-items: #{$justifySide} !important;
+      }
+
+      .flex--col--#{$justifySide} {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: #{$justifySide} !important;
+        align-items: #{$justifySide} !important;
+      }
+    } @else {
+      .flex--#{$justifySide}--#{$alignSide} {
+        display: flex !important;
+        justify-content: #{$justifySide} !important;
+        align-items: #{$alignSide} !important;
+      }
+
+      .flex--col--#{$justifySide}--#{$alignSide} {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: #{$justifySide} !important;
+        align-items: #{$alignSide} !important;
+      }
+    }
+  }
+}
+
+@each $size in $sizes {
+  .w-#{$size} {
+    width: math.percentage($size/100) !important;
+  }
+
+  .h-#{$size} {
+    height: math.percentage($size/100) !important;
+  }
+}
+
+@each $space in $spaceAmounts {
+  .gap-x-#{$space} {
+    column-gap: #{$space}px !important;
+  }
+
+  .gap-y-#{$space} {
+    row-gap: #{$space}px !important;
+  }
+
+  .p-x-#{$space} {
+    padding-right: #{$space}px !important;
+    padding-left: #{$space}px !important;
+  }
+
+  .p-y-#{$space} {
+    padding-top: #{$space}px !important;
+    padding-bottom: #{$space}px !important;
+  }
+
+  .m-x-#{$space} {
+    margin-left: #{$space}px !important;
+    margin-right: #{$space}px !important;
+  }
+
+  .m-y-#{$space} {
+    margin-top: #{$space}px !important;
+    margin-bottom: #{$space}px !important;
+  }
+
+  @each $side in $sides {
+    .m-#{$space} {
+      margin: #{$space}px !important;
+    }
+
+    .p-#{$space} {
+      padding: #{$space}px !important;
+    }
+
+    .m-#{str-slice($side, 0, 1)}-#{$space} {
+      margin-#{$side}: #{$space}px !important;
+    }
+
+    .p-#{str-slice($side, 0, 1)}-#{$space} {
+      padding-#{$side}: #{$space}px !important;
+    }
+  }
+}
+
+@each $style in $styles {
+  .c--#{$style} {
+    color: var(--s-#{$style}) !important;
+  }
+
+  .bg--#{$style} {
+    background: var(--s-#{$style}) !important;
+  }
+}

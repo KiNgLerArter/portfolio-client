@@ -1,7 +1,10 @@
-<div class="chat">
-  <section class="chat-header"></section>
-  <section class="chat-body">
+<section class="chat">
+  <div class="chat-header bg--black-70 flex--flex-end--center p-x-10 gap-x-6">
+    <mat-icon color="primary">group_add</mat-icon>
+    <mat-icon (click)="toggleChat()" color="primary">close</mat-icon>
+  </div>
+  <div class="chat-body bg--black-40">
     <div></div>
-  </section>
-  <section class="chat-footer"></section>
-</div>
+  </div>
+  <div class="chat-footer bg--black-70 p-x-10"></div>
+</section>

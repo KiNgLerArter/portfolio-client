@@ -1,5 +1,4 @@
 @mixin chat-element {
-  background-color: rgba(0, 0, 0, 0.7);
   height: 40px;
 }
 
@@ -8,6 +7,10 @@
   left: 24px;
   bottom: 24px;
   width: 360px;
+
+  mat-icon:hover {
+    cursor: pointer;
+  }
 }
 
 .chat-header {
@@ -17,7 +20,6 @@
 }
 
 .chat-body {
-  background-color: rgba(0, 0, 0, 0.4);
   height: 320px;
 }
 

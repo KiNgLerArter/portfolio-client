@@ -1,0 +1,21 @@
+.navbar-container {
+  --navbar-w: 20%;
+  --navbar-h: 300px;
+  --border-h: 50px;
+
+  position: fixed;
+  box-sizing: border-box;
+  left: calc(50% - (var(--navbar-w) / 2));
+  top: calc(var(--border-h) - var(--navbar-h));
+  width: var(--navbar-w);
+  height: var(--navbar-h);
+  transition: all 1s ease-in-out;
+  border-bottom: var(--border-h) solid var(--s-black-70);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+
+  &:hover {
+    --navbar-w: 30%;
+    top: 0;
+  }
+}

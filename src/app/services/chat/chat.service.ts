@@ -1,27 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { io, Socket } from 'socket.io-client';
-import { environment } from 'src/environments/environment';
+import { WebSocketService } from '@services/web-socket/web-socket.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ChatService {
-  private socket: Socket;
-
+export class ChatService extends WebSocketService {
   constructor() {
-    this.socket = io(environment.webSocketUrl);
-  }
-
-  listen<T>(eventName: string): Observable<T> {
-    return new Observable((subscriber) => {
-      this.socket.on(eventName, (data) => {
-        subscriber.next(data);
-      });
-    });
-  }
-
-  emit<T>(eventName: string, data: T): void {
-    this.socket.emit(eventName, data);
+    super('chat');
   }
 }
