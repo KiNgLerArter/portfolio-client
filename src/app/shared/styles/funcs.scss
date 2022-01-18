@@ -63,7 +63,6 @@ $sizes: (
 );
 $sides: (top, bottom, left, right);
 $flexSides: (center, flex-start, flex-end, space-around, space-between);
-$styles: (black-70, black-40);
 
 @each $justifySide in $flexSides {
   @each $alignSide in $flexSides {
@@ -152,15 +151,5 @@ $styles: (black-70, black-40);
     .p-#{str-slice($side, 0, 1)}-#{$space} {
       padding-#{$side}: #{$space}px !important;
     }
-  }
-}
-
-@each $style in $styles {
-  .c--#{$style} {
-    color: var(--s-#{$style}) !important;
-  }
-
-  .bg--#{$style} {
-    background: var(--s-#{$style}) !important;
   }
 }

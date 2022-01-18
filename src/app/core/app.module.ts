@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ChatModule } from '@components/features/chat/chat.module';
 import { NavbarModule } from '@components/features/navbar/navbar.module';
 import { PagesModule } from '@components/pages/pages.module';
 
@@ -14,7 +13,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     AppRoutingModule,
     PagesModule,
-    ChatModule,
     NavbarModule,
     BrowserAnimationsModule,
   ],

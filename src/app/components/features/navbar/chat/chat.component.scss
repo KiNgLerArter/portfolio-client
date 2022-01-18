@@ -1,0 +1,30 @@
+@mixin chat-element {
+  height: 40px;
+}
+
+.chat {
+  // position: fixed;
+  // left: 24px;
+  // bottom: 24px;
+  // width: 360px;
+
+  mat-icon:hover {
+    cursor: pointer;
+  }
+}
+
+// .chat-header {
+//   @include chat-element;
+//   border-top-left-radius: 16px;
+//   border-top-right-radius: 16px;
+// }
+
+// .chat-body {
+//   height: 320px;
+// }
+
+// .chat-footer {
+//   @include chat-element;
+//   border-bottom-left-radius: 16px;
+//   border-bottom-right-radius: 16px;
+// }
