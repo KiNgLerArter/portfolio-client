@@ -1,0 +1,30 @@
+@use "sass:map";
+@import "~@angular/material/theming";
+
+@mixin theme-color-grabber($theme) {
+  // Parse the theme and create variables for each color in the pallete
+  $primary: map.get($theme, primary);
+  $accent: map.get($theme, accent);
+  $warn: map.get($theme, warn);
+
+  // Create theme specfic styles
+  .primaryBG {
+    background-color: mat-color($primary, default);
+  }
+  .accentBG {
+    background-color: mat-color($accent, default);
+  }
+  .warnBG {
+    background-color: mat-color($warn, default);
+  }
+
+  // .primaryText {
+  //   color: mat-color($primary);
+  // }
+  // .accentText {
+  //   color: mat-color($accent);
+  // }
+  // .warnText {
+  //   color: mat-color($warn);
+  // }
+}

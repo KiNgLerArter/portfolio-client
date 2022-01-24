@@ -13,18 +13,20 @@ $shades: (10, 20, 30, 40, 50, 60, 70, 80, 90);
   --app-blue: rgb(var(--blue));
   --app-pink: rgb(var(--pink));
 
-  @each $shade in $shades {
-    @each $color in $colors {
+  @each $color in $colors {
+    .c--#{$color} {
+      color: rgb(var(--#{$color})) !important;
+    }
+    .bg--#{$color} {
+      background: rgb(var(--#{$color})) !important;
+    }
+
+    @each $shade in $shades {
       --app-#{$color}-#{$shade}: rgba(var(--#{$color}), #{$shade/100});
 
       .c--#{$color}-#{$shade} {
         color: rgba(var(--#{$color}), #{$shade/100}) !important;
       }
-      // $test: rgba(var(--#{$color}), #{$shade/100});
-      // &::before {
-      //   content: "#{$test}";
-      // }
-
       .bg--#{$color}-#{$shade} {
         background: rgba(var(--#{$color}), #{$shade/100}) !important;
       }

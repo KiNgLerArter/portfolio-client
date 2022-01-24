@@ -1,4 +1,6 @@
 @use "@angular/material" as mat;
+@use "./mixins.scss" as mixins;
+
 @include mat.core();
 
 $dark-primary-text: rgba(black, 0.87);
@@ -103,18 +105,19 @@ $app-blue-palette: (
   ),
 );
 
-$app-primary: mat.define-palette($app-grey-palette);
-$app-accent: mat.define-palette($app-blue-palette);
-$app-warn: mat.define-palette($app-pink-palette);
+$dark-primary: mat.define-palette($app-grey-palette);
+$dark-accent: mat.define-palette($app-blue-palette);
+$dark-warn: mat.define-palette($app-pink-palette);
 
-$app-theme: mat.define-light-theme(
+$app-theme: mat.define-dark-theme(
   (
     color: (
-      primary: $app-primary,
-      accent: $app-accent,
-      warn: $app-warn,
+      primary: $dark-primary,
+      accent: $dark-accent,
+      warn: $dark-warn,
     ),
   )
 );
 
 @include mat.all-component-themes($app-theme);
+@include mixins.theme-color-grabber($app-theme);
