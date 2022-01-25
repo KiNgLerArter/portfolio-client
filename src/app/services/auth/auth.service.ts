@@ -17,7 +17,11 @@ export class AuthService {
 
   constructor() {}
 
-  login() {}
+  login({ email, password }: { email: string; password: string }) {
+    console.log('[email]:', email);
+  }
 
   logout() {}
+
+  register({ email, password }: { email: string; password: string }) {}
 }

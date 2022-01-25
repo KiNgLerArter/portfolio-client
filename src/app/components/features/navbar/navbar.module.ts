@@ -5,12 +5,14 @@ import { ChatModule } from './chat/chat.module';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [NavbarComponent],
   imports: [
     CommonModule,
     ChatModule,
+    MatButtonModule,
     MatIconModule,
     RouterModule,
     MatTooltipModule,

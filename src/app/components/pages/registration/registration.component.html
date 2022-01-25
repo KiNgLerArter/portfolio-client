@@ -1,1 +1,17 @@
-<p>registration works!</p>
+<div class="register w-100 flex--col--center">
+  <form class="register-form p-y-32 p-x-64 flex--col--center bg--black-70">
+    <h1>Registration</h1>
+    <app-email-field [form]="form"></app-email-field>
+    <app-password-field [form]="form"></app-password-field>
+    <button
+      (click)="register($event)"
+      [disabled]="form.pristine || form.invalid"
+      type="submit"
+      class="submit-button w-100"
+      color="accent"
+      mat-raised-button
+    >
+      Submit
+    </button>
+  </form>
+</div>

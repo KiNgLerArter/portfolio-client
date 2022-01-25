@@ -1,17 +1,35 @@
 <section class="nav-container bg--black-70">
   <app-chat></app-chat>
   <div class="nav flex--center bg--blue p-8">
-    <div class="nav-actions flex--flex-end--center gap-x-4">
-      <ng-container *ngIf="isLoggedIn">
-        <mat-icon matTooltip="Open chat" color="primary">chat</mat-icon>
-        <mat-icon matTooltip="Logout" (click)="logout()" color="warn">
-          logout
-        </mat-icon>
+    <div class="nav-actions flex--flex-end--center">
+      <ng-container *ngIf="isLoggedIn; else loggedOut">
+        <button mat-icon-button>
+          <mat-icon matTooltip="Open chat" color="primary">chat</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon matTooltip="Logout" (click)="logout()" color="warn">
+            logout
+          </mat-icon>
+        </button>
       </ng-container>
-
-      <a *ngIf="!isLoggedIn" class="flex--center" [routerLink]="['/login']">
-        <mat-icon matTooltip="Login" color="primary">login</mat-icon></a
-      >
+      <ng-template #loggedOut>
+        <a
+          *ngIf="!isLoggedIn"
+          class="flex--center"
+          [routerLink]="['/registration']"
+        >
+          <button mat-icon-button>
+            <mat-icon matTooltip="Register" color="primary">
+              supervisor_account
+            </mat-icon>
+          </button>
+        </a>
+        <a *ngIf="!isLoggedIn" class="flex--center" [routerLink]="['/login']">
+          <button mat-icon-button>
+            <mat-icon matTooltip="Login" color="primary">login</mat-icon>
+          </button>
+        </a>
+      </ng-template>
     </div>
   </div>
 </section>
