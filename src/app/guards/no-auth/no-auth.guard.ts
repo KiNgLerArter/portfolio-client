@@ -7,7 +7,7 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, take, tap } from 'rxjs/operators';
 import { AuthService } from '@services/auth/auth.service';
 
 @Injectable({
@@ -25,12 +25,14 @@ export class NoAuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     return this.authService.isLoggedIn$.pipe(
+      take(1),
       map((isLoggedIn) => {
+        console.log('[no auth isLoggedIn]:', isLoggedIn);
         if (!isLoggedIn) {
           return true;
         }
 
-        return this.router.createUrlTree(['']);
+        return this.router.createUrlTree(['home']);
       })
     );
   }

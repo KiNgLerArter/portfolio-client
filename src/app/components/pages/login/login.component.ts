@@ -23,6 +23,8 @@ export class LoginComponent implements OnInit {
   login(event: Event): void {
     event.preventDefault();
 
-    this.authService.login(this.form.value);
+    this.authService
+      .login(this.form.value)
+      .subscribe((res) => console.log('[login]:', res));
   }
 }

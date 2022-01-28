@@ -23,6 +23,8 @@ export class RegistrationComponent implements OnInit {
   register(event: Event): void {
     event.preventDefault();
 
-    this.authService.register(this.form.value);
+    this.authService
+      .register(this.form.value)
+      .subscribe((res) => console.log('[register]:', res));
   }
 }
