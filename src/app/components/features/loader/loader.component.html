@@ -1,0 +1,8 @@
+<ng-container *ngIf="isLoading">
+  <div
+    [ngClass]="{ 'bg--grey-50': isTransparent, 'bg--grey': !isTransparent }"
+    class="loader-container w-100 h-100"
+  >
+    <div class="lds-heart"><div></div></div>
+  </div>
+</ng-container>

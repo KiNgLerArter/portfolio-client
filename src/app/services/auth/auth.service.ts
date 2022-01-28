@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalLoaderService } from '@components/features/global-loader/service/global-loader.service';
 import { ApiService } from '@services/api/api.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, pairwise, tap } from 'rxjs/operators';
@@ -24,14 +25,16 @@ export class AuthService extends ApiService {
     return !!this._accessToken$.value;
   }
 
-  constructor(protected http: HttpClient, private router: Router) {
+  constructor(
+    protected http: HttpClient,
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {
     super(http, 'auth');
-    const token = localStorage.getItem(Auth.accessToken);
-    if (token) {
-      this._accessToken$.next(token);
-    }
 
     this.initSubs();
+
+    setTimeout(() => this.refreshToken().subscribe());
   }
 
   private initSubs(): void {
@@ -52,8 +55,7 @@ export class AuthService extends ApiService {
   register(data: UserDto): Observable<AuthRes> {
     return this.post<AuthRes>('registration', data).pipe(
       tap(({ accessToken }) => {
-        localStorage.setItem(Auth.accessToken, accessToken);
-        this._accessToken$.next(accessToken);
+        this.setAccessToken(accessToken);
       }),
       catchError((error) => {
         console.error('[register error]:', error.message);
@@ -65,8 +67,7 @@ export class AuthService extends ApiService {
   login(data: UserDto): Observable<AuthRes> {
     return this.post<AuthRes>('login', data).pipe(
       tap(({ accessToken }) => {
-        localStorage.setItem(Auth.accessToken, accessToken);
-        this._accessToken$.next(accessToken);
+        this.setAccessToken(accessToken);
       }),
       catchError((error) => {
         console.error('[login error]:', error.message);
@@ -78,8 +79,7 @@ export class AuthService extends ApiService {
   logout(): Observable<void> {
     return this.get<void>('logout').pipe(
       tap(() => {
-        localStorage.removeItem(Auth.accessToken);
-        this._accessToken$.next(null);
+        this.clearAccessToken();
       }),
       catchError((error) => {
         console.error('[logout error]:', error.message);
@@ -88,5 +88,26 @@ export class AuthService extends ApiService {
     );
   }
 
-  refreshToken() {}
+  refreshToken(): Observable<AuthRes> {
+    return this.get<AuthRes>('refresh').pipe(
+      tap(({ accessToken }) => {
+        console.log('[tokenRefreshed]');
+        this.setAccessToken(accessToken);
+      }),
+      catchError((error) => {
+        console.error('[refresh error]:', error);
+        return of(null);
+      })
+    );
+  }
+
+  private setAccessToken(token: string): void {
+    localStorage.setItem(Auth.accessToken, token);
+    this._accessToken$.next(token);
+  }
+
+  private clearAccessToken(): void {
+    localStorage.removeItem(Auth.accessToken);
+    this._accessToken$.next(null);
+  }
 }

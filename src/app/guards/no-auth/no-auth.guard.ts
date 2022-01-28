@@ -27,7 +27,6 @@ export class NoAuthGuard implements CanActivate {
     return this.authService.isLoggedIn$.pipe(
       take(1),
       map((isLoggedIn) => {
-        console.log('[no auth isLoggedIn]:', isLoggedIn);
         if (!isLoggedIn) {
           return true;
         }
