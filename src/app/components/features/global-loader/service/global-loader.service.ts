@@ -11,6 +11,10 @@ export class GlobalLoaderService {
     this._isLoading$.next(loading);
   }
 
+  get isLoading(): boolean {
+    return this._isLoading$.value;
+  }
+
   get isLoading$(): Observable<boolean> {
     return this._isLoading$.asObservable();
   }

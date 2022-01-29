@@ -4,8 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalLoaderService } from '@components/features/global-loader/service/global-loader.service';
 import { ApiService } from '@services/api/api.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, map, pairwise, tap } from 'rxjs/operators';
-import { Auth, AuthRes, UserDto } from './@types/auth.model';
+import { catchError, finalize, map, pairwise, tap } from 'rxjs/operators';
+import { Auth, AuthRes, UserDto } from '../../shared/@types/auth.model';
 
 @Injectable({
   providedIn: 'root',
@@ -28,13 +28,11 @@ export class AuthService extends ApiService {
   constructor(
     protected http: HttpClient,
     private router: Router,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {
     super(http, 'auth');
 
     this.initSubs();
-
-    setTimeout(() => this.refreshToken().subscribe());
   }
 
   private initSubs(): void {
@@ -78,12 +76,8 @@ export class AuthService extends ApiService {
 
   logout(): Observable<void> {
     return this.get<void>('logout').pipe(
-      tap(() => {
+      finalize(() => {
         this.clearAccessToken();
-      }),
-      catchError((error) => {
-        console.error('[logout error]:', error.message);
-        return of(null);
       })
     );
   }
@@ -91,7 +85,6 @@ export class AuthService extends ApiService {
   refreshToken(): Observable<AuthRes> {
     return this.get<AuthRes>('refresh').pipe(
       tap(({ accessToken }) => {
-        console.log('[tokenRefreshed]');
         this.setAccessToken(accessToken);
       }),
       catchError((error) => {

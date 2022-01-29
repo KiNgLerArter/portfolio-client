@@ -7,7 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HeaderInterceptor } from '../interceptors/header.interceptor';
+import { AuthInterceptor } from '../interceptors/auth.interceptor';
 import { GlobalLoaderModule } from '@components/features/global-loader/global-loader.module';
 
 @NgModule({
@@ -24,7 +24,7 @@ import { GlobalLoaderModule } from '@components/features/global-loader/global-lo
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: HeaderInterceptor,
+      useClass: AuthInterceptor,
       multi: true,
     },
   ],

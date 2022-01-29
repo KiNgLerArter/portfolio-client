@@ -17,29 +17,29 @@ export class ApiService {
     this.baseUrl = environment.apiUrl + childUrl + '/';
   }
 
-  protected get<T>(url: string): Observable<T> {
+  protected get<T>(url: string = ''): Observable<T> {
     return this.http.get<T>(this.baseUrl + url, { withCredentials: true });
   }
 
-  protected post<T>(url: string, body: any): Observable<T> {
+  protected post<T>(url: string = '', body: any): Observable<T> {
     return this.http.post<T>(this.baseUrl + url, body, {
       withCredentials: true,
     });
   }
 
-  protected put<T>(url: string, body: any): Observable<T> {
+  protected put<T>(url: string = '', body: any): Observable<T> {
     return this.http.put<T>(this.baseUrl + url, body, {
       withCredentials: true,
     });
   }
 
-  protected patch<T>(url: string, body: any): Observable<T> {
+  protected patch<T>(url: string = '', body: any): Observable<T> {
     return this.http.patch<T>(this.baseUrl + url, body, {
       withCredentials: true,
     });
   }
 
-  protected delete<T>(url: string): Observable<T> {
+  protected delete<T>(url: string = ''): Observable<T> {
     return this.http.delete<T>(this.baseUrl + url, { withCredentials: true });
   }
 }
