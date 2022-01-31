@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { AuthService } from '@services/auth/auth.service';
 
 @Component({
@@ -7,6 +8,11 @@ import { AuthService } from '@services/auth/auth.service';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
+  @ViewChild('navbar') navbar: ElementRef;
+
+  isChat: boolean;
+  chatControl = new FormControl('', [Validators.maxLength(250)]);
+
   get isLoggedIn(): boolean {
     return this.authService.isLoggedIn;
   }
@@ -17,5 +23,9 @@ export class NavbarComponent implements OnInit {
 
   logout(): void {
     this.authService.logout().subscribe();
+  }
+
+  toggleChat(): void {
+    this.isChat = !this.isChat;
   }
 }

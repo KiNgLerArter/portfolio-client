@@ -1,15 +1,45 @@
-<section class="nav-container bg--black-70">
-  <app-chat></app-chat>
-  <div class="nav flex--center bg--blue p-8">
-    <div class="nav-actions flex--flex-end--center">
+<section
+  [ngClass]="{ opened: isChat, closing: isChat === false }"
+  class="navbar bg--black"
+  #navbar
+>
+  <app-chat *ngIf="isChat; else chatMimic"></app-chat>
+  <ng-template #chatMimic>
+    <div class="w-100 h-100"></div>
+  </ng-template>
+  <div class="nav flex--space-between--center bg--blue p-y-8 p-x-16">
+    <div
+      *ngIf="isChat && chatControl"
+      class="nav-chat-input flex--center gap-x-8"
+    >
+      <mat-form-field [ngClass]="{ removed: !isChat }" class="chat-input">
+        <input [formControl]="chatControl" matInput />
+      </mat-form-field>
+      <button
+        [ngClass]="{ removed: !isChat }"
+        class="chat-send-button"
+        matTooltip="Send message"
+        mat-icon-button
+      >
+        <mat-icon color="primary">send</mat-icon>
+      </button>
+    </div>
+
+    <nav class="nav-actions flex--flex-end--center">
       <ng-container *ngIf="isLoggedIn; else loggedOut">
-        <button mat-icon-button>
-          <mat-icon matTooltip="Open chat" color="primary">chat</mat-icon>
-        </button>
-        <button mat-icon-button>
-          <mat-icon matTooltip="Logout" (click)="logout()" color="warn">
-            logout
+        <button
+          [matTooltip]="isChat ? 'Close chat' : 'Open chat'"
+          mat-icon-button
+        >
+          <mat-icon
+            [color]="isChat ? 'warn' : 'primary'"
+            (click)="toggleChat()"
+          >
+            chat
           </mat-icon>
+        </button>
+        <button matTooltip="Logout" mat-icon-button>
+          <mat-icon (click)="logout()" color="warn"> logout </mat-icon>
         </button>
       </ng-container>
       <ng-template #loggedOut>
@@ -18,19 +48,17 @@
           class="flex--center"
           [routerLink]="['/registration']"
         >
-          <button mat-icon-button>
-            <mat-icon matTooltip="Register" color="primary">
-              supervisor_account
-            </mat-icon>
+          <button matTooltip="Register" mat-icon-button>
+            <mat-icon color="primary"> supervisor_account </mat-icon>
           </button>
         </a>
         <a *ngIf="!isLoggedIn" class="flex--center" [routerLink]="['/login']">
-          <button mat-icon-button>
-            <mat-icon matTooltip="Login" color="primary">login</mat-icon>
+          <button matTooltip="Login" mat-icon-button>
+            <mat-icon color="primary">login</mat-icon>
           </button>
         </a>
       </ng-template>
-    </div>
+    </nav>
   </div>
 </section>
 <!-- Размещаем чат в навигации при клике на кнопку навигация выезжает вниз и открывается чат в ней -->

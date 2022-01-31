@@ -1,7 +1,18 @@
-.nav-container {
-  --navbar-w: 20%;
+::ng-deep {
+  .mat-form-field-wrapper {
+    padding: 0;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0.5em 0;
+  }
+}
+
+.navbar {
+  --is-chat: 0;
+  --navbar-w: 300px;
   --navbar-h: 300px;
-  --border-h: 46px;
+  --nav-h: 46px;
 
   position: fixed;
   box-sizing: border-box;
@@ -9,17 +20,116 @@
   top: calc(0px - var(--navbar-h));
   width: var(--navbar-w);
   height: var(--navbar-h);
-  transition: all 1s ease-in-out;
 
-  // &:hover {
-  //   --navbar-w: 30%;
-  //   top: 0;
-  // }
+  &.opened {
+    animation-name: animate-navbar-opening;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+  }
+  &.closing {
+    animation-name: animate-navbar-closing;
+    animation-duration: 1s;
+    animation-delay: 0.6s;
+    animation-fill-mode: forwards;
+  }
 }
 
 .nav {
   box-sizing: border-box;
-  height: var(--border-h);
+  height: var(--nav-h);
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+}
+
+.chat-input {
+  width: 0;
+  animation-name: animate-input;
+  animation-delay: 1s;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+
+  &.removed {
+    animation-name: animate-input-removing;
+    animation-delay: 0.3s;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+  }
+}
+
+.chat-send-button {
+  opacity: 0;
+  animation-name: animate-send-button;
+  animation-delay: 1.3s;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+
+  &.removed {
+    animation-name: animate-send-button-removing;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+  }
+}
+
+// try to reverse animation
+@keyframes animate-navbar-opening {
+  from {
+    --navbar-w: 300px;
+    top: calc(0px - var(--navbar-h));
+  }
+
+  to {
+    --navbar-w: 400px;
+    top: 0;
+  }
+}
+
+@keyframes animate-navbar-closing {
+  from {
+    --navbar-w: 400px;
+    top: 0;
+  }
+  to {
+    --navbar-w: 300px;
+    top: calc(0px - var(--navbar-h));
+  }
+}
+
+@keyframes animate-input {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 200px;
+  }
+}
+
+@keyframes animate-input-removing {
+  from {
+    width: 200px;
+  }
+
+  to {
+    width: 0;
+  }
+}
+
+@keyframes animate-send-button {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes animate-send-button-removing {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
 }
