@@ -31,7 +31,13 @@
       </button>
     </div>
 
-    <nav class="flex--flex-end--center">
+    <nav
+      class="navbar-actions flex--flex-end--center"
+      [ngClass]="{
+        'chat-opened': isChat,
+        'chat-closed': isChat === false
+      }"
+    >
       <ng-container *ngIf="isLoggedIn; else loggedOut">
         <button
           [matTooltip]="isChat ? 'Close chat' : 'Open chat'"
