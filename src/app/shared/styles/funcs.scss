@@ -30,37 +30,7 @@ $spaceAmounts: (
   64,
   120
 );
-$sizes: (
-  2,
-  4,
-  5,
-  6,
-  8,
-  10,
-  11,
-  12,
-  14,
-  22,
-  24,
-  26,
-  32,
-  34,
-  36,
-  46,
-  48,
-  16,
-  20,
-  30,
-  40,
-  50,
-  56,
-  60,
-  64,
-  70,
-  80,
-  90,
-  100
-);
+
 $sides: (top, bottom, left, right);
 $flexSides: (center, flex-start, flex-end, space-around, space-between);
 
@@ -96,17 +66,23 @@ $flexSides: (center, flex-start, flex-end, space-around, space-between);
   }
 }
 
-@each $size in $sizes {
-  .w-#{$size} {
-    width: math.percentage($size/100) !important;
+$percent: 1;
+@while $percent <= 100 {
+  .w-#{$percent} {
+    width: math.percentage($percent/100) !important;
   }
 
-  .h-#{$size} {
-    height: math.percentage($size/100) !important;
+  .h-#{$percent} {
+    height: math.percentage($percent/100) !important;
   }
+  $percent: $percent + 1;
 }
 
 @each $space in $spaceAmounts {
+  .gap-#{$space} {
+    gap: #{$space}px !important;
+  }
+
   .gap-x-#{$space} {
     column-gap: #{$space}px !important;
   }

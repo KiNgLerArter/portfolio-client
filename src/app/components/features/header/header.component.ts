@@ -1,16 +1,15 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AuthService } from '@services/auth/auth.service';
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss'],
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss'],
 })
-export class NavbarComponent implements OnInit {
-  @ViewChild('navbar') navbar: ElementRef;
-
+export class HeaderComponent implements OnInit {
   isChat: boolean;
+  isChatInput: boolean;
   chatControl = new FormControl('', [Validators.maxLength(250)]);
 
   get isLoggedIn(): boolean {
@@ -27,5 +26,12 @@ export class NavbarComponent implements OnInit {
 
   toggleChat(): void {
     this.isChat = !this.isChat;
+    if (!this.isChat) {
+      setTimeout(() => {
+        this.isChatInput = false;
+      }, 600);
+    } else {
+      this.isChatInput = true;
+    }
   }
 }

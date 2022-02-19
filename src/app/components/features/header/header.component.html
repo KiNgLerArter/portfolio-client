@@ -1,16 +1,22 @@
-<section
-  [ngClass]="{ opened: isChat, closing: isChat === false }"
-  class="navbar bg--black"
-  #navbar
+<header
+  [ngClass]="{ opened: isChat, closed: isChat === false }"
+  class="header bg--black"
+  #header
 >
   <app-chat *ngIf="isChat; else chatMimic"></app-chat>
   <ng-template #chatMimic>
     <div class="w-100 h-100"></div>
   </ng-template>
-  <div class="nav flex--space-between--center bg--blue p-y-8 p-x-16">
+  <div
+    [ngClass]="{
+      'flex--space-between--center': isChatInput,
+      'flex--center': !isChatInput
+    }"
+    class="navbar bg--blue p-y-8 p-x-16"
+  >
     <div
-      *ngIf="isChat && chatControl"
-      class="nav-chat-input flex--center gap-x-8"
+      *ngIf="isChatInput && chatControl"
+      class="navbar-chat-actions flex--center gap-x-8"
     >
       <mat-form-field [ngClass]="{ removed: !isChat }" class="chat-input">
         <input [formControl]="chatControl" matInput />
@@ -25,7 +31,7 @@
       </button>
     </div>
 
-    <nav class="nav-actions flex--flex-end--center">
+    <nav class="flex--flex-end--center">
       <ng-container *ngIf="isLoggedIn; else loggedOut">
         <button
           [matTooltip]="isChat ? 'Close chat' : 'Open chat'"
@@ -60,5 +66,5 @@
       </ng-template>
     </nav>
   </div>
-</section>
+</header>
 <!-- Размещаем чат в навигации при клике на кнопку навигация выезжает вниз и открывается чат в ней -->

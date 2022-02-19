@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavbarComponent } from './navbar.component';
+import { HeaderComponent } from './header.component';
 import { ChatModule } from './chat/chat.module';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [NavbarComponent],
+  declarations: [HeaderComponent],
   imports: [
     CommonModule,
     ChatModule,
@@ -24,6 +24,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
   ],
-  exports: [NavbarComponent],
+  exports: [HeaderComponent],
 })
-export class NavbarModule {}
+export class HeaderModule {}

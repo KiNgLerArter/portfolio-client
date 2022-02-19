@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NavbarModule } from '@components/features/navbar/navbar.module';
+import { HeaderModule } from '@components/features/header/header.module';
 import { PagesModule } from '@components/pages/pages.module';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -17,7 +17,7 @@ import { GlobalLoaderModule } from '@components/features/global-loader/global-lo
     HttpClientModule,
     AppRoutingModule,
     PagesModule,
-    NavbarModule,
+    HeaderModule,
     BrowserAnimationsModule,
     GlobalLoaderModule,
   ],

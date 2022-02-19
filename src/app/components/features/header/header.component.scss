@@ -1,0 +1,139 @@
+::ng-deep {
+  :root {
+    --header-side: 300px;
+    --ext-header-side: 400px;
+    --navbar-h: 46px;
+    --chat-input-w: 200px;
+  }
+}
+
+.header {
+  position: fixed;
+  box-sizing: border-box;
+  left: calc(50% - (var(--header-side) / 2));
+  top: calc(0px - var(--header-side));
+  width: var(--header-side);
+  height: var(--header-side);
+
+  &.opened {
+    animation-name: chat-opening;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+  }
+  &.closed {
+    left: calc(50% - (var(--ext-header-side) / 2));
+    width: var(--ext-header-side);
+    top: 0;
+    animation-name: chat-closing;
+    animation-duration: 1s;
+    animation-delay: 0.6s;
+    animation-fill-mode: forwards;
+  }
+}
+
+.navbar {
+  box-sizing: border-box;
+  height: var(--navbar-h);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.chat-input {
+  width: 0;
+  animation-name: input-opening;
+  animation-delay: 1s;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+
+  &.removed {
+    width: var(--chat-input-w);
+    animation-name: input-closing;
+    animation-delay: 0.3s;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+  }
+}
+
+.chat-send-button {
+  opacity: 0;
+  animation-name: send-button-opening;
+  animation-delay: 1.3s;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+
+  &.removed {
+    opacity: 1;
+    animation-name: send-button-closing;
+    animation-duration: 0.3s;
+    animation-delay: 0.001s;
+    animation-fill-mode: forwards;
+  }
+}
+
+// try to reverse animation
+@keyframes chat-opening {
+  from {
+    left: calc(50% - (var(--header-side) / 2));
+    width: var(--header-side);
+    top: calc(0px - var(--header-side));
+  }
+
+  to {
+    left: calc(50% - (var(--ext-header-side) / 2));
+    width: var(--ext-header-side);
+    top: 0;
+  }
+}
+
+@keyframes chat-closing {
+  from {
+    left: calc(50% - (var(--ext-header-side) / 2));
+    width: var(--ext-header-side);
+    top: 0;
+  }
+  to {
+    left: calc(50% - (var(--header-side) / 2));
+    width: var(--header-side);
+    top: calc(0px - var(--header-side));
+  }
+}
+
+@keyframes input-opening {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: var(--chat-input-w);
+  }
+}
+
+@keyframes input-closing {
+  from {
+    width: var(--chat-input-w);
+  }
+
+  to {
+    width: 0;
+  }
+}
+
+@keyframes send-button-opening {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes send-button-closing {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
