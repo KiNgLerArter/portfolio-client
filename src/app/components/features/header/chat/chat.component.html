@@ -1,10 +1,11 @@
-<section class="chat w-100 h-100">
-  <!-- <div class="chat-header bg--black-70 flex--flex-end--center p-x-10 gap-x-6">
-    <mat-icon color="primary">group_add</mat-icon>
-    <mat-icon (click)="toggleChat()" color="primary">close</mat-icon>
-  </div> -->
-  <div class="chat-body bg--grey-70">
+<div class="chat w-100 h-100 p-y-12 p-x-6">
+  <div class="chat-body">
+    <div class="chat-header flex--flex-end--center gap-x-6">
+      <button (click)="openCreateChatDialog()" mat-icon-button>
+        <mat-icon matTooltip="Create group" color="secondary">add</mat-icon>
+      </button>
+    </div>
     <div></div>
   </div>
   <!-- <div class="chat-footer bg--black-70 p-x-10"></div> -->
-</section>
+</div>

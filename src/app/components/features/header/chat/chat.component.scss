@@ -7,17 +7,17 @@
   // left: 24px;
   // bottom: 24px;
   // width: 360px;
+  box-sizing: border-box;
 
   mat-icon:hover {
     cursor: pointer;
   }
 }
 
-// .chat-header {
-//   @include chat-element;
-//   border-top-left-radius: 16px;
-//   border-top-right-radius: 16px;
-// }
+.chat-header {
+  position: absolute;
+  opacity: 0.7;
+}
 
 // .chat-body {
 //   height: 320px;

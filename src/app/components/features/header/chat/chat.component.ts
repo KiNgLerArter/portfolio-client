@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { DialogService } from '@services/dialog/dialog.service';
 
 @Component({
   selector: 'app-chat',
@@ -9,9 +10,11 @@ import { FormControl } from '@angular/forms';
 export class ChatComponent implements OnInit {
   chatInput = new FormControl();
 
-  constructor() {}
+  constructor(private dialogService: DialogService) {}
 
   ngOnInit(): void {}
 
-  toggleChat(): void {}
+  openCreateChatDialog(): void {
+    this.dialogService.open();
+  }
 }
