@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DialogService } from '@services/dialog/dialog.service';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateChatComponent } from './dialogs/create-chat/create-chat.component';
 
 @Component({
   selector: 'app-chat',
@@ -10,11 +11,11 @@ import { DialogService } from '@services/dialog/dialog.service';
 export class ChatComponent implements OnInit {
   chatInput = new FormControl();
 
-  constructor(private dialogService: DialogService) {}
+  constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {}
 
   openCreateChatDialog(): void {
-    this.dialogService.open();
+    this.dialog.open(CreateChatComponent, { width: '400px' });
   }
 }

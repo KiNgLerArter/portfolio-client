@@ -1,0 +1,34 @@
+<h1 mat-dialog-title>Create chat</h1>
+<div mat-dialog-content class="flex--col--flex-start">
+  <mat-form-field appearance="outline" color="accent" class="w-100">
+    <mat-label>Chat Name</mat-label>
+    <input matInput [formControl]="chatNameCtrl" />
+    <mat-error *ngIf="chatNameCtrl.hasError('required')">
+      Chat name could not be empty
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline" color="accent" class="w-100">
+    <mat-label>Members</mat-label>
+    <mat-select [formControl]="usersIdsCtrl" required multiple>
+      <mat-option *ngFor="let user of users" [value]="user.id">
+        {{ user.nickname }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="usersIdsCtrl.hasError('required')">
+      Choose one or more members
+    </mat-error>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions class="flex--space-between--center">
+  <button mat-raised-button color="accent" (click)="closeDialog()">
+    Cancel
+  </button>
+  <button
+    [disabled]="form.invalid"
+    mat-raised-button
+    color="accent"
+    (click)="createChat()"
+  >
+    Create
+  </button>
+</div>
