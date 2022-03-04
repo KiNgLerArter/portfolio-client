@@ -13,6 +13,10 @@ export class UsersService extends ApiService {
   private _allUsers$ = new BehaviorSubject<User[]>([]);
   private _currentUser$ = new BehaviorSubject<User>(null);
 
+  get currentUser(): User {
+    return this._currentUser$.value;
+  }
+
   get allUsers$(): Observable<User[]> {
     return this._allUsers$.asObservable();
   }

@@ -11,7 +11,7 @@ import { DialogData } from '@services/dialog/@types/dialog.model';
 import { UsersService } from '@services/users/users.service';
 import { User } from '@shared/@types/users.model';
 import { tap } from 'rxjs/operators';
-import { ChatService } from '../../service/chat.service';
+import { ChatsService } from '../../service/chats.service';
 
 @UntilDestroy()
 @Component({
@@ -29,7 +29,7 @@ export class CreateChatComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     public dialogRef: MatDialogRef<CreateChatComponent>,
     private fb: FormBuilder,
-    private chatService: ChatService,
+    private chatsService: ChatsService,
     private usersService: UsersService
   ) {}
 
@@ -53,7 +53,9 @@ export class CreateChatComponent implements OnInit {
       .pipe(
         untilDestroyed(this),
         tap((users) => {
-          this.users = users;
+          this.users = users.filter(
+            (user) => user.id !== this.usersService.currentUser.id
+          );
         })
       )
       .subscribe();
@@ -64,6 +66,18 @@ export class CreateChatComponent implements OnInit {
   }
 
   createChat(): void {
-    this.chatService.createChat(this.form.value);
+    const { chatName, usersIds } = this.form.value;
+    if (this.form.valid) {
+      usersIds.push(this.usersService.currentUser.id);
+      this.chatsService
+        .createChat({ name: chatName, usersIds })
+        .pipe(
+          untilDestroyed(this),
+          tap(() => {
+            // this.closeDialog();
+          })
+        )
+        .subscribe();
+    }
   }
 }
