@@ -5,8 +5,13 @@ import { PasswordFieldComponent } from './password-field/password-field.componen
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NicknameFieldComponent } from './nickname-field/nickname-field.component';
 
-const declarationsToExport = [EmailFieldComponent, PasswordFieldComponent];
+const declarationsToExport = [
+  EmailFieldComponent,
+  PasswordFieldComponent,
+  NicknameFieldComponent,
+];
 
 @NgModule({
   declarations: [...declarationsToExport],

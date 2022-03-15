@@ -20,7 +20,7 @@ export class ChatsService extends WebSocketService {
   }
 
   getUserChats(userId: number): Observable<Chat[]> {
-    return this.get<Chat[]>(`user/${userId}`).pipe(
+    return this.get<Chat[]>(`${userId}/chats`, { rootUrl: 'users' }).pipe(
       tap((chats) => {
         console.log('[chats]:', chats);
         this._userChats$.next(chats);

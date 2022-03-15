@@ -37,17 +37,17 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private handleResError(
     error: any,
-    req?: HttpRequest<any>,
+    prevReq?: HttpRequest<any>,
     next?: HttpHandler
   ): Observable<any> {
-    if (error.status === 401) {
+    if (error.status === 401 && !error.url.includes('auth/refresh')) {
       return this.authService.refreshToken().pipe(
-        switchMap(() => {
-          req = this.addAuthHeader(req);
-          return next.handle(req);
-        }),
         catchError((error) => {
           return this.authService.logout();
+        }),
+        switchMap(() => {
+          prevReq = this.addAuthHeader(prevReq);
+          return next.handle(prevReq);
         })
       );
     }

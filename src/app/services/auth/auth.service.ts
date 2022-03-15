@@ -68,8 +68,8 @@ export class AuthService extends ApiService {
     this._accessToken$.next(null);
   }
 
-  register(data: UserDto): Observable<AuthRes> {
-    return this.post<AuthRes>('registration', data).pipe(
+  register(data: UserDto & { nickname: string }): Observable<AuthRes> {
+    return this.post<AuthRes>('register', data).pipe(
       tap(({ accessToken, user: { id } }) => {
         this.setCredentials(accessToken, id);
       }),

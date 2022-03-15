@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Chat } from '@components/features/header/chat/@types/chat.model';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';

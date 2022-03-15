@@ -2,6 +2,7 @@
   <form class="register-form p-y-32 p-x-64 flex--col--center bg--black-70">
     <h1>Registration</h1>
     <app-email-field [form]="form"></app-email-field>
+    <app-nickname-field [form]="form"></app-nickname-field>
     <app-password-field [form]="form"></app-password-field>
     <button
       (click)="register($event)"
