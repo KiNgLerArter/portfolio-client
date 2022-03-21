@@ -11,7 +11,7 @@ import { DialogData } from '@services/dialog/@types/dialog.model';
 import { UsersService } from '@services/users/users.service';
 import { User } from '@shared/@types/users.model';
 import { tap } from 'rxjs/operators';
-import { ChatsService } from '../../service/chats.service';
+import { ChatsService } from '../../../services/chats/chats.service';
 
 @UntilDestroy()
 @Component({

@@ -1,13 +1,15 @@
 <div class="chat w-100 h-100 p-y-12 p-x-6">
   <div class="chat-body">
     <div class="chat-header flex--flex-end--center gap-x-6">
-      <mat-select [formControl]="selectedChatCtrl">
-        <mat-option *ngFor="let chat of userChats" [value]="chat.id">{{
-          chat.name
-        }}</mat-option>
-      </mat-select>
+      <mat-form-field color="accent">
+        <mat-select [(ngModel)]="selectedChatId">
+          <mat-option *ngFor="let chat of userChats" [value]="chat.id">
+            {{ chat.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
       <button (click)="openCreateChatDialog()" mat-icon-button>
-        <mat-icon matTooltip="Create group" color="secondary">add</mat-icon>
+        <mat-icon matTooltip="Create chat">add</mat-icon>
       </button>
     </div>
     <div></div>

@@ -1,8 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContextToken } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AdditionalConfig } from './@types/api.model';
+import { ExtendedConfig } from './@types/api.model';
+
+export const IS_LOADER = new HttpContextToken(() => true);
 
 @Injectable({
   providedIn: 'root',
@@ -19,66 +21,68 @@ export class ApiService {
 
   protected get<T>(
     url = '',
-    { rootUrl }: AdditionalConfig = {}
+    { rootUrl, context }: ExtendedConfig = {}
   ): Observable<T> {
     return this.http.get<T>(
       this.generateUrl(rootUrl, url) ?? this.baseUrl + url,
       {
         withCredentials: true,
+        context,
       }
     );
   }
 
   protected post<T>(
     url = '',
-    body: any,
-    { rootUrl }: AdditionalConfig = {}
+    { rootUrl, context, body }: ExtendedConfig = {}
   ): Observable<T> {
     return this.http.post<T>(
       this.generateUrl(rootUrl, url) ?? this.baseUrl + url,
       body,
       {
         withCredentials: true,
+        context,
       }
     );
   }
 
   protected put<T>(
     url = '',
-    body: any,
-    { rootUrl }: AdditionalConfig = {}
+    { rootUrl, context, body }: ExtendedConfig = {}
   ): Observable<T> {
     return this.http.put<T>(
       this.generateUrl(rootUrl, url) ?? this.baseUrl + url,
       body,
       {
         withCredentials: true,
+        context,
       }
     );
   }
 
   protected patch<T>(
     url = '',
-    body: any,
-    { rootUrl }: AdditionalConfig = {}
+    { rootUrl, context, body }: ExtendedConfig = {}
   ): Observable<T> {
     return this.http.patch<T>(
       this.generateUrl(rootUrl, url) ?? this.baseUrl + url,
       body,
       {
         withCredentials: true,
+        context,
       }
     );
   }
 
   protected delete<T>(
     url = '',
-    { rootUrl }: AdditionalConfig = {}
+    { rootUrl, context }: ExtendedConfig = {}
   ): Observable<T> {
     return this.http.delete<T>(
       this.generateUrl(rootUrl, url) ?? this.baseUrl + url,
       {
         withCredentials: true,
+        context,
       }
     );
   }

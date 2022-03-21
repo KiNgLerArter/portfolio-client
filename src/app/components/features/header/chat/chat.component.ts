@@ -5,10 +5,16 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UsersService } from '@services/users/users.service';
 import { deepClone } from '@shared/utils';
 import { Observable } from 'rxjs';
-import { distinctUntilChanged, switchMap, take, tap } from 'rxjs/operators';
+import {
+  distinctUntilChanged,
+  filter,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs/operators';
 import { Chat } from './@types/chat.model';
 import { CreateChatComponent } from './dialogs/create-chat/create-chat.component';
-import { ChatsService } from './service/chats.service';
+import { ChatsService } from '../services/chats/chats.service';
 
 @UntilDestroy()
 @Component({
@@ -17,8 +23,15 @@ import { ChatsService } from './service/chats.service';
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit {
-  selectedChatCtrl = new FormControl();
   userChats: Chat[];
+
+  get selectedChatId(): string {
+    return this.chatsService.selectedChatId$.value;
+  }
+
+  set selectedChatId(id: string) {
+    this.chatsService.selectedChatId$.next(id);
+  }
 
   constructor(
     private chatsService: ChatsService,
@@ -37,15 +50,11 @@ export class ChatComponent implements OnInit {
 
     userChatsObs
       .pipe(
+        filter((chats) => !!chats?.length),
+        tap(() => {}),
         take(1),
         tap((chats) => {
-          this.selectedChatCtrl = new FormControl(chats[0]);
-        }),
-        switchMap(() => this.selectedChatCtrl.valueChanges as Observable<Chat>),
-        distinctUntilChanged(),
-        tap((chat) => {
-          console.log('[formControl emitted]:', chat);
-          this.chatsService.selectedChat$.next(chat);
+          this.selectedChatId = chats[0].id;
         })
       )
       .subscribe();
@@ -54,17 +63,6 @@ export class ChatComponent implements OnInit {
       .pipe(
         tap((chats) => {
           this.userChats = deepClone(chats);
-        })
-      )
-      .subscribe();
-
-    this.chatsService.selectedChat$
-      .pipe(
-        untilDestroyed(this),
-        distinctUntilChanged(),
-        tap((chat) => {
-          console.log('[subject emitted]:', chat);
-          this.selectedChatCtrl.setValue(chat);
         })
       )
       .subscribe();

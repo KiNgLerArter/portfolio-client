@@ -69,7 +69,7 @@ export class AuthService extends ApiService {
   }
 
   register(data: UserDto & { nickname: string }): Observable<AuthRes> {
-    return this.post<AuthRes>('register', data).pipe(
+    return this.post<AuthRes>('register', {body: data}).pipe(
       tap(({ accessToken, user: { id } }) => {
         this.setCredentials(accessToken, id);
       }),
@@ -81,7 +81,7 @@ export class AuthService extends ApiService {
   }
 
   login(data: UserDto): Observable<AuthRes> {
-    return this.post<AuthRes>('login', data).pipe(
+    return this.post<AuthRes>('login', {body: data}).pipe(
       tap(({ accessToken, user: { id } }) => {
         this.setCredentials(accessToken, id);
       }),

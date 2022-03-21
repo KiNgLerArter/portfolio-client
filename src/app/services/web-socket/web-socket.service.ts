@@ -30,4 +30,6 @@ export class WebSocketService extends ApiService {
   protected emit<T>(eventName: string, data: T): void {
     this.socket.emit(eventName, data);
   }
+
+  protected listenRoom(roomName: string): void {}
 }

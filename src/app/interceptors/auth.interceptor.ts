@@ -1,4 +1,6 @@
 import {
+  HttpContext,
+  HttpContextToken,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
@@ -7,6 +9,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GlobalLoaderService } from '@components/features/global-loader/service/global-loader.service';
+import { IS_LOADER } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, finalize, switchMap, tap } from 'rxjs/operators';
@@ -22,7 +25,10 @@ export class AuthInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    this.loaderService.isLoading = true;
+    if (req.context.get(IS_LOADER)) {
+      this.loaderService.isLoading = true;
+    }
+
     req = this.addAuthHeader(req);
 
     return next.handle(req).pipe(

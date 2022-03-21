@@ -22,6 +22,7 @@
         <input [formControl]="chatControl" matInput />
       </mat-form-field>
       <button
+        (click)="sendMessage()"
         [ngClass]="{ removed: !isChat }"
         class="chat-send-button"
         matTooltip="Send message"
@@ -41,17 +42,13 @@
       <ng-container *ngIf="isLoggedIn; else loggedOut">
         <button
           [matTooltip]="isChat ? 'Close chat' : 'Open chat'"
+          (click)="toggleChat()"
           mat-icon-button
         >
-          <mat-icon
-            [color]="isChat ? 'warn' : 'primary'"
-            (click)="toggleChat()"
-          >
-            chat
-          </mat-icon>
+          <mat-icon [color]="isChat ? 'warn' : 'primary'"> chat </mat-icon>
         </button>
-        <button matTooltip="Logout" mat-icon-button>
-          <mat-icon (click)="logout()" color="warn"> logout </mat-icon>
+        <button (click)="logout()" matTooltip="Logout" mat-icon-button>
+          <mat-icon color="warn"> logout </mat-icon>
         </button>
       </ng-container>
       <ng-template #loggedOut>

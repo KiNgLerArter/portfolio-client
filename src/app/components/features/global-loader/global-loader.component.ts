@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { GlobalLoaderService } from './service/global-loader.service';
 
 @Component({
@@ -9,11 +9,15 @@ import { GlobalLoaderService } from './service/global-loader.service';
 export class GlobalLoaderComponent implements OnInit {
   isLoading: boolean;
 
-  constructor(private loaderService: GlobalLoaderService) {}
+  constructor(
+    private loaderService: GlobalLoaderService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.loaderService.isLoading$.subscribe((loading) => {
       this.isLoading = loading;
+      this.cdr.detectChanges();
     });
   }
 }

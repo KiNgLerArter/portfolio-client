@@ -34,4 +34,10 @@ export class HeaderComponent implements OnInit {
       this.isChatInput = true;
     }
   }
+
+  sendMessage(): void {
+    if (this.chatControl.valid) {
+      this.c;
+    }
+  }
 }
