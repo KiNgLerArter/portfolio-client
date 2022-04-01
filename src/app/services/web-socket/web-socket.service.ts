@@ -27,9 +27,18 @@ export class WebSocketService extends ApiService {
     });
   }
 
-  protected emit<T>(eventName: string, data: T): void {
-    this.socket.emit(eventName, data);
-  }
+  /**
+   *
+   * @param eventName websocket event name
+   * @param data data passed to BE
+   * @param callback callback which will be called on BE
+   */
 
-  protected listenRoom(roomName: string): void {}
+  protected emit<T>(eventName: string, data: T, callback?: () => {}): void {
+    if (callback) {
+      this.socket.emit(eventName, data, callback);
+    } else {
+      this.socket.emit(eventName, data);
+    }
+  }
 }

@@ -16,7 +16,12 @@
 
 .chat-header {
   position: absolute;
-  opacity: 0.7;
+  background-color: inherit;
+  // opacity: 0.7;
+}
+
+.message {
+  border-radius: 6px;
 }
 
 // .chat-body {

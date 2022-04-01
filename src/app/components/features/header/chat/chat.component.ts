@@ -12,9 +12,10 @@ import {
   take,
   tap,
 } from 'rxjs/operators';
-import { Chat } from './@types/chat.model';
+import { Chat } from '../@types/chat.model';
 import { CreateChatComponent } from './dialogs/create-chat/create-chat.component';
 import { ChatsService } from '../services/chats/chats.service';
+import { User } from '@shared/@types/users.model';
 
 @UntilDestroy()
 @Component({
@@ -25,12 +26,20 @@ import { ChatsService } from '../services/chats/chats.service';
 export class ChatComponent implements OnInit {
   userChats: Chat[];
 
+  get currentUser(): User {
+    return this.usersService.currentUser;
+  }
+
+  get selectedChat(): Chat {
+    return this.userChats.find((chat) => chat.id === this.selectedChatId);
+  }
+
   get selectedChatId(): string {
-    return this.chatsService.selectedChatId$.value;
+    return this.chatsService.currentChatId$.value;
   }
 
   set selectedChatId(id: string) {
-    this.chatsService.selectedChatId$.next(id);
+    this.chatsService.currentChatId$.next(id);
   }
 
   constructor(

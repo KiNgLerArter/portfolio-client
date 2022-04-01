@@ -1,7 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthService } from '@services/auth/auth.service';
+import { ChatsService } from './services/chats/chats.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -10,15 +13,25 @@ import { AuthService } from '@services/auth/auth.service';
 export class HeaderComponent implements OnInit {
   isChat: boolean;
   isChatInput: boolean;
-  chatControl = new FormControl('', [Validators.maxLength(250)]);
+  chatControl = new FormControl('', [
+    Validators.required,
+    Validators.maxLength(250),
+  ]);
 
   get isLoggedIn(): boolean {
     return this.authService.isLoggedIn;
   }
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private chatsService: ChatsService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.chatsService.listenMessages().subscribe((message) => {
+      console.log('[message]:', message);
+    });
+  }
 
   logout(): void {
     this.authService.logout().subscribe();
@@ -37,7 +50,7 @@ export class HeaderComponent implements OnInit {
 
   sendMessage(): void {
     if (this.chatControl.valid) {
-      this.c;
+      this.chatsService.sendMessage(this.chatControl.value);
     }
   }
 }

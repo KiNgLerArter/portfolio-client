@@ -1,14 +1,7 @@
 import { User } from '@shared/@types/users.model';
 
-export namespace chatDtos {
-  export interface Create {
-    readonly name: string;
-    readonly usersIds: number[];
-  }
-}
-
 export interface Message {
-  userId: number;
+  ownerId: number;
   repliedMessageId?: string;
   body: string;
   created_at: number;
