@@ -1,9 +1,12 @@
-<div class="chat w-100 h-100 p-y-12 p-x-6">
-  <div class="chat-body">
+<div class="chat w-100 h-100 p-x-6">
+  <div class="chat-body m-y-12">
     <div class="chat-header bg--black-90 flex--flex-end--center gap-x-6">
       <mat-form-field color="accent">
-        <mat-select [(ngModel)]="selectedChatId">
-          <mat-option *ngFor="let chat of userChats" [value]="chat.id">
+        <mat-select [(ngModel)]="currentChatId">
+          <mat-option
+            *ngFor="let chat of chatsService.userChats$ | async"
+            [value]="chat.id"
+          >
             {{ chat.name }}
           </mat-option>
         </mat-select>
@@ -13,15 +16,17 @@
       </button>
     </div>
     <div
-      *ngIf="selectedChat?.messages?.length"
-      class="chat-messages flex--col--flex-start"
+      *ngIf="(chatsService.currentChat$ | async)?.messages?.length"
+      class="chat-messages flex--col--flex-start gap-y-8"
+      #chat
     >
       <div
-        *ngFor="let message of selectedChat.messages"
-        class="message p-4"
+        *ngFor="let message of (chatsService.currentChat$ | async).messages"
+        class="message p-6 bg--grey"
         [ngStyle]="{
-          'self-align':
-            message.ownerId === currentUser.id ? 'flex-end' : 'initial'
+          'align-self': chatsService.isCurrentUserMessage(message)
+            ? 'flex-end'
+            : 'initial'
         }"
       >
         {{ message.body }}

@@ -17,11 +17,17 @@
 .chat-header {
   position: absolute;
   background-color: inherit;
+  border-radius: 6px;
   // opacity: 0.7;
+}
+
+.chat-body {
+  overflow-y: auto;
 }
 
 .message {
   border-radius: 6px;
+  scroll-margin: 0px;
 }
 
 // .chat-body {

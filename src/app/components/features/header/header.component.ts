@@ -28,9 +28,7 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.chatsService.listenMessages().subscribe((message) => {
-      console.log('[message]:', message);
-    });
+    this.chatsService.listenMessages().subscribe();
   }
 
   logout(): void {

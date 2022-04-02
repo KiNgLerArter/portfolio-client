@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -24,27 +24,30 @@ import { User } from '@shared/@types/users.model';
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit {
-  userChats: Chat[];
-
-  get currentUser(): User {
-    return this.usersService.currentUser;
+  @ViewChild('chat') set chat(elem: ElementRef) {
+    const htmlElem = elem.nativeElement;
+    this.chatsService.chatElement = htmlElem;
+    htmlElem.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end',
+    });
   }
 
-  get selectedChat(): Chat {
-    return this.userChats.find((chat) => chat.id === this.selectedChatId);
+  get currentChat(): Chat {
+    return this.chatsService.currentChat$.value;
   }
 
-  get selectedChatId(): string {
-    return this.chatsService.currentChatId$.value;
+  get currentChatId(): string {
+    return this.chatsService.currentChat$.value?.id;
   }
 
-  set selectedChatId(id: string) {
-    this.chatsService.currentChatId$.next(id);
+  set currentChatId(id: string) {
+    this.chatsService.currentChat$.next(this.chatsService.getChatById(id));
   }
 
   constructor(
-    private chatsService: ChatsService,
-    private usersService: UsersService,
+    public chatsService: ChatsService,
+    public usersService: UsersService,
     private dialog: MatDialog
   ) {}
 
@@ -53,25 +56,13 @@ export class ChatComponent implements OnInit {
   }
 
   private initSubs(): void {
-    const userChatsObs = this.chatsService.userChats$.pipe(
-      untilDestroyed(this)
-    );
-
-    userChatsObs
+    this.chatsService.userChats$
       .pipe(
+        untilDestroyed(this),
         filter((chats) => !!chats?.length),
-        tap(() => {}),
         take(1),
         tap((chats) => {
-          this.selectedChatId = chats[0].id;
-        })
-      )
-      .subscribe();
-
-    userChatsObs
-      .pipe(
-        tap((chats) => {
-          this.userChats = deepClone(chats);
+          this.currentChatId = chats[0].id;
         })
       )
       .subscribe();
