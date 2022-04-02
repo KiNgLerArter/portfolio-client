@@ -22,7 +22,7 @@ export class ChatsService extends WebSocketService {
   }
 
   private get _userChats(): Chat[] {
-    return this._userChats$.value;
+    return deepClone(this._userChats$.value);
   }
 
   constructor(protected http: HttpClient, private usersService: UsersService) {
@@ -89,12 +89,14 @@ export class ChatsService extends WebSocketService {
     return this.listen<message.BE>('receive message').pipe(
       tap((message) => {
         this.addMessageToChat(message);
-        if (this.isCurrentUserMessage(message)) {
-          this.chatElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'end',
-          });
-        }
+        setTimeout(() => {
+          if (this.isCurrentUserMessage(message)) {
+            this.chatElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'end',
+            });
+          }
+        });
       })
     );
   }
@@ -124,12 +126,16 @@ export class ChatsService extends WebSocketService {
     return message.ownerId === this.usersService.currentUser.id;
   }
 
-  private addMessageToChat(
-    message: message.BE,
-    chat = this.currentChat$.value
-  ): void {
-    chat.messages.push(message);
-    const updatedChats = [...this._userChats, chat];
+  private addMessageToChat(message: message.BE): void {
+    const updatedChats = this._userChats;
+    updatedChats.some((chat) => {
+      if (chat.id === message.chatId) {
+        chat.messages.push(message);
+        return true;
+      }
+      return false;
+    });
+
     this._userChats$.next(updatedChats);
   }
 }

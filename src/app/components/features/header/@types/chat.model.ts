@@ -2,7 +2,7 @@ import { User } from '@shared/@types/users.model';
 
 export namespace message {
   export interface FE {
-    chatId: number;
+    chatId: string;
     ownerId: number;
     repliedMessageId?: string;
     body: string;
@@ -11,7 +11,7 @@ export namespace message {
 
   export interface BE {
     id: string;
-    chatId: number;
+    chatId: string;
     ownerId: number;
     repliedMessageId?: string;
     body: string;

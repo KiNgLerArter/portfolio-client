@@ -1,6 +1,6 @@
 <div class="chat w-100 h-100 p-x-6">
-  <div class="chat-body m-y-12">
-    <div class="chat-header bg--black-90 flex--flex-end--center gap-x-6">
+  <div class="chat-body" #chat>
+    <div class="chat-header flex--flex-start--center gap-x-6">
       <mat-form-field color="accent">
         <mat-select [(ngModel)]="currentChatId">
           <mat-option
@@ -18,7 +18,6 @@
     <div
       *ngIf="(chatsService.currentChat$ | async)?.messages?.length"
       class="chat-messages flex--col--flex-start gap-y-8"
-      #chat
     >
       <div
         *ngFor="let message of (chatsService.currentChat$ | async).messages"
