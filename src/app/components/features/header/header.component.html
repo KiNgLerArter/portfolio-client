@@ -14,23 +14,32 @@
     }"
     class="navbar bg--blue p-y-8 p-x-16"
   >
-    <div
+    <form
       *ngIf="isChatInput && chatControl"
       class="navbar-chat-actions flex--center gap-x-8"
+      (onsubmit)="sendMessage($event)"
     >
       <mat-form-field [ngClass]="{ removed: !isChat }" class="chat-input">
         <input [formControl]="chatControl" matInput />
       </mat-form-field>
       <button
         (click)="sendMessage()"
+        [disabled]="chatControl.invalid || !chatControl.value?.length"
         [ngClass]="{ removed: !isChat }"
+        type="submit"
         class="chat-send-button"
         matTooltip="Send message"
         mat-icon-button
       >
-        <mat-icon color="primary">send</mat-icon>
+        <mat-icon
+          [color]="
+            chatControl.dirty && chatControl.invalid ? 'warn' : 'primary'
+          "
+        >
+          send
+        </mat-icon>
       </button>
-    </div>
+    </form>
 
     <nav
       class="navbar-actions flex--flex-end--center"

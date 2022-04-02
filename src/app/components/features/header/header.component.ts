@@ -13,10 +13,7 @@ import { ChatsService } from './services/chats/chats.service';
 export class HeaderComponent implements OnInit {
   isChat: boolean;
   isChatInput: boolean;
-  chatControl = new FormControl('', [
-    Validators.required,
-    Validators.maxLength(250),
-  ]);
+  chatControl = new FormControl('', [Validators.maxLength(250)]);
 
   get isLoggedIn(): boolean {
     return this.authService.isLoggedIn;
@@ -28,6 +25,7 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.chatsService.messageInput = this.chatControl;
     this.chatsService.listenMessages().subscribe();
   }
 
@@ -46,8 +44,9 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  sendMessage(): void {
-    if (this.chatControl.valid) {
+  sendMessage(event?: Event): void {
+    event?.preventDefault();
+    if (this.chatControl.valid || !this.chatControl.value?.length) {
       this.chatsService.sendMessage(this.chatControl.value);
     }
   }

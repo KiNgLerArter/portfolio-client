@@ -3,6 +3,7 @@ import { GlobalLoaderService } from '@components/features/global-loader/service/
 import { Auth } from '@shared/@types/auth.model';
 import { AuthService } from '@services/auth/auth.service';
 import { UsersService } from '@services/users/users.service';
+import { filter, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -24,5 +25,24 @@ export class AppComponent implements OnInit {
     if (localStorage.getItem(Auth.accessToken)) {
       this.authService.refreshToken().subscribe();
     }
+
+    this.authService.isLoggedIn$
+      .pipe(
+        filter((isLoggedIn) => {
+          console.log('[isLoggedIn]: ', isLoggedIn);
+          if (!isLoggedIn) {
+            this.usersService.clearUsers();
+            return false;
+          }
+          return true;
+        }),
+        switchMap(() => this.usersService.fetchUsers()),
+        tap(() => {
+          this.usersService.currentUser$.next(
+            this.usersService.getUserById(this.authService.currentUserId)
+          );
+        })
+      )
+      .subscribe();
   }
 }

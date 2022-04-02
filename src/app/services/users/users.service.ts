@@ -12,10 +12,11 @@ import { User } from '../../shared/@types/users.model';
 })
 export class UsersService extends ApiService {
   private _allUsers$ = new BehaviorSubject<User[]>([]);
-  private _currentUser$ = new BehaviorSubject<User>(null);
+
+  currentUser$ = new BehaviorSubject<User>(null);
 
   get currentUser(): User {
-    return this._currentUser$.value;
+    return this.currentUser$.value;
   }
 
   get allUsers$(): Observable<User[]> {
@@ -28,35 +29,14 @@ export class UsersService extends ApiService {
     this.initSubs();
   }
 
-  private initSubs(): void {
-    this.authService.isLoggedIn$
-      .pipe(
-        filter((isLoggedIn) => {
-          console.log('[isLoggedIn]: ', isLoggedIn);
-          if (!isLoggedIn) {
-            this.clearUsers();
-            return false;
-          }
-          return true;
-        }),
-        switchMap(() => this.getUserById(this.authService.currentUserId)),
-        tap((user) => {
-          console.log('[user]:', user);
-        }),
-        switchMap(() => this.getUsers())
-      )
-      .subscribe();
-  }
+  private initSubs(): void {}
 
-  private clearUsers(): void {
+  clearUsers(): void {
     this._allUsers$.next([]);
   }
 
-  getUserById(userId: number): Observable<User> {
+  fetchUserById(userId: number): Observable<User> {
     return this.get<User>(userId.toString()).pipe(
-      tap((user) => {
-        this._currentUser$.next(user);
-      }),
       catchError((error) => {
         console.log('[getUserById error]: ', error);
         return of(null);
@@ -64,7 +44,7 @@ export class UsersService extends ApiService {
     );
   }
 
-  getUsers(): Observable<User[]> {
+  fetchUsers(): Observable<User[]> {
     return this.get<User[]>().pipe(
       tap((users) => {
         this._allUsers$.next(users);
@@ -74,5 +54,9 @@ export class UsersService extends ApiService {
         return of([]);
       })
     );
+  }
+
+  getUserById(id: number): User {
+    return this._allUsers$.value.find((user) => user.id === id);
   }
 }

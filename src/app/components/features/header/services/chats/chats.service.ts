@@ -1,5 +1,6 @@
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { IS_LOADER } from '@services/api/api.service';
 import { UsersService } from '@services/users/users.service';
 import { WebSocketService } from '@services/web-socket/web-socket.service';
@@ -12,8 +13,11 @@ import { Chat, message } from '../../@types/chat.model';
 
 @Injectable()
 export class ChatsService extends WebSocketService {
+  messageInput: FormControl;
   chatElement: HTMLElement;
   currentChat$ = new BehaviorSubject<Chat>(null);
+
+  readonly SMILES = ['😶‍🌫️', '🥸', '😈', '🤠', '🥶', '😎', '🤢', '👹', '☠️'];
 
   private _userChats$ = new BehaviorSubject<Chat[]>([]);
 
@@ -91,10 +95,7 @@ export class ChatsService extends WebSocketService {
         this.addMessageToChat(message);
         setTimeout(() => {
           if (this.isCurrentUserMessage(message)) {
-            this.chatElement.scrollIntoView({
-              behavior: 'smooth',
-              block: 'end',
-            });
+            this.messageInput.setValue('');
           }
         });
       })
@@ -131,6 +132,9 @@ export class ChatsService extends WebSocketService {
     updatedChats.some((chat) => {
       if (chat.id === message.chatId) {
         chat.messages.push(message);
+        if (this.currentChat$.value.id === chat.id) {
+          this.currentChat$.next(chat);
+        }
         return true;
       }
       return false;
