@@ -1,5 +1,16 @@
 import { User } from '@shared/@types/users.model';
 
+export enum ChatEvents {
+  JOIN = 'join chat',
+  LEAVE = 'leave chat',
+}
+
+export enum MessageEvents {
+  SEND = 'send message',
+  DELETE = 'delete message',
+  RECEIVE = 'receive message',
+}
+
 export namespace message {
   export interface FE {
     chatId: string;

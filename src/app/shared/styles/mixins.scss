@@ -2,29 +2,29 @@
 @import "~@angular/material/theming";
 
 @mixin theme-color-grabber($theme) {
-  // Parse the theme and create variables for each color in the pallete
+  // Parse the theme and create variables for each color in the pallet
   $primary: map.get($theme, primary);
   $accent: map.get($theme, accent);
   $warn: map.get($theme, warn);
 
-  // Create theme specfic styles
-  .primaryBG {
+  // Create theme specific styles
+  .bg--primary {
     background-color: mat-color($primary, default);
   }
-  .accentBG {
+  .bg--accent {
     background-color: mat-color($accent, default);
   }
-  .warnBG {
+  .bg--warn {
     background-color: mat-color($warn, default);
   }
 
-  // .primaryText {
-  //   color: mat-color($primary);
-  // }
-  // .accentText {
-  //   color: mat-color($accent);
-  // }
-  // .warnText {
-  //   color: mat-color($warn);
-  // }
+  .c--primary {
+    color: mat-color($primary, default);
+  }
+  .c--accent {
+    color: mat-color($accent, default);
+  }
+  .c--warn {
+    color: mat-color($warn, default);
+  }
 }

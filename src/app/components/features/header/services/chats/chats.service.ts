@@ -8,8 +8,8 @@ import { deepClone } from '@shared/utils';
 import { formatInTimeZone } from 'date-fns-tz';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, pairwise, startWith, tap } from 'rxjs/operators';
-import { chatDtos as dtos } from '../../@types/chat.dto';
-import { Chat, message } from '../../@types/chat.model';
+import { chatDtos as dtos } from './@types/chat.dto';
+import { Chat, ChatEvents, message } from './@types/chat.model';
 
 @Injectable()
 export class ChatsService extends WebSocketService {
@@ -81,23 +81,27 @@ export class ChatsService extends WebSocketService {
 
   //============WebSocket============//
 
-  joinChats(chatIds: string[]): void {
-    this.emit('join chats', chatIds);
+  joinChats(chatIds: string[] | string): void {
+    if (typeof chatIds === 'string') {
+      this.emit(ChatEvents.JOIN, [chatIds]);
+    }
+    this.emit(ChatEvents.JOIN, chatIds);
   }
 
-  leaveChats(chatIds: string[]): void {
-    this.emit('leave chats', chatIds);
+  leaveChats(chatIds: string[] = this._userChats.map((chat) => chat.id)): void {
+    if (typeof chatIds === 'string') {
+      this.emit(ChatEvents.LEAVE, [chatIds]);
+    }
+    this.emit(ChatEvents.LEAVE, chatIds);
   }
 
   listenMessages(): Observable<message.BE> {
     return this.listen<message.BE>('receive message').pipe(
       tap((message) => {
         this.addMessageToChat(message);
-        setTimeout(() => {
-          if (this.isCurrentUserMessage(message)) {
-            this.messageInput.setValue('');
-          }
-        });
+        if (this.isCurrentUserMessage(message)) {
+          this.messageInput.setValue('');
+        }
       })
     );
   }

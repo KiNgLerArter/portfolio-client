@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -14,7 +20,7 @@ import {
   take,
   tap,
 } from 'rxjs/operators';
-import { Chat } from '../@types/chat.model';
+import { Chat } from '../services/chats/@types/chat.model';
 import { CreateChatComponent } from './dialogs/create-chat/create-chat.component';
 import { ChatsService } from '../services/chats/chats.service';
 import { User } from '@shared/@types/users.model';
@@ -25,7 +31,7 @@ import { User } from '@shared/@types/users.model';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
   @ViewChild('chat') set chat(elem: ElementRef) {
     this._chatElem = elem.nativeElement;
   }
@@ -62,6 +68,10 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.initSubs();
+  }
+
+  ngOnDestroy(): void {
+    this.chatsService.leaveChats();
   }
 
   private initSubs(): void {

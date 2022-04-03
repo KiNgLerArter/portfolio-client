@@ -28,8 +28,9 @@
             : 'initial'
         }"
       >
-        <div class="nickname m-b-2">
+        <div class="nickname">
           {{ usersService.getUserById(message.ownerId).nickname }}
+          <mat-divider class="msg-divider bg--accent m-b-2"></mat-divider>
         </div>
         <div>{{ message.body }}</div>
       </div>

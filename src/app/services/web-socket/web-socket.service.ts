@@ -34,7 +34,7 @@ export class WebSocketService extends ApiService {
    * @param callback callback which will be called on BE
    */
 
-  protected emit<T>(eventName: string, data: T, callback?: () => {}): void {
+  protected emit<T>(eventName: string, data: T, callback?: () => void): void {
     if (callback) {
       this.socket.emit(eventName, data, callback);
     } else {

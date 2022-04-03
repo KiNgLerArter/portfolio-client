@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 import { ChatsService } from '../services/chats/chats.service';
 
 const declarationsToExport = [ChatComponent];
@@ -27,6 +28,7 @@ const declarationsToExport = [ChatComponent];
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
+    MatDividerModule,
   ],
   exports: [...declarationsToExport],
   providers: [ChatsService],

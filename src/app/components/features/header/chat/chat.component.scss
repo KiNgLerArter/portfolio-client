@@ -32,6 +32,13 @@
 
 .nickname {
   font-weight: bold;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.msg-divider {
+  height: 1px;
+  border-radius: 6px;
 }
 
 .message {
