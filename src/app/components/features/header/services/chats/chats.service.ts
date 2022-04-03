@@ -8,21 +8,27 @@ import { deepClone } from '@shared/utils';
 import { formatInTimeZone } from 'date-fns-tz';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, pairwise, startWith, tap } from 'rxjs/operators';
-import { chatDtos as dtos } from './@types/chat.dto';
-import { Chat, ChatEvents, message } from './@types/chat.model';
+import { chatDtos, chatDtos as dtos } from './@types/chat.dto';
+import { Chat, ChatEvents, message, Messages } from './@types/chat.model';
 
 @Injectable()
 export class ChatsService extends WebSocketService {
+  currentChat$ = new BehaviorSubject<Chat>(null);
+
   messageInput: FormControl;
   chatElement: HTMLElement;
-  currentChat$ = new BehaviorSubject<Chat>(null);
+
+  private _userChatsMessages$ = new BehaviorSubject<Messages>({});
+  private _userChats$ = new BehaviorSubject<Chat[]>([]);
 
   readonly SMILES = ['😶‍🌫️', '🥸', '😈', '🤠', '🥶', '😎', '🤢', '👹', '☠️'];
 
-  private _userChats$ = new BehaviorSubject<Chat[]>([]);
-
   get userChats$(): Observable<Chat[]> {
     return this._userChats$.asObservable();
+  }
+
+  private get _userChatsMessages(): Messages {
+    return deepClone(this._userChatsMessages$.value);
   }
 
   private get _userChats(): Chat[] {
@@ -47,14 +53,21 @@ export class ChatsService extends WebSocketService {
 
   //============HTTP============//
 
-  getUserChats(userId: number): Observable<Chat[]> {
-    return this.get<Chat[]>(`${userId}/chats`, {
+  getUserChats(userId: number): Observable<chatDtos.FetchChat[]> {
+    return this.get<chatDtos.FetchChat[]>(`${userId}/chats`, {
       rootUrl: 'users',
       context: new HttpContext().set(IS_LOADER, false),
     }).pipe(
       tap((chats) => {
         console.log('[chats]:', chats);
-        this._userChats$.next(chats);
+        const messages: Messages = {};
+        chats.forEach((chat) => {
+          messages[chat.id] = chat.messages;
+          delete chat.messages;
+        });
+
+        this._userChatsMessages$.next(messages);
+        this._userChats$.next(chats as Chat[]);
       }),
       catchError((error) => {
         console.log('[getUserChats error]:', error);
@@ -97,9 +110,11 @@ export class ChatsService extends WebSocketService {
 
   listenMessages(): Observable<message.BE> {
     return this.listen<message.BE>('receive message').pipe(
-      tap((message) => {
-        this.addMessageToChat(message);
-        if (this.isCurrentUserMessage(message)) {
+      tap((receivedMessage) => {
+        const messages = this._userChatsMessages;
+        messages[receivedMessage.chatId].push(receivedMessage);
+        this._userChatsMessages$.next(messages);
+        if (this.isCurrentUserMessage(receivedMessage)) {
           this.messageInput.setValue('');
         }
       })
@@ -129,21 +144,5 @@ export class ChatsService extends WebSocketService {
 
   isCurrentUserMessage(message: message.BE): boolean {
     return message.ownerId === this.usersService.currentUser.id;
-  }
-
-  private addMessageToChat(message: message.BE): void {
-    const updatedChats = this._userChats;
-    updatedChats.some((chat) => {
-      if (chat.id === message.chatId) {
-        chat.messages.push(message);
-        if (this.currentChat$.value.id === chat.id) {
-          this.currentChat$.next(chat);
-        }
-        return true;
-      }
-      return false;
-    });
-
-    this._userChats$.next(updatedChats);
   }
 }

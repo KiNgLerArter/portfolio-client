@@ -1,3 +1,5 @@
+import { Chat, message } from './chat.model';
+
 export namespace chatDtos {
   export interface SendMessage {
     readonly chatId: string;
@@ -10,5 +12,9 @@ export namespace chatDtos {
   export interface CreateChat {
     readonly name: string;
     readonly usersIds: number[];
+  }
+
+  export interface FetchChat extends Chat {
+    messages: message.BE[];
   }
 }

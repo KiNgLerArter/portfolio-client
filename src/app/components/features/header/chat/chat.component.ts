@@ -86,6 +86,8 @@ export class ChatComponent implements OnInit, OnDestroy {
       )
       .subscribe();
 
+    //added messages object in the service, needs to be implemented
+
     this.chatsService.currentChat$
       .pipe(
         untilDestroyed(this),

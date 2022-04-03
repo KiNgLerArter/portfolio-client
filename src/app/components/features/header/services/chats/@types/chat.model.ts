@@ -34,5 +34,6 @@ export interface Chat {
   id: string;
   name: string;
   users: User[];
-  messages: message.BE[];
 }
+
+export type Messages = Record<Chat['id'], message.BE[]>;
