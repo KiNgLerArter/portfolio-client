@@ -16,11 +16,11 @@
       </button>
     </div>
     <div
-      *ngIf="(chatsService.currentChat$ | async)?.messages?.length"
+      *ngIf="currentChatMessages?.length"
       class="chat-messages flex--col--flex-start gap-y-8"
     >
       <div
-        *ngFor="let message of (chatsService.currentChat$ | async).messages"
+        *ngFor="let message of currentChatMessages"
         class="message p-6 bg--grey"
         [ngStyle]="{
           'align-self': chatsService.isCurrentUserMessage(message)

@@ -20,10 +20,9 @@ import {
   take,
   tap,
 } from 'rxjs/operators';
-import { Chat } from '../services/chats/@types/chat.model';
+import { Chat, message, Messages } from '../services/chats/@types/chat.model';
 import { CreateChatComponent } from './dialogs/create-chat/create-chat.component';
 import { ChatsService } from '../services/chats/chats.service';
-import { User } from '@shared/@types/users.model';
 
 @UntilDestroy()
 @Component({
@@ -47,6 +46,9 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   private _chatElem: any;
   private _chatBodyElem: any;
+  private _allMessages: Messages;
+
+  currentChatMessages: message.BE[] = [];
 
   get currentChat(): Chat {
     return this.chatsService.currentChat$.value;
@@ -86,20 +88,25 @@ export class ChatComponent implements OnInit, OnDestroy {
       )
       .subscribe();
 
-    //added messages object in the service, needs to be implemented
-
-    this.chatsService.currentChat$
+    this.chatsService.userChats$
       .pipe(
         untilDestroyed(this),
-        filter((chat) => !!chat),
-        distinctUntilChanged(
-          (prev, curr) => prev.messages.length === curr.messages.length
-        ),
-        map((chat) => chat.messages.slice(-1)[0]),
-        tap((message) => {
+        filter((chats) => !!chats?.length),
+        switchMap(() => this.chatsService.userChatsMessages$),
+        tap((messages) => {
+          this.currentChatMessages = deepClone(messages[this.currentChatId]);
+          this._allMessages = messages;
+        }),
+        map((messages) => messages[this.currentChatId]),
+        filter((currChatMessages) => !!currChatMessages?.length),
+        distinctUntilChanged((prev, curr) => {
+          return prev.length >= curr.length;
+        }),
+        map((currChatMessages) => currChatMessages.slice(-1)[0]),
+        tap((lastMessage) => {
           setTimeout(() => {
             if (
-              this.chatsService.isCurrentUserMessage(message) ||
+              this.chatsService.isCurrentUserMessage(lastMessage) ||
               this._chatElem.scrollTop > this._chatElem.scrollHeight - 500
             ) {
               this._chatBodyElem.scrollIntoView({
@@ -108,6 +115,15 @@ export class ChatComponent implements OnInit, OnDestroy {
               });
             }
           });
+        })
+      )
+      .subscribe();
+
+    this.chatsService.currentChat$
+      .pipe(
+        filter((chat) => !!chat && !!this._allMessages),
+        tap((chat) => {
+          this.currentChatMessages = deepClone(this._allMessages[chat.id]);
         })
       )
       .subscribe();

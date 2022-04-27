@@ -13,26 +13,24 @@ import { Chat, ChatEvents, message, Messages } from './@types/chat.model';
 
 @Injectable()
 export class ChatsService extends WebSocketService {
+  private _userChats$ = new BehaviorSubject<Chat[]>([]);
+  private _userChatsMessages$ = new BehaviorSubject<Messages>({});
+
   currentChat$ = new BehaviorSubject<Chat>(null);
+  userChats$ = this._userChats$.asObservable();
+  userChatsMessages$ = this._userChatsMessages$.asObservable();
 
   messageInput: FormControl;
   chatElement: HTMLElement;
 
-  private _userChatsMessages$ = new BehaviorSubject<Messages>({});
-  private _userChats$ = new BehaviorSubject<Chat[]>([]);
-
   readonly SMILES = ['😶‍🌫️', '🥸', '😈', '🤠', '🥶', '😎', '🤢', '👹', '☠️'];
-
-  get userChats$(): Observable<Chat[]> {
-    return this._userChats$.asObservable();
-  }
-
-  private get _userChatsMessages(): Messages {
-    return deepClone(this._userChatsMessages$.value);
-  }
 
   private get _userChats(): Chat[] {
     return deepClone(this._userChats$.value);
+  }
+
+  private get _messages(): Messages {
+    return deepClone(this._userChatsMessages$.value);
   }
 
   constructor(protected http: HttpClient, private usersService: UsersService) {
@@ -59,7 +57,6 @@ export class ChatsService extends WebSocketService {
       context: new HttpContext().set(IS_LOADER, false),
     }).pipe(
       tap((chats) => {
-        console.log('[chats]:', chats);
         const messages: Messages = {};
         chats.forEach((chat) => {
           messages[chat.id] = chat.messages;
@@ -109,9 +106,12 @@ export class ChatsService extends WebSocketService {
   }
 
   listenMessages(): Observable<message.BE> {
+    console.log('[listening messages]');
     return this.listen<message.BE>('receive message').pipe(
       tap((receivedMessage) => {
-        const messages = this._userChatsMessages;
+        console.log('[receivedMessage]:', receivedMessage);
+        console.log('[this._messages]:', this._messages);
+        const messages = this._messages;
         messages[receivedMessage.chatId].push(receivedMessage);
         this._userChatsMessages$.next(messages);
         if (this.isCurrentUserMessage(receivedMessage)) {
