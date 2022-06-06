@@ -7,11 +7,11 @@ import {
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { DialogData } from '@services/dialog/@types/dialog.model';
+import { DialogData } from '@services/dialog/model/dialog.model';
 import { UsersService } from '@services/users/users.service';
-import { User } from '@shared/@types/users.model';
+import { User } from '@shared/model/users.model';
 import { tap } from 'rxjs/operators';
-import { ChatsService } from '../../../services/chats/chats.service';
+import { ChatsService } from '../../service/chats.service';
 
 @UntilDestroy()
 @Component({

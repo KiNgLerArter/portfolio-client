@@ -38,55 +38,6 @@
   border-bottom-right-radius: 20px;
 }
 
-@mixin nav-act-animation {
-  animation-duration: 1.9s;
-  animation-fill-mode: forwards;
-  animation-iteration-count: 1;
-}
-
-.navbar-actions {
-  &.chat-opened {
-    @include nav-act-animation;
-    animation-name: open-nav-actions;
-  }
-  &.chat-closed {
-    @include nav-act-animation;
-    animation-name: close-nav-actions;
-  }
-}
-
-.chat-input {
-  width: 0;
-  animation-name: open-input;
-  animation-delay: 1s;
-  animation-duration: 0.3s;
-  animation-fill-mode: forwards;
-
-  &.removed {
-    width: var(--chat-input-w);
-    animation-name: close-input;
-    animation-delay: 0.3s;
-    animation-duration: 0.3s;
-    animation-fill-mode: forwards;
-  }
-}
-
-.chat-send-button {
-  opacity: 0;
-  animation-name: show-element;
-  animation-duration: 0.3s;
-  animation-delay: 1.3s;
-  animation-fill-mode: forwards;
-
-  &.removed {
-    opacity: 1;
-    animation-name: hide-element;
-    animation-duration: 0.3s;
-    animation-delay: 0.001s;
-    animation-fill-mode: forwards;
-  }
-}
-
 // try to reverse animation
 @keyframes open-chat {
   from {
@@ -115,26 +66,6 @@
   }
 }
 
-@keyframes open-input {
-  from {
-    width: 0;
-  }
-
-  to {
-    width: var(--chat-input-w);
-  }
-}
-
-@keyframes close-input {
-  from {
-    width: var(--chat-input-w);
-  }
-
-  to {
-    width: 0;
-  }
-}
-
 @keyframes show-element {
   from {
     opacity: 0;
@@ -152,33 +83,5 @@
 
   to {
     opacity: 0;
-  }
-}
-
-@keyframes open-nav-actions {
-  0% {
-    opacity: 0;
-  }
-
-  86% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes close-nav-actions {
-  0% {
-    opacity: 0;
-  }
-
-  86% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
   }
 }

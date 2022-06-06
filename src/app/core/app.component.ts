@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalLoaderService } from '@components/features/global-loader/service/global-loader.service';
-import { Auth } from '@shared/@types/auth.model';
+import { Auth } from '@shared/model/auth.model';
 import { AuthService } from '@services/auth/auth.service';
 import { UsersService } from '@services/users/users.service';
 import { filter, switchMap, tap } from 'rxjs/operators';

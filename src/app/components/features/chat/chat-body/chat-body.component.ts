@@ -1,36 +1,27 @@
-import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UsersService } from '@services/users/users.service';
 import { deepClone } from '@shared/utils';
-import { Observable } from 'rxjs';
 import {
   distinctUntilChanged,
   filter,
   map,
-  pairwise,
   switchMap,
   take,
   tap,
 } from 'rxjs/operators';
-import { Chat, message, Messages } from '../services/chats/@types/chat.model';
-import { CreateChatComponent } from './dialogs/create-chat/create-chat.component';
-import { ChatsService } from '../services/chats/chats.service';
+import { Chat, message, Messages } from '../service/model/chat.model';
+import { ChatsService } from '../service/chats.service';
+import { CreateChatComponent } from '../mat-dialogs/create-chat/create-chat.component';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-chat',
-  templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss'],
+  selector: 'app-chat-body',
+  templateUrl: './chat-body.component.html',
+  styleUrls: ['./chat-body.component.scss'],
 })
-export class ChatComponent implements OnInit, OnDestroy {
+export class ChatBodyComponent implements OnInit {
   @ViewChild('chat') set chat(elem: ElementRef) {
     this._chatElem = elem.nativeElement;
   }
@@ -70,10 +61,21 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initSubs();
+    this.chatsService.listenMessages().subscribe();
   }
 
   ngOnDestroy(): void {
     this.chatsService.leaveChats();
+  }
+
+  getRandomSmile(): string {
+    return this.chatsService.SMILES[
+      Math.floor(Math.random() * this.chatsService.SMILES.length)
+    ];
+  }
+
+  openCreateChatDialog(): void {
+    this.dialog.open(CreateChatComponent, { width: '400px' });
   }
 
   private initSubs(): void {
@@ -131,15 +133,5 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.chatsService
       .getUserChats(this.usersService.currentUser.id)
       .subscribe();
-  }
-
-  getRandomSmile(): string {
-    return this.chatsService.SMILES[
-      Math.floor(Math.random() * this.chatsService.SMILES.length)
-    ];
-  }
-
-  openCreateChatDialog(): void {
-    this.dialog.open(CreateChatComponent, { width: '400px' });
   }
 }

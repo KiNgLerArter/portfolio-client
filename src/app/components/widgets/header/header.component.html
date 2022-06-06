@@ -3,7 +3,7 @@
   class="header bg--black"
   #header
 >
-  <app-chat *ngIf="isChat; else chatMimic"></app-chat>
+  <app-chat-body *ngIf="isChat; else chatMimic"></app-chat-body>
   <ng-template #chatMimic>
     <div class="w-100 h-100"></div>
   </ng-template>
@@ -14,33 +14,7 @@
     }"
     class="navbar bg--blue p-y-8 p-x-16"
   >
-    <form
-      *ngIf="isChatInput && chatControl"
-      class="navbar-chat-actions flex--center gap-x-8"
-      (onsubmit)="sendMessage($event)"
-    >
-      <mat-form-field [ngClass]="{ removed: !isChat }" class="chat-input">
-        <input [formControl]="chatControl" matInput />
-      </mat-form-field>
-      <button
-        (click)="sendMessage()"
-        [disabled]="chatControl.invalid || !chatControl.value?.length"
-        [ngClass]="{ removed: !isChat }"
-        type="submit"
-        class="chat-send-button"
-        matTooltip="Send message"
-        mat-icon-button
-      >
-        <mat-icon
-          [color]="
-            chatControl.dirty && chatControl.invalid ? 'warn' : 'primary'
-          "
-        >
-          send
-        </mat-icon>
-      </button>
-    </form>
-
+    <app-chat-input *ngIf="isChatInput"></app-chat-input>
     <nav
       class="navbar-actions flex--flex-end--center"
       [ngClass]="{
@@ -79,4 +53,3 @@
     </nav>
   </div>
 </header>
-<!-- Размещаем чат в навигации при клике на кнопку навигация выезжает вниз и открывается чат в ней -->

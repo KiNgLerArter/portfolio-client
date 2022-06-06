@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthService } from '@services/auth/auth.service';
-import { ChatsService } from './services/chats/chats.service';
+import { ChatsService } from '../../features/chat/service/chats.service';
 
 @UntilDestroy()
 @Component({
@@ -13,21 +13,14 @@ import { ChatsService } from './services/chats/chats.service';
 export class HeaderComponent implements OnInit {
   isChat: boolean;
   isChatInput: boolean;
-  chatControl = new FormControl('', [Validators.maxLength(250)]);
 
   get isLoggedIn(): boolean {
     return this.authService.isLoggedIn;
   }
 
-  constructor(
-    private authService: AuthService,
-    private chatsService: ChatsService
-  ) {}
+  constructor(private authService: AuthService) {}
 
-  ngOnInit(): void {
-    this.chatsService.messageInput = this.chatControl;
-    this.chatsService.listenMessages().subscribe();
-  }
+  ngOnInit(): void {}
 
   logout(): void {
     this.authService.logout().subscribe();
@@ -41,13 +34,6 @@ export class HeaderComponent implements OnInit {
       }, 600);
     } else {
       this.isChatInput = true;
-    }
-  }
-
-  sendMessage(event?: Event): void {
-    event?.preventDefault();
-    if (this.chatControl.valid || !this.chatControl.value?.length) {
-      this.chatsService.sendMessage(this.chatControl.value);
     }
   }
 }

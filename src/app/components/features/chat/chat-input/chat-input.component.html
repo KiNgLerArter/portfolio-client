@@ -1,0 +1,23 @@
+<form
+  *ngIf="chatControl"
+  class="chat-actions flex--center gap-x-8"
+  (onsubmit)="sendMessage($event)"
+>
+  <mat-form-field class="chat-input">
+    <input [formControl]="chatControl" matInput />
+  </mat-form-field>
+  <button
+    (click)="sendMessage()"
+    [disabled]="chatControl.invalid || !chatControl.value?.length"
+    type="submit"
+    class="chat-send-button"
+    matTooltip="Send message"
+    mat-icon-button
+  >
+    <mat-icon
+      [color]="chatControl.dirty && chatControl.invalid ? 'warn' : 'primary'"
+    >
+      send
+    </mat-icon>
+  </button>
+</form>

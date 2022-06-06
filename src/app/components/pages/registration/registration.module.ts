@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RegistrationComponent } from './registration.component';
-import { FormFieldsModule } from '@components/entities/form-fields/form-fields.module';
 import { MatButtonModule } from '@angular/material/button';
+import { FormFieldsModule } from '@shared/ui/form-fields/form-fields.module';
 
 @NgModule({
   declarations: [RegistrationComponent],

@@ -6,7 +6,7 @@ import { ApiService } from '@services/api/api.service';
 import { UsersService } from '@services/users/users.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, finalize, map, pairwise, tap } from 'rxjs/operators';
-import { Auth, AuthRes, UserDto } from '../../shared/@types/auth.model';
+import { Auth, AuthRes, UserDto } from '../../shared/model/auth.model';
 
 @Injectable({
   providedIn: 'root',
@@ -69,7 +69,7 @@ export class AuthService extends ApiService {
   }
 
   register(data: UserDto & { nickname: string }): Observable<AuthRes> {
-    return this.post<AuthRes>('register', {body: data}).pipe(
+    return this.post<AuthRes>('register', { body: data }).pipe(
       tap(({ accessToken, user: { id } }) => {
         this.setCredentials(accessToken, id);
       }),
@@ -81,7 +81,7 @@ export class AuthService extends ApiService {
   }
 
   login(data: UserDto): Observable<AuthRes> {
-    return this.post<AuthRes>('login', {body: data}).pipe(
+    return this.post<AuthRes>('login', { body: data }).pipe(
       tap(({ accessToken, user: { id } }) => {
         this.setCredentials(accessToken, id);
       }),

@@ -8,8 +8,8 @@ import { deepClone } from '@shared/utils';
 import { formatInTimeZone } from 'date-fns-tz';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, pairwise, startWith, tap } from 'rxjs/operators';
-import { chatDtos, chatDtos as dtos } from './@types/chat.dto';
-import { Chat, ChatEvents, message, Messages } from './@types/chat.model';
+import { chatDtos, chatDtos as dtos } from './model/chat.dto';
+import { Chat, ChatEvents, message, Messages } from './model/chat.model';
 
 @Injectable()
 export class ChatsService extends WebSocketService {

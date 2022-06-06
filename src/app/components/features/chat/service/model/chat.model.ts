@@ -1,4 +1,4 @@
-import { User } from '@shared/@types/users.model';
+import { User } from '@shared/model/users.model';
 
 export enum ChatEvents {
   JOIN = 'join chat',
