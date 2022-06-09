@@ -13,8 +13,4 @@ export namespace chatDtos {
     readonly name: string;
     readonly usersIds: number[];
   }
-
-  export interface FetchChat extends Chat {
-    messages: message.BE[];
-  }
 }

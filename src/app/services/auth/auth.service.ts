@@ -1,12 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { GlobalLoaderService } from '@components/features/global-loader/service/global-loader.service';
+import { Router } from '@angular/router';
 import { ApiService } from '@services/api/api.service';
-import { UsersService } from '@services/users/users.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, finalize, map, pairwise, tap } from 'rxjs/operators';
-import { Auth, AuthRes, UserDto } from '../../shared/model/auth.model';
+import { Auth, AuthRes, UserDto } from '../../shared/models/auth.model';
 
 @Injectable({
   providedIn: 'root',

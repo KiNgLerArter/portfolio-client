@@ -6,8 +6,8 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../interceptors/auth.interceptor';
-import { GlobalLoaderModule } from '@components/features/global-loader/global-loader.module';
 import { HeaderModule } from '@components/widgets/header/header.module';
+import { LoaderModule } from '@components/features/loader/loader.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,7 +18,7 @@ import { HeaderModule } from '@components/widgets/header/header.module';
     PagesModule,
     HeaderModule,
     BrowserAnimationsModule,
-    GlobalLoaderModule,
+    LoaderModule,
   ],
   providers: [
     {

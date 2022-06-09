@@ -33,8 +33,3 @@ $shades: (10, 20, 30, 40, 50, 60, 70, 80, 90);
     }
   }
 }
-
-// function addAlpha(color, opacity) {
-//     const _opacity = Math.round(Math.min(Math.max(opacity || 1, 0), 1) * 255);
-//     return color + _opacity.toString(16).toUpperCase();
-// }

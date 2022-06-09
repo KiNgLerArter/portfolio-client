@@ -2,7 +2,10 @@
   <div class="chat-body" #chatBody>
     <div class="chat-header flex--flex-start--center gap-x-6">
       <mat-form-field color="accent">
-        <mat-select [(ngModel)]="currentChatId">
+        <mat-select
+          [value]="chats$ | async"
+          (selectionChange)="changeChat($event)"
+        >
           <mat-option
             *ngFor="let chat of chatsService.userChats$ | async"
             [value]="chat.id"
@@ -15,12 +18,12 @@
         <mat-icon matTooltip="Create chat">add</mat-icon>
       </button>
     </div>
-    <div
-      *ngIf="currentChatMessages?.length"
-      class="chat-messages flex--col--flex-start gap-y-8"
-    >
+    <div class="chat-messages flex--col--flex-start gap-y-8">
       <div
-        *ngFor="let message of currentChatMessages"
+        *ngFor="
+          let message of currentChatMessages$ | async;
+          trackBy: identifyMessage
+        "
         class="message p-6 bg--grey"
         [ngStyle]="{
           'align-self': chatsService.isCurrentUserMessage(message)

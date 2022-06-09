@@ -8,9 +8,9 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GlobalLoaderService } from '@components/features/global-loader/service/global-loader.service';
-import { IS_LOADER } from '@services/api/api.service';
+import { IS_LOADER } from '@services/api/config/api.config';
 import { AuthService } from '@services/auth/auth.service';
+import { GlobalLoaderService } from '@services/global-loader/global-loader.service';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, finalize, switchMap, tap } from 'rxjs/operators';
 
@@ -18,7 +18,7 @@ import { catchError, filter, finalize, switchMap, tap } from 'rxjs/operators';
 export class AuthInterceptor implements HttpInterceptor {
   constructor(
     private authService: AuthService,
-    private loaderService: GlobalLoaderService
+    private globalLoaderService: GlobalLoaderService
   ) {}
 
   intercept(
@@ -26,7 +26,7 @@ export class AuthInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     if (req.context.get(IS_LOADER)) {
-      this.loaderService.isLoading = true;
+      this.globalLoaderService.setLoading(true);
     }
 
     req = this.addAuthHeader(req);
@@ -36,7 +36,7 @@ export class AuthInterceptor implements HttpInterceptor {
         return this.handleResError(error, req, next);
       }),
       finalize(() => {
-        this.loaderService.isLoading = false;
+        this.globalLoaderService.setLoading(false);
       })
     );
   }

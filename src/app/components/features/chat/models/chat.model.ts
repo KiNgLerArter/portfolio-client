@@ -1,4 +1,4 @@
-import { User } from '@shared/model/users.model';
+import { SimplifiedUser, User } from '@shared/models/users.model';
 
 export enum ChatEvents {
   JOIN = 'join chat',
@@ -34,6 +34,21 @@ export interface Chat {
   id: string;
   name: string;
   users: User[];
+  messages: message.BE[];
+}
+
+export class ChatPreview {
+  id: string;
+  name: string;
+  lastMessage: {
+    value: message.BE['body'];
+    owner: SimplifiedUser;
+  };
+
+  constructor({ id, name }: { id: string; name: string }) {
+    this.id = id;
+    this.name = name;
+  }
 }
 
 export type Messages = Record<Chat['id'], message.BE[]>;

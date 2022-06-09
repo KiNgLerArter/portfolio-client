@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { FormFieldsModule } from '@shared/ui/form-fields/form-fields.module';
+import { FormFieldsModule } from '@components/entities/form-fields/form-fields.module';
 
 @NgModule({
   declarations: [LoginComponent],

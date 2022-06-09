@@ -9,7 +9,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogData } from '@services/dialog/model/dialog.model';
 import { UsersService } from '@services/users/users.service';
-import { User } from '@shared/model/users.model';
+import { User } from '@shared/models/users.model';
 import { tap } from 'rxjs/operators';
 import { ChatsService } from '../../service/chats.service';
 

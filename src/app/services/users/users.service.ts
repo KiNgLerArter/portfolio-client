@@ -4,7 +4,7 @@ import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, filter, switchMap, tap } from 'rxjs/operators';
-import { User } from '../../shared/model/users.model';
+import { User } from '../../shared/models/users.model';
 
 @Injectable({
   providedIn: 'root',

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalLoaderService } from '@components/features/global-loader/service/global-loader.service';
-import { Auth } from '@shared/model/auth.model';
+import { Auth } from '@shared/models/auth.model';
 import { AuthService } from '@services/auth/auth.service';
 import { UsersService } from '@services/users/users.service';
 import { filter, switchMap, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { GlobalLoaderService } from '@services/global-loader/global-loader.service';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +12,7 @@ import { filter, switchMap, tap } from 'rxjs/operators';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  get isLoading(): boolean {
-    return this.loaderService.isLoading;
-  }
+  isLoading$: Observable<boolean>;
 
   constructor(
     private authService: AuthService,
@@ -22,6 +21,8 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isLoading$ = this.loaderService.isLoading$;
+
     if (localStorage.getItem(Auth.accessToken)) {
       this.authService.refreshToken().subscribe();
     }

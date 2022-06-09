@@ -1,8 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UsersService } from '@services/users/users.service';
-import { deepClone } from '@shared/utils';
 import {
   distinctUntilChanged,
   filter,
@@ -11,15 +17,19 @@ import {
   take,
   tap,
 } from 'rxjs/operators';
-import { Chat, message, Messages } from '../service/model/chat.model';
+import { Chat, ChatPreview, message, Messages } from '../models/chat.model';
 import { ChatsService } from '../service/chats.service';
 import { CreateChatComponent } from '../mat-dialogs/create-chat/create-chat.component';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { deepEqual } from '@shared/utils';
+import { MatSelectChange } from '@angular/material/select';
 
 @UntilDestroy()
 @Component({
   selector: 'app-chat-body',
   templateUrl: './chat-body.component.html',
   styleUrls: ['./chat-body.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChatBodyComponent implements OnInit {
   @ViewChild('chat') set chat(elem: ElementRef) {
@@ -37,35 +47,29 @@ export class ChatBodyComponent implements OnInit {
 
   private _chatElem: any;
   private _chatBodyElem: any;
-  private _allMessages: Messages;
 
-  currentChatMessages: message.BE[] = [];
-
-  get currentChat(): Chat {
-    return this.chatsService.currentChat$.value;
-  }
-
-  get currentChatId(): string {
-    return this.chatsService.currentChat$.value?.id;
-  }
-
-  set currentChatId(id: string) {
-    this.chatsService.currentChat$.next(this.chatsService.getChatById(id));
-  }
+  chats$: Observable<ChatPreview[]>;
+  currentChatMessages$: Observable<message.BE[]>;
+  currentChatId$ = new BehaviorSubject<string>(null);
 
   constructor(
     public chatsService: ChatsService,
     public usersService: UsersService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+    this.initVars();
     this.initSubs();
-    this.chatsService.listenMessages().subscribe();
   }
 
   ngOnDestroy(): void {
     this.chatsService.leaveChats();
+  }
+
+  changeChat(event: MatSelectChange): void {
+    this.currentChatId$.next(event.value);
   }
 
   getRandomSmile(): string {
@@ -78,33 +82,44 @@ export class ChatBodyComponent implements OnInit {
     this.dialog.open(CreateChatComponent, { width: '400px' });
   }
 
+  identifyMessage(index: number, item: message.BE) {
+    return item.id;
+  }
+
+  private initVars(): void {
+    this.currentChatMessages$ = this.chatsService.currentChat$.pipe(
+      untilDestroyed(this),
+      distinctUntilChanged(
+        (curr, next) =>
+          curr.id === next.id || deepEqual(curr.messages, next.messages)
+      ),
+      map((chat) => chat.messages)
+    );
+
+    this.chats$ = this.chatsService.userChats$;
+  }
+
   private initSubs(): void {
+    this.currentChatId$
+      .pipe(switchMap((id) => this.chatsService.getChatById(id)))
+      .subscribe();
+
+    // Initialize first chat
     this.chatsService.userChats$
       .pipe(
         untilDestroyed(this),
         filter((chats) => !!chats?.length),
         take(1),
         tap((chats) => {
-          this.currentChatId = chats[0].id;
+          this.currentChatId$.next(chats[0].id);
         })
       )
       .subscribe();
 
-    this.chatsService.userChats$
+    //scroll to the bottom of the chat if the user sent a message
+    this.currentChatMessages$
       .pipe(
-        untilDestroyed(this),
-        filter((chats) => !!chats?.length),
-        switchMap(() => this.chatsService.userChatsMessages$),
-        tap((messages) => {
-          this.currentChatMessages = deepClone(messages[this.currentChatId]);
-          this._allMessages = messages;
-        }),
-        map((messages) => messages[this.currentChatId]),
-        filter((currChatMessages) => !!currChatMessages?.length),
-        distinctUntilChanged((prev, curr) => {
-          return prev.length >= curr.length;
-        }),
-        map((currChatMessages) => currChatMessages.slice(-1)[0]),
+        map((messages) => messages.slice(-1)[0]),
         tap((lastMessage) => {
           setTimeout(() => {
             if (
@@ -121,17 +136,11 @@ export class ChatBodyComponent implements OnInit {
       )
       .subscribe();
 
-    this.chatsService.currentChat$
-      .pipe(
-        filter((chat) => !!chat && !!this._allMessages),
-        tap((chat) => {
-          this.currentChatMessages = deepClone(this._allMessages[chat.id]);
-        })
-      )
+    //load chats
+    this.chatsService
+      .getChatPreviews(this.usersService.currentUser.id)
       .subscribe();
 
-    this.chatsService
-      .getUserChats(this.usersService.currentUser.id)
-      .subscribe();
+    this.chatsService.listenMessages().subscribe();
   }
 }

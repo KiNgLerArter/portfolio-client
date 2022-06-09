@@ -18,7 +18,7 @@
     "module": "es2020",
     "lib": ["es2020", "dom"],
     "paths": {
-      "@core/*": ["./src/app/core/*"],
+      "@core/*": ["src/app/app/*"],
       "@components/*": ["./src/app/components/*"],
       "@guards/*": ["./src/app/guards/*"],
       "@shared/*": ["./src/app/shared/*"],
