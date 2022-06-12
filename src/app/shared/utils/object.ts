@@ -4,8 +4,11 @@ export const deepClone = <T>(obj: T): T => {
 
 export const deepEqual = (firstItem: any, secondItem: any): boolean => {
   const firstItemType = typeof firstItem;
+  const secondItemType = typeof secondItem;
+
   if (
     !firstItemType ||
+    firstItemType !== secondItemType ||
     firstItemType === 'string' ||
     firstItemType === 'number' ||
     firstItemType === 'bigint' ||

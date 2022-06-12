@@ -7,7 +7,14 @@ import { WebSocketService } from '@services/web-socket/web-socket.service';
 import { User } from '@shared/models/users.model';
 import { convertToDBFormat, deepClone } from '@shared/utils';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, map, pairwise, startWith, tap } from 'rxjs/operators';
+import {
+  catchError,
+  map,
+  pairwise,
+  startWith,
+  take,
+  tap,
+} from 'rxjs/operators';
 import { chatDtos, chatDtos as dtos } from '../models/chat.dto';
 import {
   Chat,
@@ -43,7 +50,10 @@ export class ChatsService extends WebSocketService {
     this._userChats$
       .pipe(
         pairwise(),
+        take(1),
         tap(([prev, curr]) => {
+          console.log('[prev, curr]:', prev, curr);
+
           if (prev.length) {
             this.leaveChats(prev.map((chat) => chat.id));
           }
@@ -55,6 +65,7 @@ export class ChatsService extends WebSocketService {
   }
 
   setCurrentChat(chat: Chat) {
+    console.log('[chat]:', chat);
     this._currentChat$.next(chat);
   }
 
@@ -68,8 +79,8 @@ export class ChatsService extends WebSocketService {
     return this.get<Chat>(chatId);
   }
 
-  getChatPreviews(userId: User['id']): Observable<ChatPreview[]> {
-    return this.get<ChatPreview[]>(`${userId}/chat-previews`, {
+  getChatsPreviews(userId: User['id']): Observable<ChatPreview[]> {
+    return this.get<ChatPreview[]>(`${userId}/chats-previews`, {
       rootUrl: 'users',
       context: setLoader(false),
     }).pipe(
@@ -88,9 +99,11 @@ export class ChatsService extends WebSocketService {
       tap((chat) => {
         const chats = this._userChats$.value;
         chats.push(new ChatPreview(chat));
-        this._userChats$.next(chats);
 
+        this._userChats$.next(chats);
         this._currentChat$.next(chat);
+
+        this.joinChats(chat.id);
       }),
       catchError((error) => {
         console.log('[createChat error]:', error);
@@ -120,6 +133,23 @@ export class ChatsService extends WebSocketService {
     return this.listen<message.BE>('receive message').pipe(
       tap((receivedMessage) => {
         console.log('[receivedMessage]:', receivedMessage);
+
+        const currentChat = deepClone(this._currentChat$.value);
+        const userChats = deepClone(this._userChats$.value);
+
+        userChats.find(
+          (chat) => chat.id === receivedMessage.chatId
+        ).lastMessage = {
+          body: receivedMessage.body,
+          owner: {
+            id: receivedMessage.ownerId,
+            nickname: receivedMessage.owner.nickname,
+          },
+        };
+        currentChat.messages.push(receivedMessage);
+
+        this._currentChat$.next(currentChat);
+        this._userChats$.next(userChats);
 
         if (this.isCurrentUserMessage(receivedMessage)) {
           this.messageInput.setValue('');

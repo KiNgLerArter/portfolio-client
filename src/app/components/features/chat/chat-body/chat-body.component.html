@@ -3,8 +3,8 @@
     <div class="chat-header flex--flex-start--center gap-x-6">
       <mat-form-field color="accent">
         <mat-select
-          [value]="chats$ | async"
-          (selectionChange)="changeChat($event)"
+          [ngModel]="currentChatId$ | async"
+          (ngModelChange)="selectChat($event)"
         >
           <mat-option
             *ngFor="let chat of chatsService.userChats$ | async"

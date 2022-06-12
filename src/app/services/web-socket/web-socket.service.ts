@@ -31,7 +31,7 @@ export class WebSocketService extends ApiService {
    *
    * @param eventName websocket event name
    * @param data data passed to BE
-   * @param callback callback which will be called on BE
+   * @param callback callback which will be called on the BE
    */
 
   protected emit<T>(eventName: string, data: T, callback?: () => void): void {

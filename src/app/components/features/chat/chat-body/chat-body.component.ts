@@ -59,6 +59,8 @@ export class ChatBodyComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
+  //new message isn't being rendered, double emit of Observables
+
   ngOnInit(): void {
     this.initVars();
     this.initSubs();
@@ -68,8 +70,8 @@ export class ChatBodyComponent implements OnInit {
     this.chatsService.leaveChats();
   }
 
-  changeChat(event: MatSelectChange): void {
-    this.currentChatId$.next(event.value);
+  selectChat(id: string): void {
+    this.currentChatId$.next(id);
   }
 
   getRandomSmile(): string {
@@ -91,9 +93,9 @@ export class ChatBodyComponent implements OnInit {
       untilDestroyed(this),
       distinctUntilChanged(
         (curr, next) =>
-          curr.id === next.id || deepEqual(curr.messages, next.messages)
+          curr?.id === next?.id || deepEqual(curr?.messages, next?.messages)
       ),
-      map((chat) => chat.messages)
+      map((chat) => chat?.messages ?? [])
     );
 
     this.chats$ = this.chatsService.userChats$;
@@ -101,7 +103,14 @@ export class ChatBodyComponent implements OnInit {
 
   private initSubs(): void {
     this.currentChatId$
-      .pipe(switchMap((id) => this.chatsService.getChatById(id)))
+      .pipe(
+        filter((id) => !!id),
+        distinctUntilChanged(),
+        switchMap((id) => this.chatsService.getChatById(id)),
+        tap((chat) => {
+          this.chatsService.setCurrentChat(chat);
+        })
+      )
       .subscribe();
 
     // Initialize first chat
@@ -111,6 +120,7 @@ export class ChatBodyComponent implements OnInit {
         filter((chats) => !!chats?.length),
         take(1),
         tap((chats) => {
+          console.log('[chats]:', chats);
           this.currentChatId$.next(chats[0].id);
         })
       )
@@ -120,6 +130,7 @@ export class ChatBodyComponent implements OnInit {
     this.currentChatMessages$
       .pipe(
         map((messages) => messages.slice(-1)[0]),
+        filter((lastMessage) => !!lastMessage),
         tap((lastMessage) => {
           setTimeout(() => {
             if (
@@ -138,7 +149,7 @@ export class ChatBodyComponent implements OnInit {
 
     //load chats
     this.chatsService
-      .getChatPreviews(this.usersService.currentUser.id)
+      .getChatsPreviews(this.usersService.currentUser.id)
       .subscribe();
 
     this.chatsService.listenMessages().subscribe();

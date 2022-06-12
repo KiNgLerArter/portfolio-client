@@ -1,8 +1,8 @@
 import { SimplifiedUser, User } from '@shared/models/users.model';
 
 export enum ChatEvents {
-  JOIN = 'join chat',
-  LEAVE = 'leave chat',
+  JOIN = 'join chats',
+  LEAVE = 'leave chats',
 }
 
 export enum MessageEvents {
@@ -23,6 +23,7 @@ export namespace message {
   export interface BE {
     id: string;
     chatId: string;
+    owner: User;
     ownerId: number;
     repliedMessageId?: string;
     body: string;
@@ -41,7 +42,7 @@ export class ChatPreview {
   id: string;
   name: string;
   lastMessage: {
-    value: message.BE['body'];
+    body: message.BE['body'];
     owner: SimplifiedUser;
   };
 
