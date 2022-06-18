@@ -1,26 +1,32 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { AuthService } from '@services/auth/auth.service';
-import { ChatsService } from '../../features/chat/service/chats.service';
+import { tap } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit {
   isChat: boolean;
-  isChatInput: boolean;
+  isLoggedIn: boolean;
 
-  get isLoggedIn(): boolean {
-    return this.authService.isLoggedIn;
+  constructor(
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.initSubs();
   }
-
-  constructor(private authService: AuthService) {}
-
-  ngOnInit(): void {}
 
   logout(): void {
     this.authService.logout().subscribe();
@@ -28,12 +34,17 @@ export class HeaderComponent implements OnInit {
 
   toggleChat(): void {
     this.isChat = !this.isChat;
-    if (!this.isChat) {
-      setTimeout(() => {
-        this.isChatInput = false;
-      }, 600);
-    } else {
-      this.isChatInput = true;
-    }
+    this.cdr.markForCheck();
+  }
+
+  private initSubs(): void {
+    this.authService.isLoggedIn$
+      .pipe(
+        tap((value) => {
+          this.isLoggedIn = value;
+          this.cdr.markForCheck();
+        })
+      )
+      .subscribe();
   }
 }

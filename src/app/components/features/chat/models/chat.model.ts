@@ -1,11 +1,11 @@
 import { SimplifiedUser, User } from '@shared/models/users.model';
 
-export enum ChatEvents {
+export enum ChatEvent {
   JOIN = 'join chats',
   LEAVE = 'leave chats',
 }
 
-export enum MessageEvents {
+export enum MessageEvent {
   SEND = 'send message',
   DELETE = 'delete message',
   RECEIVE = 'receive message',

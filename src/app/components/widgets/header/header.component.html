@@ -9,12 +9,12 @@
   </ng-template>
   <div
     [ngClass]="{
-      'flex--space-between--center': isChatInput,
-      'flex--center': !isChatInput
+      'flex--space-between--center': isChat,
+      'flex--center': !isChat
     }"
     class="navbar bg--blue p-y-8 p-x-16"
   >
-    <app-chat-input *ngIf="isChatInput"></app-chat-input>
+    <app-chat-input *ngIf="isChat"></app-chat-input>
     <nav
       class="navbar-actions flex--flex-end--center"
       [ngClass]="{

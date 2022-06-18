@@ -29,10 +29,6 @@ export class AuthService extends ApiService {
     return this._accessToken$.pipe(map((token) => !!token));
   }
 
-  get isLoggedIn(): boolean {
-    return !!this._accessToken$.value;
-  }
-
   constructor(protected http: HttpClient, private router: Router) {
     super(http, 'auth');
 

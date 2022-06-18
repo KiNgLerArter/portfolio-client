@@ -17,12 +17,10 @@ import {
   take,
   tap,
 } from 'rxjs/operators';
-import { Chat, ChatPreview, message, Messages } from '../models/chat.model';
+import { ChatPreview, message } from '../models/chat.model';
 import { ChatsService } from '../service/chats.service';
 import { CreateChatComponent } from '../mat-dialogs/create-chat/create-chat.component';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { deepEqual } from '@shared/utils';
-import { MatSelectChange } from '@angular/material/select';
 
 @UntilDestroy()
 @Component({
@@ -37,7 +35,6 @@ export class ChatBodyComponent implements OnInit {
   }
   @ViewChild('chatBody') set chatBody(elem: ElementRef) {
     const htmlElem = elem.nativeElement;
-    this.chatsService.chatElement = htmlElem;
     this._chatBodyElem = htmlElem;
     htmlElem.scrollIntoView({
       behavior: 'smooth',
@@ -84,17 +81,17 @@ export class ChatBodyComponent implements OnInit {
     this.dialog.open(CreateChatComponent, { width: '400px' });
   }
 
-  identifyMessage(index: number, item: message.BE) {
+  identifyMessage(index: number, item: message.BE): string {
     return item.id;
+  }
+
+  deleteMessage(id: message.BE['id']): void {
+    this.chatsService.deleteMessage(id);
   }
 
   private initVars(): void {
     this.currentChatMessages$ = this.chatsService.currentChat$.pipe(
       untilDestroyed(this),
-      distinctUntilChanged(
-        (curr, next) =>
-          curr?.id === next?.id || deepEqual(curr?.messages, next?.messages)
-      ),
       map((chat) => chat?.messages ?? [])
     );
 
@@ -120,7 +117,6 @@ export class ChatBodyComponent implements OnInit {
         filter((chats) => !!chats?.length),
         take(1),
         tap((chats) => {
-          console.log('[chats]:', chats);
           this.currentChatId$.next(chats[0].id);
         })
       )

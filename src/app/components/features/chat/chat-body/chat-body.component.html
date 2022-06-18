@@ -30,6 +30,7 @@
             ? 'flex-end'
             : 'initial'
         }"
+        (contextmenu)="deleteMessage(message.id)"
       >
         <div class="nickname">
           {{ usersService.getUserById(message.ownerId).nickname }}

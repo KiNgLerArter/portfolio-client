@@ -18,26 +18,22 @@ import {
 import { chatDtos, chatDtos as dtos } from '../models/chat.dto';
 import {
   Chat,
-  ChatEvents,
+  ChatEvent,
   message,
   Messages,
   ChatPreview,
+  MessageEvent,
 } from '../models/chat.model';
 
 @Injectable()
 export class ChatsService extends WebSocketService {
-  // TODO
-  // Use _currentChat$ to get current chat messages
-  // Rework _userChats$ model so it will be simple: the chat should contain id, name, lastMessage
-  // When changing chat load the chat and it's messages from BE
   private _userChats$ = new BehaviorSubject<ChatPreview[]>([]);
   private _currentChat$ = new BehaviorSubject<Chat>(null);
 
+  private _messagesInput: FormControl;
+
   userChats$ = this._userChats$.asObservable();
   currentChat$ = this._currentChat$.asObservable();
-
-  messageInput: FormControl;
-  chatElement: HTMLElement;
 
   readonly SMILES = ['😶‍🌫️', '🥸', '😈', '🤠', '🥶', '😎', '👹', '☠️'];
 
@@ -52,8 +48,6 @@ export class ChatsService extends WebSocketService {
         pairwise(),
         take(1),
         tap(([prev, curr]) => {
-          console.log('[prev, curr]:', prev, curr);
-
           if (prev.length) {
             this.leaveChats(prev.map((chat) => chat.id));
           }
@@ -65,8 +59,11 @@ export class ChatsService extends WebSocketService {
   }
 
   setCurrentChat(chat: Chat) {
-    console.log('[chat]:', chat);
     this._currentChat$.next(chat);
+  }
+
+  setMessagesInput(input: FormControl): void {
+    this._messagesInput = input;
   }
 
   isCurrentUserMessage(message: message.BE): boolean {
@@ -76,7 +73,7 @@ export class ChatsService extends WebSocketService {
   //============HTTP============//
 
   getChatById(chatId: Chat['id']): Observable<Chat> {
-    return this.get<Chat>(chatId);
+    return this.get<Chat>(chatId, { context: setLoader(false) });
   }
 
   getChatsPreviews(userId: User['id']): Observable<ChatPreview[]> {
@@ -116,21 +113,20 @@ export class ChatsService extends WebSocketService {
 
   joinChats(chatIds: string[] | string): void {
     if (typeof chatIds === 'string') {
-      this.emit(ChatEvents.JOIN, [chatIds]);
+      this.emit(ChatEvent.JOIN, [chatIds]);
     }
-    this.emit(ChatEvents.JOIN, chatIds);
+    this.emit(ChatEvent.JOIN, chatIds);
   }
 
   leaveChats(chatIds: string[] = this._userChats.map((chat) => chat.id)): void {
     if (typeof chatIds === 'string') {
-      this.emit(ChatEvents.LEAVE, [chatIds]);
+      this.emit(ChatEvent.LEAVE, [chatIds]);
     }
-    this.emit(ChatEvents.LEAVE, chatIds);
+    this.emit(ChatEvent.LEAVE, chatIds);
   }
 
   listenMessages(): Observable<message.BE> {
-    console.log('[listening messages]');
-    return this.listen<message.BE>('receive message').pipe(
+    return this.listen<message.BE>(MessageEvent.RECEIVE).pipe(
       tap((receivedMessage) => {
         console.log('[receivedMessage]:', receivedMessage);
 
@@ -152,7 +148,7 @@ export class ChatsService extends WebSocketService {
         this._userChats$.next(userChats);
 
         if (this.isCurrentUserMessage(receivedMessage)) {
-          this.messageInput.setValue('');
+          this._messagesInput.setValue('');
         }
       })
     );
@@ -166,7 +162,11 @@ export class ChatsService extends WebSocketService {
       sentDate: convertToDBFormat(new Date()),
       ...(repliedOnMessageId && { repliedOnMessageId }),
     };
-    return this.emit<dtos.SendMessage>('send message', dto);
+    return this.emit(MessageEvent.SEND, dto);
+  }
+
+  deleteMessage(messageId: message.BE['id']): void {
+    return this.emit(MessageEvent.DELETE, messageId);
   }
 
   //========

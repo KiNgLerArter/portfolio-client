@@ -1,5 +1,6 @@
 @use "sass:map";
 @import "~@angular/material/theming";
+@import "colors";
 
 @mixin theme-color-grabber($theme) {
   // Parse the theme and create variables for each color in the pallet
@@ -26,5 +27,37 @@
   }
   .c--warn {
     color: mat-color($warn, default);
+  }
+
+  @each $shade in $shades {
+    // --app-primary-#{$shade}: rgba(mat-color($primary, default), $shade/100);
+    // --app-accent-#{$shade}: rgba(mat-color($accent, default), $shade/100);
+    // --app-warn-#{$shade}: rgba(mat-color($warn, default), $shade/100);
+
+    .bg--primary {
+      background-color: rgba(
+        mat-color($primary, default),
+        $shade/100
+      ) !important;
+    }
+    .bg--accent {
+      background-color: rgba(
+        mat-color($accent, default),
+        $shade/100
+      ) !important;
+    }
+    .bg--warn {
+      background-color: rgba(mat-color($warn, default), $shade/100) !important;
+    }
+
+    .c--primary {
+      color: rgba(mat-color($primary, default), $shade/100) !important;
+    }
+    .c--accent {
+      color: rgba(mat-color($accent, default), $shade/100) !important;
+    }
+    .c--warn {
+      color: rgba(mat-color($warn, default), $shade/100) !important;
+    }
   }
 }
