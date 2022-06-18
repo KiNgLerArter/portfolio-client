@@ -34,29 +34,29 @@
     // --app-accent-#{$shade}: rgba(mat-color($accent, default), $shade/100);
     // --app-warn-#{$shade}: rgba(mat-color($warn, default), $shade/100);
 
-    .bg--primary {
+    .bg--primary-#{$shade} {
       background-color: rgba(
         mat-color($primary, default),
         $shade/100
       ) !important;
     }
-    .bg--accent {
+    .bg--accent-#{$shade} {
       background-color: rgba(
         mat-color($accent, default),
         $shade/100
       ) !important;
     }
-    .bg--warn {
+    .bg--warn-#{$shade} {
       background-color: rgba(mat-color($warn, default), $shade/100) !important;
     }
 
-    .c--primary {
+    .c--primary-#{$shade} {
       color: rgba(mat-color($primary, default), $shade/100) !important;
     }
-    .c--accent {
+    .c--accent-#{$shade} {
       color: rgba(mat-color($accent, default), $shade/100) !important;
     }
-    .c--warn {
+    .c--warn-#{$shade} {
       color: rgba(mat-color($warn, default), $shade/100) !important;
     }
   }
