@@ -3,7 +3,10 @@
   class="header bg--black"
   #header
 >
-  <app-chat-body *ngIf="isChat; else chatMimic"></app-chat-body>
+  <ng-container *ngIf="isChat; else chatMimic">
+    <app-chat-header class="chat-header"></app-chat-header>
+    <app-chat-body class="chat-body"></app-chat-body>
+  </ng-container>
   <ng-template #chatMimic>
     <div class="w-100 h-100"></div>
   </ng-template>
@@ -14,7 +17,7 @@
     }"
     class="navbar bg--accent-70 p-y-8 p-x-16"
   >
-    <app-chat-input *ngIf="isChat"></app-chat-input>
+    <app-chat-actions *ngIf="isChat"></app-chat-actions>
     <nav
       class="navbar-actions flex--flex-end--center"
       [ngClass]="{

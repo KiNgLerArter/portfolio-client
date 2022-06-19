@@ -1,0 +1,17 @@
+<div
+  class="chat-header w-100 flex--flex-start--center gap-x-6 p-x-6 bg--black-90"
+>
+  <mat-form-field color="accent">
+    <mat-select
+      [ngModel]="currentChatId$ | async"
+      (ngModelChange)="selectChat($event)"
+    >
+      <mat-option *ngFor="let chat of chats$ | async" [value]="chat.id">
+        {{ chat.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button (click)="openCreateChatDialog()" mat-icon-button>
+    <mat-icon matTooltip="Create chat">add</mat-icon>
+  </button>
+</div>

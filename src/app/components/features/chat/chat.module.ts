@@ -10,11 +10,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { ChatBodyComponent } from './chat-body/chat-body.component';
-import { ChatInputComponent } from './chat-input/chat-input.component';
+import { ChatActionsComponent } from './chat-actions/chat-actions.component';
 import { ChatsService } from './service/chats.service';
 import { CreateChatComponent } from './mat-dialogs/create-chat/create-chat.component';
+import { ChatHeaderComponent } from './chat-header/chat-header.component';
 
-const declarationsToExport = [ChatBodyComponent, ChatInputComponent];
+const declarationsToExport = [
+  ChatBodyComponent,
+  ChatActionsComponent,
+  ChatHeaderComponent,
+];
 
 @NgModule({
   declarations: [...declarationsToExport, CreateChatComponent],

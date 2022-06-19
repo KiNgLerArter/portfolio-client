@@ -1,43 +1,23 @@
-<div class="chat-wrapper w-100 h-100 p-x-6" #chat>
-  <div class="chat-body" #chatBody>
-    <div class="chat-header flex--flex-start--center gap-x-6">
-      <mat-form-field color="accent">
-        <mat-select
-          [ngModel]="currentChatId$ | async"
-          (ngModelChange)="selectChat($event)"
-        >
-          <mat-option
-            *ngFor="let chat of chatsService.userChats$ | async"
-            [value]="chat.id"
-          >
-            {{ chat.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <button (click)="openCreateChatDialog()" mat-icon-button>
-        <mat-icon matTooltip="Create chat">add</mat-icon>
-      </button>
-    </div>
-    <div class="chat-messages flex--col--flex-start gap-y-8">
-      <div
-        *ngFor="
-          let message of currentChatMessages$ | async;
-          trackBy: identifyMessage
-        "
-        class="message p-6 bg--grey"
-        [ngStyle]="{
-          'align-self': chatsService.isCurrentUserMessage(message)
-            ? 'flex-end'
-            : 'initial'
-        }"
-        (contextmenu)="deleteMessage(message.id)"
-      >
-        <div class="nickname">
-          {{ usersService.getUserById(message.ownerId).nickname }}
-          <mat-divider class="msg-divider bg--accent m-b-2"></mat-divider>
-        </div>
-        <div>{{ message.body }}</div>
+<div class="chat-body w-100 p-x-6" #chatBody>
+  <div class="chat-messages flex--col--flex-start gap-y-8" #chatMessages>
+    <div
+      *ngFor="
+        let message of currentChatMessages$ | async;
+        trackBy: identifyMessage
+      "
+      class="message p-6 bg--grey"
+      [ngStyle]="{
+        'align-self': chatsService.isCurrentUserMessage(message)
+          ? 'flex-end'
+          : 'initial'
+      }"
+      (contextmenu)="deleteMessage(message.id)"
+    >
+      <div class="nickname">
+        {{ usersService.getUserById(message.ownerId).nickname }}
+        <mat-divider class="msg-divider bg--accent m-b-2"></mat-divider>
       </div>
+      <div>{{ message.body }}</div>
     </div>
   </div>
 </div>

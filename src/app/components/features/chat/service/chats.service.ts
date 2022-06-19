@@ -133,19 +133,21 @@ export class ChatsService extends WebSocketService {
         const currentChat = deepClone(this._currentChat$.value);
         const userChats = deepClone(this._userChats$.value);
 
-        userChats.find(
-          (chat) => chat.id === receivedMessage.chatId
-        ).lastMessage = {
-          body: receivedMessage.body,
-          owner: {
-            id: receivedMessage.ownerId,
-            nickname: receivedMessage.owner.nickname,
-          },
-        };
-        currentChat.messages.push(receivedMessage);
-
-        this._currentChat$.next(currentChat);
-        this._userChats$.next(userChats);
+        if (receivedMessage.chatId !== currentChat.id) {
+          userChats.find(
+            (chat) => chat.id === receivedMessage.chatId
+          ).lastMessage = {
+            body: receivedMessage.body,
+            owner: {
+              id: receivedMessage.owner.id,
+              nickname: receivedMessage.owner.nickname,
+            },
+          };
+          this._userChats$.next(userChats);
+        } else {
+          currentChat.messages.push(receivedMessage);
+          this._currentChat$.next(currentChat);
+        }
 
         if (this.isCurrentUserMessage(receivedMessage)) {
           this._messagesInput.setValue('');

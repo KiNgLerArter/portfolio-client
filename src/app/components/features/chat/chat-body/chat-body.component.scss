@@ -2,11 +2,8 @@
   height: 40px;
 }
 
-.chat-wrapper {
-  // position: fixed;
-  // left: 24px;
-  // bottom: 24px;
-  // width: 360px;
+.chat-body {
+  height: var(--chat-body-h);
   box-sizing: border-box;
   overflow-y: auto;
   -ms-overflow-style: none;
@@ -26,7 +23,8 @@
   }
 }
 
-.chat-header {
+.chat-messages {
+  padding-top: 50px;
 }
 
 .nickname {
@@ -43,18 +41,9 @@
 .message {
   border-radius: 6px;
   max-width: 240px;
+  min-height: 44px;
 
   &:last-child {
     margin-bottom: 12px;
   }
 }
-
-// .chat-body {
-//   height: 320px;
-// }
-
-// .chat-footer {
-//   @include chat-element;
-//   border-bottom-left-radius: 16px;
-//   border-bottom-right-radius: 16px;
-// }

@@ -1,14 +1,21 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ChatsService } from '../service/chats.service';
 
 @Component({
-  selector: 'app-chat-input',
-  templateUrl: './chat-input.component.html',
-  styleUrls: ['./chat-input.component.scss'],
+  selector: 'app-chat-actions',
+  templateUrl: './chat-actions.component.html',
+  styleUrls: ['./chat-actions.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChatInputComponent implements OnInit {
+export class ChatActionsComponent implements OnInit {
+  @Input() height: string;
+
   chatControl = new FormControl('', [Validators.maxLength(250)]);
 
   constructor(private chatsService: ChatsService) {}

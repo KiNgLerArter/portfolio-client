@@ -1,8 +1,10 @@
 ::ng-deep {
   :root {
-    --header-side: 350px;
+    --chat-body-h: 350px;
+    --chat-section-h: 45px;
+    --chat-w: 350px;
+    --chat-h: calc(var(--chat-w) + var(--chat-section-h));
     --ext-header-side: 450px;
-    --navbar-h: 46px;
     --chat-input-w: 200px;
   }
 }
@@ -10,10 +12,12 @@
 .header {
   position: fixed;
   box-sizing: border-box;
-  left: calc(50% - (var(--header-side) / 2));
-  top: calc(0px - var(--header-side));
-  width: var(--header-side);
-  height: var(--header-side);
+  left: calc(50% - (var(--chat-w) / 2));
+  top: calc(0px - var(--chat-h));
+  width: var(--chat-w);
+  height: var(--chat-h);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 
   &.opened {
     animation-name: open-chat;
@@ -32,7 +36,7 @@
 
 .navbar {
   box-sizing: border-box;
-  height: var(--navbar-h);
+  height: var(--chat-section-h);
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 }
@@ -40,9 +44,9 @@
 // try to reverse animation
 @keyframes open-chat {
   from {
-    left: calc(50% - (var(--header-side) / 2));
-    width: var(--header-side);
-    top: calc(0px - var(--header-side));
+    left: calc(50% - (var(--chat-w) / 2));
+    width: var(--chat-w);
+    top: calc(0px - var(--chat-h));
   }
 
   to {
@@ -59,9 +63,9 @@
     top: 0;
   }
   to {
-    left: calc(50% - (var(--header-side) / 2));
-    width: var(--header-side);
-    top: calc(0px - var(--header-side));
+    left: calc(50% - (var(--chat-w) / 2));
+    width: var(--chat-w);
+    top: calc(0px - var(--chat-h));
   }
 }
 

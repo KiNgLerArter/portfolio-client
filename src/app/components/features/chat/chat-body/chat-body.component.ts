@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  Input,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -30,29 +31,28 @@ import { BehaviorSubject, Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChatBodyComponent implements OnInit {
-  @ViewChild('chat') set chat(elem: ElementRef) {
-    this._chatElem = elem.nativeElement;
+  @ViewChild('chatBody') set chat(elem: ElementRef) {
+    this._chatBody = elem.nativeElement;
   }
-  @ViewChild('chatBody') set chatBody(elem: ElementRef) {
+  @ViewChild('chatMessages') set chatBody(elem: ElementRef) {
     const htmlElem = elem.nativeElement;
-    this._chatBodyElem = htmlElem;
+    this._chatBodyMessages = htmlElem;
     htmlElem.scrollIntoView({
       behavior: 'smooth',
       block: 'end',
     });
   }
 
-  private _chatElem: any;
-  private _chatBodyElem: any;
+  @Input() height: string;
 
-  chats$: Observable<ChatPreview[]>;
+  private _chatBody: any;
+  private _chatBodyMessages: any;
+
   currentChatMessages$: Observable<message.BE[]>;
-  currentChatId$ = new BehaviorSubject<string>(null);
 
   constructor(
     public chatsService: ChatsService,
     public usersService: UsersService,
-    private dialog: MatDialog,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -67,18 +67,10 @@ export class ChatBodyComponent implements OnInit {
     this.chatsService.leaveChats();
   }
 
-  selectChat(id: string): void {
-    this.currentChatId$.next(id);
-  }
-
   getRandomSmile(): string {
     return this.chatsService.SMILES[
       Math.floor(Math.random() * this.chatsService.SMILES.length)
     ];
-  }
-
-  openCreateChatDialog(): void {
-    this.dialog.open(CreateChatComponent, { width: '400px' });
   }
 
   identifyMessage(index: number, item: message.BE): string {
@@ -94,34 +86,9 @@ export class ChatBodyComponent implements OnInit {
       untilDestroyed(this),
       map((chat) => chat?.messages ?? [])
     );
-
-    this.chats$ = this.chatsService.userChats$;
   }
 
   private initSubs(): void {
-    this.currentChatId$
-      .pipe(
-        filter((id) => !!id),
-        distinctUntilChanged(),
-        switchMap((id) => this.chatsService.getChatById(id)),
-        tap((chat) => {
-          this.chatsService.setCurrentChat(chat);
-        })
-      )
-      .subscribe();
-
-    // Initialize first chat
-    this.chatsService.userChats$
-      .pipe(
-        untilDestroyed(this),
-        filter((chats) => !!chats?.length),
-        take(1),
-        tap((chats) => {
-          this.currentChatId$.next(chats[0].id);
-        })
-      )
-      .subscribe();
-
     //scroll to the bottom of the chat if the user sent a message
     this.currentChatMessages$
       .pipe(
@@ -131,9 +98,9 @@ export class ChatBodyComponent implements OnInit {
           setTimeout(() => {
             if (
               this.chatsService.isCurrentUserMessage(lastMessage) ||
-              this._chatElem.scrollTop > this._chatElem.scrollHeight - 500
+              this._chatBody.scrollTop > this._chatBody.scrollHeight - 500
             ) {
-              this._chatBodyElem.scrollIntoView({
+              this._chatBodyMessages.scrollIntoView({
                 behavior: 'smooth',
                 block: 'end',
               });
