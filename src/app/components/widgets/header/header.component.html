@@ -18,13 +18,7 @@
     class="navbar bg--accent-70 p-y-8 p-x-16"
   >
     <app-chat-actions *ngIf="isChat"></app-chat-actions>
-    <nav
-      class="navbar-actions flex--flex-end--center"
-      [ngClass]="{
-        'chat-opened': isChat,
-        'chat-closed': isChat === false
-      }"
-    >
+    <nav class="navbar-actions flex--flex-end--center">
       <ng-container *ngIf="isLoggedIn; else loggedOut">
         <button
           [matTooltip]="isChat ? 'Close chat' : 'Open chat'"

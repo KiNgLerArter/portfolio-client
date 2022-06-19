@@ -25,9 +25,6 @@
     animation-fill-mode: forwards;
   }
   &.closed {
-    left: calc(50% - (var(--ext-header-side) / 2));
-    width: var(--ext-header-side);
-    top: 0;
     animation-name: close-chat;
     animation-duration: 1s;
     animation-fill-mode: forwards;
@@ -41,7 +38,7 @@
   border-bottom-right-radius: 20px;
 }
 
-// try to reverse animation
+// TODO: try to reverse animation
 @keyframes open-chat {
   from {
     left: calc(50% - (var(--chat-w) / 2));
