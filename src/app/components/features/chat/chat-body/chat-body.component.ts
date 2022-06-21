@@ -5,6 +5,7 @@ import {
   ElementRef,
   Input,
   OnInit,
+  TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,10 +19,13 @@ import {
   take,
   tap,
 } from 'rxjs/operators';
-import { ChatPreview, message } from '../models/chat.model';
+import { message } from '../models/chat.model';
 import { ChatsService } from '../service/chats.service';
-import { CreateChatComponent } from '../mat-dialogs/create-chat/create-chat.component';
 import { BehaviorSubject, Observable } from 'rxjs';
+import {
+  MatBottomSheet,
+  MatBottomSheetRef,
+} from '@angular/material/bottom-sheet';
 
 @UntilDestroy()
 @Component({
@@ -31,7 +35,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChatBodyComponent implements OnInit {
-  @ViewChild('chatBody') set chat(elem: ElementRef) {
+  @ViewChild('messageOptions') messageOptions: TemplateRef<any>;
+  @ViewChild('chatBody')
+  set chat(elem: ElementRef) {
     this._chatBody = elem.nativeElement;
   }
   @ViewChild('chatMessages') set chatBody(elem: ElementRef) {
@@ -47,13 +53,16 @@ export class ChatBodyComponent implements OnInit {
 
   private _chatBody: any;
   private _chatBodyMessages: any;
+  private _bottomSheetRef: MatBottomSheetRef;
 
   currentChatMessages$: Observable<message.BE[]>;
+  currentMessage$ = new BehaviorSubject<message.BE>(null);
 
   constructor(
     public chatsService: ChatsService,
     public usersService: UsersService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private bottomSheet: MatBottomSheet
   ) {}
 
   //new message isn't being rendered, double emit of Observables
@@ -77,7 +86,18 @@ export class ChatBodyComponent implements OnInit {
     return item.id;
   }
 
-  deleteMessage(id: message.BE['id']): void {
+  openMessageOptions(event: Event, message: message.BE): void {
+    event.preventDefault();
+    this.currentMessage$.next(message);
+
+    if (!this._bottomSheetRef) {
+      this._bottomSheetRef = this.bottomSheet.open(this.messageOptions, {
+        hasBackdrop: false,
+      });
+    }
+  }
+
+  deleteMessage(id: message.BE['id'] = this.currentMessage$.value.id): void {
     this.chatsService.deleteMessage(id);
   }
 

@@ -33,7 +33,7 @@
   width: fit-content;
 }
 
-.msg-divider {
+.message-divider {
   height: 1px;
   border-radius: 6px;
 }
@@ -46,4 +46,10 @@
   &:last-child {
     margin-bottom: 12px;
   }
+}
+
+.message-options-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

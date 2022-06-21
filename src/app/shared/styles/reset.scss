@@ -2,5 +2,8 @@ a,
 button {
   &:hover {
     cursor: pointer !important;
+    &:disabled {
+      cursor: initial !important;
+    }
   }
 }

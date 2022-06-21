@@ -1,23 +1,47 @@
-<div class="chat-body w-100 p-x-6" #chatBody>
+<div class="chat-body w-100 p-6" #chatBody>
   <div class="chat-messages flex--col--flex-start gap-y-8" #chatMessages>
-    <div
+    <ng-container
       *ngFor="
         let message of currentChatMessages$ | async;
         trackBy: identifyMessage
       "
-      class="message p-6 bg--grey"
-      [ngStyle]="{
-        'align-self': chatsService.isCurrentUserMessage(message)
-          ? 'flex-end'
-          : 'initial'
-      }"
-      (contextmenu)="deleteMessage(message.id)"
     >
-      <div class="nickname">
-        {{ usersService.getUserById(message.ownerId).nickname }}
-        <mat-divider class="msg-divider bg--accent m-b-2"></mat-divider>
+      <div
+        class="message p-6 bg--grey"
+        [ngStyle]="{
+          'align-self': chatsService.isCurrentUserMessage(message)
+            ? 'flex-end'
+            : 'initial'
+        }"
+        (contextmenu)="openMessageOptions($event, message)"
+      >
+        <div class="nickname">
+          {{ usersService.getUserById(message.ownerId).nickname }}
+          <mat-divider class="message-divider bg--accent m-b-2"></mat-divider>
+        </div>
+        <div>{{ message.body }}</div>
       </div>
-      <div>{{ message.body }}</div>
-    </div>
+    </ng-container>
+    <ng-template #messageOptions>
+      <h3 class="message-options-title m-y-8">
+        {{ (currentMessage$ | async).body }}
+      </h3>
+      <mat-divider></mat-divider>
+      <div class="flex--col--flex-start">
+        <button
+          class="w-100 flex--flex-start"
+          mat-button
+          (click)="deleteMessage()"
+        >
+          <mat-icon>delete_forever</mat-icon> Delete
+        </button>
+        <button class="w-100 flex--flex-start" mat-button disabled>
+          <mat-icon>edit</mat-icon> Edit
+        </button>
+        <button class="w-100 flex--flex-start" mat-button disabled>
+          <mat-icon>reply</mat-icon> Reply
+        </button>
+      </div>
+    </ng-template>
   </div>
 </div>

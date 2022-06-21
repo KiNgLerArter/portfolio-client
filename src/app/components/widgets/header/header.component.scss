@@ -13,7 +13,7 @@
   position: fixed;
   box-sizing: border-box;
   left: calc(50% - (var(--chat-w) / 2));
-  top: calc(0px - var(--chat-h));
+  top: calc(0px - var(--chat-body-h));
   width: var(--chat-w);
   height: var(--chat-h);
   border-bottom-left-radius: 20px;
@@ -31,6 +31,10 @@
   }
 }
 
+.chat-mimic {
+  height: var(--chat-body-h);
+}
+
 .navbar {
   box-sizing: border-box;
   height: var(--chat-section-h);
@@ -43,7 +47,7 @@
   from {
     left: calc(50% - (var(--chat-w) / 2));
     width: var(--chat-w);
-    top: calc(0px - var(--chat-h));
+    top: calc(0px - var(--chat-body-h));
   }
 
   to {
@@ -62,7 +66,7 @@
   to {
     left: calc(50% - (var(--chat-w) / 2));
     width: var(--chat-w);
-    top: calc(0px - var(--chat-h));
+    top: calc(0px - var(--chat-body-h));
   }
 }
 

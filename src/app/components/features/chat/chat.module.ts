@@ -14,6 +14,8 @@ import { ChatActionsComponent } from './chat-actions/chat-actions.component';
 import { ChatsService } from './service/chats.service';
 import { CreateChatComponent } from './mat-dialogs/create-chat/create-chat.component';
 import { ChatHeaderComponent } from './chat-header/chat-header.component';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatListModule } from '@angular/material/list';
 
 const declarationsToExport = [
   ChatBodyComponent,
@@ -35,6 +37,8 @@ const declarationsToExport = [
     MatSelectModule,
     MatButtonModule,
     MatDividerModule,
+    MatBottomSheetModule,
+    MatListModule,
   ],
   exports: [...declarationsToExport],
   providers: [ChatsService],
