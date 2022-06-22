@@ -6,9 +6,10 @@ import { UsersService } from '@services/users/users.service';
 import { WebSocketService } from '@services/web-socket/web-socket.service';
 import { User } from '@shared/models/users.model';
 import { convertToDBFormat, deepClone } from '@shared/utils';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, mergeWith, Observable, of } from 'rxjs';
 import {
   catchError,
+  filter,
   map,
   pairwise,
   startWith,
@@ -23,6 +24,7 @@ import {
   Messages,
   ChatPreview,
   MessageEvent,
+  WSEvent,
 } from '../models/chat.model';
 
 @Injectable()
@@ -125,12 +127,34 @@ export class ChatsService extends WebSocketService {
     this.emit(ChatEvent.LEAVE, chatIds);
   }
 
-  listenMessages(): Observable<message.BE> {
+  sendMessage(message: string, repliedOnMessageId?: number): void {
+    const dto: dtos.SendMessage = {
+      chatId: this._currentChat$.value.id,
+      ownerId: this.usersService.currentUser.id,
+      body: message,
+      sentDate: convertToDBFormat(new Date()),
+      ...(repliedOnMessageId && { repliedOnMessageId }),
+    };
+    return this.emit(MessageEvent.SEND, dto);
+  }
+
+  deleteMessage(messageId: message.BE['id']): void {
+    return this.emit(MessageEvent.DELETE, messageId);
+  }
+
+  listenMessages(): Observable<WSEvent<message.BE>> {
+    return mergeWith(
+      this.listenMessagesReceiving(),
+      this.listenMessagesDeletion()
+    );
+  }
+
+  private listenMessagesReceiving(): Observable<WSEvent<message.BE>> {
     return this.listen<message.BE>(MessageEvent.RECEIVE).pipe(
       tap((receivedMessage) => {
         console.log('[receivedMessage]:', receivedMessage);
 
-        const currentChat = deepClone(this._currentChat$.value);
+        const currentChat = this.getCurrentChat();
         const userChats = deepClone(this._userChats$.value);
 
         if (receivedMessage.chatId !== currentChat.id) {
@@ -152,24 +176,39 @@ export class ChatsService extends WebSocketService {
         if (this.isCurrentUserMessage(receivedMessage)) {
           this._messagesInput.setValue('');
         }
+      }),
+      map((receivedMessage) => ({
+        type: MessageEvent.RECEIVE,
+        data: receivedMessage,
+      }))
+    );
+  }
+
+  private listenMessagesDeletion(): Observable<WSEvent<message.BE>> {
+    return this.listen<message.BE>(MessageEvent.DELETE).pipe(
+      map((receivedMessage) => ({
+        type: MessageEvent.DELETE,
+        data: receivedMessage,
+      })),
+      tap(({ data }) => {
+        //Didn't use "filter" operator cause this stream can be used outside of the service
+        if (data.chatId !== this._currentChat$.value.id) {
+          return;
+        }
+        const currentChat = this.getCurrentChat();
+        const indexToDelete = currentChat.messages.findIndex(
+          (message) => message.id === data.id
+        );
+        currentChat.messages.splice(indexToDelete, 1);
+
+        this._currentChat$.next(currentChat);
       })
     );
   }
 
-  sendMessage(message: string, repliedOnMessageId?: number): void {
-    const dto: dtos.SendMessage = {
-      chatId: this._currentChat$.value.id,
-      ownerId: this.usersService.currentUser.id,
-      body: message,
-      sentDate: convertToDBFormat(new Date()),
-      ...(repliedOnMessageId && { repliedOnMessageId }),
-    };
-    return this.emit(MessageEvent.SEND, dto);
-  }
-
-  deleteMessage(messageId: message.BE['id']): void {
-    return this.emit(MessageEvent.DELETE, messageId);
-  }
-
   //========
+
+  private getCurrentChat(): Chat {
+    return deepClone(this._currentChat$.value);
+  }
 }

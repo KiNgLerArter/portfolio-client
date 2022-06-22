@@ -38,6 +38,11 @@ export interface Chat {
   messages: message.BE[];
 }
 
+export interface WSEvent<T> {
+  type: ChatEvent | MessageEvent;
+  data: T;
+}
+
 export class ChatPreview {
   id: string;
   name: string;
