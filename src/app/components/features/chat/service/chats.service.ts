@@ -6,7 +6,7 @@ import { UsersService } from '@services/users/users.service';
 import { WebSocketService } from '@services/web-socket/web-socket.service';
 import { User } from '@shared/models/users.model';
 import { convertToDBFormat, deepClone } from '@shared/utils';
-import { BehaviorSubject, mergeWith, Observable, of } from 'rxjs';
+import { BehaviorSubject, EMPTY, mergeWith, Observable, of } from 'rxjs';
 import {
   catchError,
   filter,
@@ -143,9 +143,8 @@ export class ChatsService extends WebSocketService {
   }
 
   listenMessages(): Observable<WSEvent<message.BE>> {
-    return mergeWith(
-      this.listenMessagesReceiving(),
-      this.listenMessagesDeletion()
+    return EMPTY.pipe(
+      mergeWith(this.listenMessagesReceiving(), this.listenMessagesDeletion())
     );
   }
 
@@ -191,6 +190,7 @@ export class ChatsService extends WebSocketService {
         data: receivedMessage,
       })),
       tap(({ data }) => {
+        console.log('[deletedMessage]:', data);
         //Didn't use "filter" operator cause this stream can be used outside of the service
         if (data.chatId !== this._currentChat$.value.id) {
           return;
