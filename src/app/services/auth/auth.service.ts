@@ -13,21 +13,8 @@ export class AuthService extends ApiService {
   private _accessToken$ = new BehaviorSubject<string>(null);
   private _currentUserId$ = new BehaviorSubject<number>(null);
 
-  get accessToken(): string {
-    return this._accessToken$.value;
-  }
-
-  get currentUserId$(): Observable<number> {
-    return this._currentUserId$.asObservable();
-  }
-
-  get currentUserId(): number {
-    return this._currentUserId$.value;
-  }
-
-  get isLoggedIn$(): Observable<boolean> {
-    return this._accessToken$.pipe(map((token) => !!token));
-  }
+  currentUserId$ = this._currentUserId$.asObservable();
+  isLoggedIn$ = this._accessToken$.pipe(map((token) => !!token));
 
   constructor(protected http: HttpClient, private router: Router) {
     super(http, 'auth');
@@ -35,31 +22,12 @@ export class AuthService extends ApiService {
     this.initSubs();
   }
 
-  private initSubs(): void {
-    this._accessToken$
-      .pipe(
-        pairwise(),
-        tap(([prev, next]) => {
-          if (!prev && next) {
-            this.router.navigate(['/home']);
-          } else if (prev && !next) {
-            this.router.navigate(['/login']);
-          }
-        })
-      )
-      .subscribe();
+  getCurrentUserId(): number {
+    return this._currentUserId$.value;
   }
 
-  private setCredentials(token: string, id: number): void {
-    this._currentUserId$.next(id);
-    localStorage.setItem(Auth.accessToken, token);
-    this._accessToken$.next(token);
-  }
-
-  private clearCredentials(): void {
-    this._currentUserId$.next(null);
-    localStorage.removeItem(Auth.accessToken);
-    this._accessToken$.next(null);
+  getAccessToken(): string {
+    return this._accessToken$.value;
   }
 
   register(data: UserDto & { nickname: string }): Observable<AuthRes> {
@@ -104,5 +72,32 @@ export class AuthService extends ApiService {
         return of(null);
       })
     );
+  }
+
+  private initSubs(): void {
+    this._accessToken$
+      .pipe(
+        pairwise(),
+        tap(([prev, next]) => {
+          if (!prev && next) {
+            this.router.navigate(['/home']);
+          } else if (prev && !next) {
+            this.router.navigate(['/login']);
+          }
+        })
+      )
+      .subscribe();
+  }
+
+  private setCredentials(token: string, id: number): void {
+    this._currentUserId$.next(id);
+    localStorage.setItem(Auth.accessToken, token);
+    this._accessToken$.next(token);
+  }
+
+  private clearCredentials(): void {
+    this._currentUserId$.next(null);
+    localStorage.removeItem(Auth.accessToken);
+    this._accessToken$.next(null);
   }
 }

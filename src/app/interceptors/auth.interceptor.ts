@@ -63,7 +63,9 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private addAuthHeader(req: HttpRequest<any>) {
     return req.clone({
-      setHeaders: { Authorization: `Bearer ${this.authService.accessToken}` },
+      setHeaders: {
+        Authorization: `Bearer ${this.authService.getAccessToken()}`,
+      },
     });
   }
 }

@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
         switchMap(() => this.usersService.fetchUsers()),
         tap(() => {
           this.usersService.currentUser$.next(
-            this.usersService.getUserById(this.authService.currentUserId)
+            this.usersService.getUserById(this.authService.getCurrentUserId())
           );
         })
       )
