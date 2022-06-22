@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-nickname-field',
@@ -7,10 +7,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./nickname-field.component.scss'],
 })
 export class NicknameFieldComponent implements OnInit {
-  @Input() form: FormGroup;
+  @Input() form: UntypedFormGroup;
 
-  get control(): FormControl {
-    return (this.form.get('nickname') as FormControl) ?? null;
+  get control(): UntypedFormControl {
+    return (this.form.get('nickname') as UntypedFormControl) ?? null;
   }
 
   constructor() {}
@@ -18,7 +18,7 @@ export class NicknameFieldComponent implements OnInit {
   ngOnInit(): void {
     this.form.addControl(
       'nickname',
-      new FormControl(null, [Validators.required])
+      new UntypedFormControl(null, [Validators.required])
     );
   }
 }

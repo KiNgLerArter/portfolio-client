@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-email-field',
@@ -7,10 +7,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./email-field.component.scss'],
 })
 export class EmailFieldComponent implements OnInit {
-  @Input() form: FormGroup;
+  @Input() form: UntypedFormGroup;
 
-  get control(): FormControl {
-    return (this.form.get('email') as FormControl) ?? null;
+  get control(): UntypedFormControl {
+    return (this.form.get('email') as UntypedFormControl) ?? null;
   }
 
   constructor() {}
@@ -18,7 +18,7 @@ export class EmailFieldComponent implements OnInit {
   ngOnInit(): void {
     this.form.addControl(
       'email',
-      new FormControl(null, [Validators.required, Validators.email])
+      new UntypedFormControl(null, [Validators.required, Validators.email])
     );
   }
 }

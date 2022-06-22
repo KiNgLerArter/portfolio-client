@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-password-field',
@@ -7,10 +7,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./password-field.component.scss'],
 })
 export class PasswordFieldComponent implements OnInit {
-  @Input() form: FormGroup;
+  @Input() form: UntypedFormGroup;
 
-  get control(): FormControl {
-    return (this.form.get('password') as FormControl) ?? null;
+  get control(): UntypedFormControl {
+    return (this.form.get('password') as UntypedFormControl) ?? null;
   }
 
   constructor() {}
@@ -18,7 +18,7 @@ export class PasswordFieldComponent implements OnInit {
   ngOnInit(): void {
     this.form.addControl(
       'password',
-      new FormControl(null, [Validators.required, Validators.maxLength(16)])
+      new UntypedFormControl(null, [Validators.required, Validators.maxLength(16)])
     );
   }
 }

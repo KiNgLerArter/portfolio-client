@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -20,15 +20,15 @@ import { ChatsService } from '../../service/chats.service';
   styleUrls: ['./create-chat.component.scss'],
 })
 export class CreateChatComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   users: User[] = [];
-  chatNameCtrl: FormControl;
-  usersIdsCtrl: FormControl;
+  chatNameCtrl: UntypedFormControl;
+  usersIdsCtrl: UntypedFormControl;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     public dialogRef: MatDialogRef<CreateChatComponent>,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private chatsService: ChatsService,
     private usersService: UsersService
   ) {}
@@ -44,8 +44,8 @@ export class CreateChatComponent implements OnInit {
       usersIds: [[], Validators.required],
     });
 
-    this.chatNameCtrl = this.form.get('chatName') as FormControl;
-    this.usersIdsCtrl = this.form.get('usersIds') as FormControl;
+    this.chatNameCtrl = this.form.get('chatName') as UntypedFormControl;
+    this.usersIdsCtrl = this.form.get('usersIds') as UntypedFormControl;
   }
 
   private initSubs(): void {

@@ -103,6 +103,5 @@
         }
       }
     }
-  },
-  "defaultProject": "angular-nest-client"
+  }
 }

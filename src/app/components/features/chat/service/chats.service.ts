@@ -1,6 +1,6 @@
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { setLoader } from '@services/api/config/api.config';
 import { UsersService } from '@services/users/users.service';
 import { WebSocketService } from '@services/web-socket/web-socket.service';
@@ -32,7 +32,7 @@ export class ChatsService extends WebSocketService {
   private _userChats$ = new BehaviorSubject<ChatPreview[]>([]);
   private _currentChat$ = new BehaviorSubject<Chat>(null);
 
-  private _messagesInput: FormControl;
+  private _messagesInput: UntypedFormControl;
 
   userChats$ = this._userChats$.asObservable();
   currentChat$ = this._currentChat$.asObservable();
@@ -64,7 +64,7 @@ export class ChatsService extends WebSocketService {
     this._currentChat$.next(chat);
   }
 
-  setMessagesInput(input: FormControl): void {
+  setMessagesInput(input: UntypedFormControl): void {
     this._messagesInput = input;
   }
 

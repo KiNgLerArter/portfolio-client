@@ -4,7 +4,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { ChatsService } from '../service/chats.service';
 
 @Component({
@@ -16,7 +16,7 @@ import { ChatsService } from '../service/chats.service';
 export class ChatActionsComponent implements OnInit {
   @Input() height: string;
 
-  chatControl = new FormControl('', [Validators.maxLength(250)]);
+  chatControl = new UntypedFormControl('', [Validators.maxLength(250)]);
 
   constructor(private chatsService: ChatsService) {}
 
