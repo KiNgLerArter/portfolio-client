@@ -49,7 +49,7 @@ export class ChatBodyComponent implements OnInit {
     });
   }
 
-  @Input() height: string;
+  @Input() openAnimationDuration: number;
 
   private _chatBody: any;
   private _chatBodyMessages: any;
@@ -91,14 +91,23 @@ export class ChatBodyComponent implements OnInit {
     this.currentMessage$.next(message);
 
     if (!this._bottomSheetRef) {
-      this._bottomSheetRef = this.bottomSheet.open(this.messageOptions, {
-        hasBackdrop: false,
-      });
+      this._bottomSheetRef = this.bottomSheet.open(this.messageOptions);
+      this._bottomSheetRef
+        .afterDismissed()
+        .pipe(
+          untilDestroyed(this),
+          take(1),
+          tap(() => {
+            this._bottomSheetRef = null;
+          })
+        )
+        .subscribe();
     }
   }
 
-  deleteMessage(id: message.BE['id'] = this.currentMessage$.value.id): void {
-    this.chatsService.deleteMessage(id);
+  deleteMessage(message: message.BE = this.currentMessage$.value): void {
+    this.chatsService.deleteMessage(message);
+    this._bottomSheetRef.dismiss();
   }
 
   private initVars(): void {
@@ -120,21 +129,32 @@ export class ChatBodyComponent implements OnInit {
               this.chatsService.isCurrentUserMessage(lastMessage) ||
               this._chatBody.scrollTop > this._chatBody.scrollHeight - 500
             ) {
-              this._chatBodyMessages.scrollIntoView({
-                behavior: 'smooth',
-                block: 'end',
-              });
+              this.scrollToTheBottom();
             }
           });
         })
       )
       .subscribe();
 
-    //load chats
+    //load chats and scroll to the bottom
     this.chatsService
       .getChatsPreviews(this.usersService.currentUser.id)
+      .pipe(
+        tap(() => {
+          setTimeout(() => {
+            this.scrollToTheBottom();
+          }, this.openAnimationDuration);
+        })
+      )
       .subscribe();
 
     this.chatsService.listenMessages().subscribe();
+  }
+
+  private scrollToTheBottom(): void {
+    this._chatBodyMessages?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end',
+    });
   }
 }

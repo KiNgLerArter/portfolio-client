@@ -5,7 +5,10 @@
 >
   <ng-container *ngIf="isChat; else chatMimic">
     <app-chat-header class="chat-header"></app-chat-header>
-    <app-chat-body class="chat-body"></app-chat-body>
+    <app-chat-body
+      class="chat-body"
+      [openAnimationDuration]="1000"
+    ></app-chat-body>
   </ng-container>
   <ng-template #chatMimic>
     <div class="chat-mimic w-100"></div>

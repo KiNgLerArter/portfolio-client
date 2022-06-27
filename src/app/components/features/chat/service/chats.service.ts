@@ -7,15 +7,7 @@ import { WebSocketService } from '@services/web-socket/web-socket.service';
 import { User } from '@shared/models/users.model';
 import { convertToDBFormat, deepClone } from '@shared/utils';
 import { BehaviorSubject, EMPTY, mergeWith, Observable, of } from 'rxjs';
-import {
-  catchError,
-  filter,
-  map,
-  pairwise,
-  startWith,
-  take,
-  tap,
-} from 'rxjs/operators';
+import { catchError, map, pairwise, take, tap } from 'rxjs/operators';
 import { chatDtos, chatDtos as dtos } from '../models/chat.dto';
 import {
   Chat,
@@ -138,8 +130,8 @@ export class ChatsService extends WebSocketService {
     return this.emit(MessageEvent.SEND, dto);
   }
 
-  deleteMessage(messageId: message.BE['id']): void {
-    return this.emit(MessageEvent.DELETE, messageId);
+  deleteMessage(message: message.BE): void {
+    return this.emit(MessageEvent.DELETE, message);
   }
 
   listenMessages(): Observable<WSEvent<message.BE>> {
