@@ -1,6 +1,11 @@
 # AngularNestClient
-#### Hi ✋. This repo is my playground for testing cutting edge frontend technologies, paradigms, patterns and principles
-> For now there is only a chat as a project feature
+> Hi✋. This repo is my playground for testing cutting edge frontend technologies, paradigms, patterns and principles
+#### Project features:
+* CI
+* Authentication
+* Chat
+  * Chat rooms
+  * Messages deletion, edition and replaying
 #### Setup
 1. Open the console
 2. Run `npm i`
