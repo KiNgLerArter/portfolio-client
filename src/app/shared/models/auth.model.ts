@@ -12,5 +12,5 @@ export interface AuthRes {
 }
 
 export enum Auth {
-  accessToken = 'ACCESS_TOKEN',
+  accessToken = "ACCESS_TOKEN"
 }

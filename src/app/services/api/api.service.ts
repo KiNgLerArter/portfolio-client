@@ -1,37 +1,34 @@
-import { HttpClient, HttpContextToken } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { ExtendedConfig } from './models/api.model';
+import { HttpClient } from "@angular/common/http";
+import { Inject, Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { environment } from "src/environments/environment";
+import { ExtendedConfig } from "./models/api.model";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root"
 })
 export class ApiService {
   private baseUrl: string;
 
-  constructor(
-    protected http: HttpClient,
-    @Inject('rootUrl') rootUrl: string = ''
-  ) {
+  constructor(protected http: HttpClient, @Inject("rootUrl") rootUrl = "") {
     this.baseUrl = this.generateUrl(rootUrl);
   }
 
   protected get<T>(
-    url = '',
+    url = "",
     { rootUrl, context }: ExtendedConfig = {}
   ): Observable<T> {
     return this.http.get<T>(
       this.generateUrl(rootUrl, url) ?? this.baseUrl + url,
       {
         withCredentials: true,
-        context,
+        context
       }
     );
   }
 
   protected post<T>(
-    url = '',
+    url = "",
     { rootUrl, context, body }: ExtendedConfig = {}
   ): Observable<T> {
     return this.http.post<T>(
@@ -39,13 +36,13 @@ export class ApiService {
       body,
       {
         withCredentials: true,
-        context,
+        context
       }
     );
   }
 
   protected put<T>(
-    url = '',
+    url = "",
     { rootUrl, context, body }: ExtendedConfig = {}
   ): Observable<T> {
     return this.http.put<T>(
@@ -53,13 +50,13 @@ export class ApiService {
       body,
       {
         withCredentials: true,
-        context,
+        context
       }
     );
   }
 
   protected patch<T>(
-    url = '',
+    url = "",
     { rootUrl, context, body }: ExtendedConfig = {}
   ): Observable<T> {
     return this.http.patch<T>(
@@ -67,20 +64,20 @@ export class ApiService {
       body,
       {
         withCredentials: true,
-        context,
+        context
       }
     );
   }
 
   protected delete<T>(
-    url = '',
+    url = "",
     { rootUrl, context }: ExtendedConfig = {}
   ): Observable<T> {
     return this.http.delete<T>(
       this.generateUrl(rootUrl, url) ?? this.baseUrl + url,
       {
         withCredentials: true,
-        context,
+        context
       }
     );
   }
@@ -94,7 +91,7 @@ export class ApiService {
         return null;
       }
 
-      resultUrl += currUrl + '/';
+      resultUrl += currUrl + "/";
     }
 
     return resultUrl;

@@ -1,8 +1,8 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { NoAuthGuard } from './no-auth.guard';
+import { NoAuthGuard } from "./no-auth.guard";
 
-describe('NoAuthGuard', () => {
+describe("NoAuthGuard", () => {
   let guard: NoAuthGuard;
 
   beforeEach(() => {
@@ -10,7 +10,7 @@ describe('NoAuthGuard', () => {
     guard = TestBed.inject(NoAuthGuard);
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(guard).toBeTruthy();
   });
 });

@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { CarModule } from './car/car.module';
-import { HomeModule } from './home/home.module';
-import { LoginModule } from './login/login.module';
-import { RegistrationModule } from './registration/registration.module';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { CarModule } from "./car/car.module";
+import { HomeModule } from "./home/home.module";
+import { LoginModule } from "./login/login.module";
+import { RegistrationModule } from "./registration/registration.module";
 
 @NgModule({
   declarations: [],
@@ -12,7 +12,7 @@ import { RegistrationModule } from './registration/registration.module';
     CarModule,
     HomeModule,
     LoginModule,
-    RegistrationModule,
-  ],
+    RegistrationModule
+  ]
 })
 export class PagesModule {}

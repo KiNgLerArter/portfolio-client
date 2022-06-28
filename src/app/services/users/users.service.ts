@@ -1,13 +1,13 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { ApiService } from '@services/api/api.service';
-import { AuthService } from '@services/auth/auth.service';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, filter, switchMap, tap } from 'rxjs/operators';
-import { User } from '../../shared/models/users.model';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { ApiService } from "@services/api/api.service";
+import { AuthService } from "@services/auth/auth.service";
+import { BehaviorSubject, Observable, of } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
+import { User } from "../../shared/models/users.model";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root"
 })
 export class UsersService extends ApiService {
   private _allUsers$ = new BehaviorSubject<User[]>([]);
@@ -23,7 +23,7 @@ export class UsersService extends ApiService {
   }
 
   constructor(protected http: HttpClient, private authService: AuthService) {
-    super(http, 'users');
+    super(http, "users");
 
     this.initSubs();
   }
@@ -37,7 +37,7 @@ export class UsersService extends ApiService {
   fetchUserById(userId: number): Observable<User> {
     return this.get<User>(userId.toString()).pipe(
       catchError((error) => {
-        console.log('[getUserById error]: ', error);
+        console.log("[getUserById error]: ", error);
         return of(null);
       })
     );
@@ -49,7 +49,7 @@ export class UsersService extends ApiService {
         this._allUsers$.next(users);
       }),
       catchError((error) => {
-        console.log('[getUsers error]: ', error);
+        console.log("[getUsers error]: ", error);
         return of([]);
       })
     );

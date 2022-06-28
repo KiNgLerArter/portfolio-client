@@ -1,14 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { PasswordFieldComponent } from './password-field.component';
+import { PasswordFieldComponent } from "./password-field.component";
 
-describe('PasswordFieldComponent', () => {
+describe("PasswordFieldComponent", () => {
   let component: PasswordFieldComponent;
   let fixture: ComponentFixture<PasswordFieldComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PasswordFieldComponent],
+      declarations: [PasswordFieldComponent]
     }).compileComponents();
   });
 
@@ -18,7 +18,7 @@ describe('PasswordFieldComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

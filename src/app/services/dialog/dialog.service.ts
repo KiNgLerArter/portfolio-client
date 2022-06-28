@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { DialogData } from './model/dialog.model';
-import { DialogBodyComponent } from './dialog-body/dialog-body.component';
+import { Injectable } from "@angular/core";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { DialogData } from "./model/dialog.model";
+import { DialogBodyComponent } from "./dialog-body/dialog-body.component";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root"
 })
 export class DialogService {
   constructor(private dialog: MatDialog) {}
@@ -12,12 +12,12 @@ export class DialogService {
   open(
     config: MatDialogConfig<DialogData> = {
       data: {
-        title: '',
-        text: '',
-        actions: { cancel: { text: 'cancel' }, accept: { text: 'ok' } },
+        title: "",
+        text: "",
+        actions: { cancel: { text: "cancel" }, accept: { text: "ok" } }
       },
-      width: '400px',
-      height: '200px',
+      width: "400px",
+      height: "200px"
     }
   ) {
     this.dialog.open(DialogBodyComponent, config);

@@ -1,18 +1,15 @@
 import {
-  HttpContext,
-  HttpContextToken,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
-  HttpRequest,
-  HttpResponse,
-} from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { IS_LOADER } from '@services/api/config/api.config';
-import { AuthService } from '@services/auth/auth.service';
-import { GlobalLoaderService } from '@services/global-loader/global-loader.service';
-import { EMPTY, Observable, of, throwError } from 'rxjs';
-import { catchError, filter, finalize, switchMap, tap } from 'rxjs/operators';
+  HttpRequest
+} from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { IS_LOADER } from "@services/api/config/api.config";
+import { AuthService } from "@services/auth/auth.service";
+import { GlobalLoaderService } from "@services/global-loader/global-loader.service";
+import { Observable, throwError } from "rxjs";
+import { catchError, finalize, switchMap } from "rxjs/operators";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -46,9 +43,9 @@ export class AuthInterceptor implements HttpInterceptor {
     prevReq?: HttpRequest<any>,
     next?: HttpHandler
   ): Observable<any> {
-    if (error.status === 401 && !error.url.includes('auth/refresh')) {
+    if (error.status === 401 && !error.url.includes("auth/refresh")) {
       return this.authService.refreshToken().pipe(
-        catchError((error) => {
+        catchError(() => {
           return this.authService.logout();
         }),
         switchMap(() => {
@@ -64,8 +61,8 @@ export class AuthInterceptor implements HttpInterceptor {
   private addAuthHeader(req: HttpRequest<any>) {
     return req.clone({
       setHeaders: {
-        Authorization: `Bearer ${this.authService.getAccessToken()}`,
-      },
+        Authorization: `Bearer ${this.authService.getAccessToken()}`
+      }
     });
   }
 }

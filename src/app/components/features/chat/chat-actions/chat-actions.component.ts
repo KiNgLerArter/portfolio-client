@@ -2,21 +2,21 @@ import {
   ChangeDetectionStrategy,
   Component,
   Input,
-  OnInit,
-} from '@angular/core';
-import { UntypedFormControl, Validators } from '@angular/forms';
-import { ChatsService } from '../service/chats.service';
+  OnInit
+} from "@angular/core";
+import { UntypedFormControl, Validators } from "@angular/forms";
+import { ChatsService } from "../service/chats.service";
 
 @Component({
-  selector: 'app-chat-actions',
-  templateUrl: './chat-actions.component.html',
-  styleUrls: ['./chat-actions.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: "app-chat-actions",
+  templateUrl: "./chat-actions.component.html",
+  styleUrls: ["./chat-actions.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChatActionsComponent implements OnInit {
   @Input() height: string;
 
-  chatControl = new UntypedFormControl('', [Validators.maxLength(250)]);
+  chatControl = new UntypedFormControl("", [Validators.maxLength(250)]);
 
   constructor(private chatsService: ChatsService) {}
 

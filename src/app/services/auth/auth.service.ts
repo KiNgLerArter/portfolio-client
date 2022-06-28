@@ -1,13 +1,13 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { ApiService } from '@services/api/api.service';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, finalize, map, pairwise, tap } from 'rxjs/operators';
-import { Auth, AuthRes, UserDto } from '../../shared/models/auth.model';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { ApiService } from "@services/api/api.service";
+import { BehaviorSubject, Observable, of } from "rxjs";
+import { catchError, finalize, map, pairwise, tap } from "rxjs/operators";
+import { Auth, AuthRes, UserDto } from "../../shared/models/auth.model";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root"
 })
 export class AuthService extends ApiService {
   private _accessToken$ = new BehaviorSubject<string>(null);
@@ -17,7 +17,7 @@ export class AuthService extends ApiService {
   isLoggedIn$ = this._accessToken$.pipe(map((token) => !!token));
 
   constructor(protected http: HttpClient, private router: Router) {
-    super(http, 'auth');
+    super(http, "auth");
 
     this.initSubs();
   }
@@ -31,31 +31,31 @@ export class AuthService extends ApiService {
   }
 
   register(data: UserDto & { nickname: string }): Observable<AuthRes> {
-    return this.post<AuthRes>('register', { body: data }).pipe(
+    return this.post<AuthRes>("register", { body: data }).pipe(
       tap(({ accessToken, user: { id } }) => {
         this.setCredentials(accessToken, id);
       }),
       catchError((error) => {
-        console.error('[register error]:', error.message);
+        console.error("[register error]:", error.message);
         return of(null);
       })
     );
   }
 
   login(data: UserDto): Observable<AuthRes> {
-    return this.post<AuthRes>('login', { body: data }).pipe(
+    return this.post<AuthRes>("login", { body: data }).pipe(
       tap(({ accessToken, user: { id } }) => {
         this.setCredentials(accessToken, id);
       }),
       catchError((error) => {
-        console.error('[login error]:', error.message);
+        console.error("[login error]:", error.message);
         return of(null);
       })
     );
   }
 
   logout(): Observable<void> {
-    return this.get<void>('logout').pipe(
+    return this.get<void>("logout").pipe(
       finalize(() => {
         this.clearCredentials();
       })
@@ -63,12 +63,12 @@ export class AuthService extends ApiService {
   }
 
   refreshToken(): Observable<AuthRes> {
-    return this.get<AuthRes>('refresh').pipe(
+    return this.get<AuthRes>("refresh").pipe(
       tap(({ accessToken, user: { id } }) => {
         this.setCredentials(accessToken, id);
       }),
       catchError((error) => {
-        console.error('[refresh error]:', error);
+        console.error("[refresh error]:", error);
         return of(null);
       })
     );
@@ -80,9 +80,9 @@ export class AuthService extends ApiService {
         pairwise(),
         tap(([prev, next]) => {
           if (!prev && next) {
-            this.router.navigate(['/home']);
+            this.router.navigate(["/home"]);
           } else if (prev && !next) {
-            this.router.navigate(['/login']);
+            this.router.navigate(["/login"]);
           }
         })
       )

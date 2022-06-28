@@ -1,44 +1,44 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
 
-import { CarComponent } from '@components/pages/car/car.component';
-import { HomeComponent } from '@components/pages/home/home.component';
-import { LoginComponent } from '@components/pages/login/login.component';
-import { RegistrationComponent } from '@components/pages/registration/registration.component';
+import { CarComponent } from "@components/pages/car/car.component";
+import { HomeComponent } from "@components/pages/home/home.component";
+import { LoginComponent } from "@components/pages/login/login.component";
+import { RegistrationComponent } from "@components/pages/registration/registration.component";
 
-import { AuthGuard } from '@guards/auth/auth.guard';
-import { NoAuthGuard } from '@guards/no-auth/no-auth.guard';
+import { AuthGuard } from "@guards/auth/auth.guard";
+import { NoAuthGuard } from "@guards/no-auth/no-auth.guard";
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full',
+    path: "",
+    redirectTo: "home",
+    pathMatch: "full"
   },
   {
-    path: 'home',
+    path: "home",
     component: HomeComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
-    path: 'cars/:model',
+    path: "cars/:model",
     component: CarComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
-    path: 'login',
+    path: "login",
     component: LoginComponent,
-    canActivate: [NoAuthGuard],
+    canActivate: [NoAuthGuard]
   },
   {
-    path: 'registration',
+    path: "registration",
     component: RegistrationComponent,
-    canActivate: [NoAuthGuard],
-  },
+    canActivate: [NoAuthGuard]
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {}

@@ -1,23 +1,22 @@
-import { HttpClient, HttpContext } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
-import { setLoader } from '@services/api/config/api.config';
-import { UsersService } from '@services/users/users.service';
-import { WebSocketService } from '@services/web-socket/web-socket.service';
-import { User } from '@shared/models/users.model';
-import { convertToDBFormat, deepClone } from '@shared/utils';
-import { BehaviorSubject, EMPTY, mergeWith, Observable, of } from 'rxjs';
-import { catchError, map, pairwise, take, tap } from 'rxjs/operators';
-import { chatDtos, chatDtos as dtos } from '../models/chat.dto';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { UntypedFormControl } from "@angular/forms";
+import { setLoader } from "@services/api/config/api.config";
+import { UsersService } from "@services/users/users.service";
+import { WebSocketService } from "@services/web-socket/web-socket.service";
+import { User } from "@shared/models/users.model";
+import { convertToDBFormat, deepClone } from "@shared/utils";
+import { BehaviorSubject, EMPTY, mergeWith, Observable, of } from "rxjs";
+import { catchError, map, pairwise, take, tap } from "rxjs/operators";
+import { chatDtos as dtos } from "../models/chat.dtos";
 import {
   Chat,
   ChatEvent,
   message,
-  Messages,
   ChatPreview,
   MessageEvent,
-  WSEvent,
-} from '../models/chat.model';
+  WSEvent
+} from "../models/chat.model";
 
 @Injectable()
 export class ChatsService extends WebSocketService {
@@ -29,14 +28,14 @@ export class ChatsService extends WebSocketService {
   userChats$ = this._userChats$.asObservable();
   currentChat$ = this._currentChat$.asObservable();
 
-  readonly SMILES = ['😶‍🌫️', '🥸', '😈', '🤠', '🥶', '😎', '👹', '☠️'];
+  readonly SMILES = ["😶‍🌫️", "🥸", "😈", "🤠", "🥶", "😎", "👹", "☠️"];
 
   private get _userChats(): ChatPreview[] {
     return deepClone(this._userChats$.value);
   }
 
   constructor(protected http: HttpClient, private usersService: UsersService) {
-    super(http, 'chats');
+    super(http, "chats");
     this._userChats$
       .pipe(
         pairwise(),
@@ -66,27 +65,27 @@ export class ChatsService extends WebSocketService {
 
   //============HTTP============//
 
-  getChatById(chatId: Chat['id']): Observable<Chat> {
+  getChatById(chatId: Chat["id"]): Observable<Chat> {
     return this.get<Chat>(chatId, { context: setLoader(false) });
   }
 
-  getChatsPreviews(userId: User['id']): Observable<ChatPreview[]> {
+  getChatsPreviews(userId: User["id"]): Observable<ChatPreview[]> {
     return this.get<ChatPreview[]>(`${userId}/chats-previews`, {
-      rootUrl: 'users',
-      context: setLoader(false),
+      rootUrl: "users",
+      context: setLoader(false)
     }).pipe(
       tap((chats) => {
         this._userChats$.next(chats);
       }),
       catchError((error) => {
-        console.log('[getUserChats error]:', error);
+        console.log("[getUserChats error]:", error);
         return of([]);
       })
     );
   }
 
   createChat(dto: dtos.CreateChat): Observable<Chat> {
-    return this.post<Chat>('create', { body: dto }).pipe(
+    return this.post<Chat>("create", { body: dto }).pipe(
       tap((chat) => {
         const chats = this._userChats$.value;
         chats.push(new ChatPreview(chat));
@@ -97,7 +96,7 @@ export class ChatsService extends WebSocketService {
         this.joinChats(chat.id);
       }),
       catchError((error) => {
-        console.log('[createChat error]:', error);
+        console.log("[createChat error]:", error);
         return of(null);
       })
     );
@@ -106,14 +105,14 @@ export class ChatsService extends WebSocketService {
   //============WebSocket============//
 
   joinChats(chatIds: string[] | string): void {
-    if (typeof chatIds === 'string') {
+    if (typeof chatIds === "string") {
       this.emit(ChatEvent.JOIN, [chatIds]);
     }
     this.emit(ChatEvent.JOIN, chatIds);
   }
 
   leaveChats(chatIds: string[] = this._userChats.map((chat) => chat.id)): void {
-    if (typeof chatIds === 'string') {
+    if (typeof chatIds === "string") {
       this.emit(ChatEvent.LEAVE, [chatIds]);
     }
     this.emit(ChatEvent.LEAVE, chatIds);
@@ -125,7 +124,7 @@ export class ChatsService extends WebSocketService {
       ownerId: this.usersService.currentUser.id,
       body: message,
       sentDate: convertToDBFormat(new Date()),
-      ...(repliedOnMessageId && { repliedOnMessageId }),
+      ...(repliedOnMessageId && { repliedOnMessageId })
     };
     return this.emit(MessageEvent.SEND, dto);
   }
@@ -143,7 +142,7 @@ export class ChatsService extends WebSocketService {
   private listenMessagesReceiving(): Observable<WSEvent<message.BE>> {
     return this.listen<message.BE>(MessageEvent.RECEIVE).pipe(
       tap((receivedMessage) => {
-        console.log('[receivedMessage]:', receivedMessage);
+        console.log("[receivedMessage]:", receivedMessage);
 
         const currentChat = this.getCurrentChat();
         const userChats = deepClone(this._userChats$.value);
@@ -155,8 +154,8 @@ export class ChatsService extends WebSocketService {
             body: receivedMessage.body,
             owner: {
               id: receivedMessage.owner.id,
-              nickname: receivedMessage.owner.nickname,
-            },
+              nickname: receivedMessage.owner.nickname
+            }
           };
           this._userChats$.next(userChats);
         } else {
@@ -165,12 +164,12 @@ export class ChatsService extends WebSocketService {
         }
 
         if (this.isCurrentUserMessage(receivedMessage)) {
-          this._messagesInput.setValue('');
+          this._messagesInput.setValue("");
         }
       }),
       map((receivedMessage) => ({
         type: MessageEvent.RECEIVE,
-        data: receivedMessage,
+        data: receivedMessage
       }))
     );
   }
@@ -179,10 +178,10 @@ export class ChatsService extends WebSocketService {
     return this.listen<message.BE>(MessageEvent.DELETE).pipe(
       map((receivedMessage) => ({
         type: MessageEvent.DELETE,
-        data: receivedMessage,
+        data: receivedMessage
       })),
       tap(({ data }) => {
-        console.log('[deletedMessage]:', data);
+        console.log("[deletedMessage]:", data);
         //Didn't use "filter" operator cause this stream can be used outside of the service
         if (data.chatId !== this._currentChat$.value.id) {
           return;

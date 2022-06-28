@@ -35,8 +35,8 @@ $app-pink-palette: (
     A100: $dark-primary-text,
     A200: $dark-primary-text,
     A400: $dark-primary-text,
-    A700: $dark-primary-text,
-  ),
+    A700: $dark-primary-text
+  )
 );
 
 $app-grey-palette: (
@@ -68,8 +68,8 @@ $app-grey-palette: (
     A100: $light-primary-text,
     A200: $light-primary-text,
     A400: $light-primary-text,
-    A700: $light-primary-text,
-  ),
+    A700: $light-primary-text
+  )
 );
 
 $app-blue-palette: (
@@ -101,8 +101,8 @@ $app-blue-palette: (
     A100: $dark-primary-text,
     A200: $dark-primary-text,
     A400: $dark-primary-text,
-    A700: $light-primary-text,
-  ),
+    A700: $light-primary-text
+  )
 );
 
 $dark-primary: mat.define-palette($app-grey-palette);
@@ -114,8 +114,8 @@ $app-theme: mat.define-dark-theme(
     color: (
       primary: $dark-primary,
       accent: $dark-accent,
-      warn: $dark-warn,
-    ),
+      warn: $dark-warn
+    )
   )
 );
 

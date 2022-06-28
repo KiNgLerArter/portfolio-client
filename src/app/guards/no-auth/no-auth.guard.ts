@@ -1,25 +1,16 @@
-import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
-import { Observable } from 'rxjs';
-import { map, take, tap } from 'rxjs/operators';
-import { AuthService } from '@services/auth/auth.service';
+import { Injectable } from "@angular/core";
+import { CanActivate, Router, UrlTree } from "@angular/router";
+import { Observable } from "rxjs";
+import { map, take } from "rxjs/operators";
+import { AuthService } from "@services/auth/auth.service";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root"
 })
 export class NoAuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ):
+  canActivate():
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree>
     | boolean
@@ -31,7 +22,7 @@ export class NoAuthGuard implements CanActivate {
           return true;
         }
 
-        return this.router.createUrlTree(['home']);
+        return this.router.createUrlTree(["home"]);
       })
     );
   }

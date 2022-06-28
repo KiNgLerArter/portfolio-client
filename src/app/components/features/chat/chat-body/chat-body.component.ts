@@ -4,48 +4,41 @@ import {
   Component,
   ElementRef,
   Input,
+  OnDestroy,
   OnInit,
   TemplateRef,
-  ViewChild,
-} from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { UsersService } from '@services/users/users.service';
-import {
-  distinctUntilChanged,
-  filter,
-  map,
-  switchMap,
-  take,
-  tap,
-} from 'rxjs/operators';
-import { message } from '../models/chat.model';
-import { ChatsService } from '../service/chats.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+  ViewChild
+} from "@angular/core";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
+import { UsersService } from "@services/users/users.service";
+import { filter, map, take, tap } from "rxjs/operators";
+import { message } from "../models/chat.model";
+import { ChatsService } from "../service/chats.service";
+import { BehaviorSubject, Observable } from "rxjs";
 import {
   MatBottomSheet,
-  MatBottomSheetRef,
-} from '@angular/material/bottom-sheet';
+  MatBottomSheetRef
+} from "@angular/material/bottom-sheet";
 
 @UntilDestroy()
 @Component({
-  selector: 'app-chat-body',
-  templateUrl: './chat-body.component.html',
-  styleUrls: ['./chat-body.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: "app-chat-body",
+  templateUrl: "./chat-body.component.html",
+  styleUrls: ["./chat-body.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ChatBodyComponent implements OnInit {
-  @ViewChild('messageOptions') messageOptions: TemplateRef<any>;
-  @ViewChild('chatBody')
+export class ChatBodyComponent implements OnInit, OnDestroy {
+  @ViewChild("messageOptions") messageOptions: TemplateRef<any>;
+  @ViewChild("chatBody")
   set chat(elem: ElementRef) {
     this._chatBody = elem.nativeElement;
   }
-  @ViewChild('chatMessages') set chatBody(elem: ElementRef) {
+  @ViewChild("chatMessages") set chatBody(elem: ElementRef) {
     const htmlElem = elem.nativeElement;
     this._chatBodyMessages = htmlElem;
     htmlElem.scrollIntoView({
-      behavior: 'smooth',
-      block: 'end',
+      behavior: "smooth",
+      block: "end"
     });
   }
 
@@ -153,8 +146,8 @@ export class ChatBodyComponent implements OnInit {
 
   private scrollToTheBottom(): void {
     this._chatBodyMessages?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'end',
+      behavior: "smooth",
+      block: "end"
     });
   }
 }

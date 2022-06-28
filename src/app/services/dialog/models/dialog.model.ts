@@ -4,11 +4,11 @@ export interface DialogData {
   actions?: {
     cancel?: {
       text?: string;
-      onClick?: () => {};
+      onClick?: () => void;
     };
     accept?: {
       text?: string;
-      onClick?: () => {};
+      onClick?: () => void;
     };
   };
 }

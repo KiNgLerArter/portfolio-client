@@ -1,5 +1,4 @@
-import { NicknameFieldComponent } from '@components/entities/form-fields/nickname-field/nickname-field.component';
-import { Role } from './roles.model';
+import { Role } from "./roles.model";
 
 export interface User {
   id: number;

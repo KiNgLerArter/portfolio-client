@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Auth } from '@shared/models/auth.model';
-import { AuthService } from '@services/auth/auth.service';
-import { UsersService } from '@services/users/users.service';
-import { filter, switchMap, tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { GlobalLoaderService } from '@services/global-loader/global-loader.service';
+import { Component, OnInit } from "@angular/core";
+import { Auth } from "@shared/models/auth.model";
+import { AuthService } from "@services/auth/auth.service";
+import { UsersService } from "@services/users/users.service";
+import { filter, switchMap, tap } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { GlobalLoaderService } from "@services/global-loader/global-loader.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit {
   isLoading$: Observable<boolean>;
@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
     this.authService.isLoggedIn$
       .pipe(
         filter((isLoggedIn) => {
-          console.log('[isLoggedIn]: ', isLoggedIn);
+          console.log("[isLoggedIn]: ", isLoggedIn);
           if (!isLoggedIn) {
             this.usersService.clearUsers();
             return false;

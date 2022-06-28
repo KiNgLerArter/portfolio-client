@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { HeaderComponent } from './header.component';
-import { MatIconModule } from '@angular/material/icon';
-import { RouterModule } from '@angular/router';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatButtonModule } from '@angular/material/button';
-import { ChatModule } from '@components/features/chat/chat.module';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { HeaderComponent } from "./header.component";
+import { MatIconModule } from "@angular/material/icon";
+import { RouterModule } from "@angular/router";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatButtonModule } from "@angular/material/button";
+import { ChatModule } from "@components/features/chat/chat.module";
 
 @NgModule({
   declarations: [HeaderComponent],
@@ -15,8 +15,8 @@ import { ChatModule } from '@components/features/chat/chat.module';
     MatIconModule,
     RouterModule,
     MatTooltipModule,
-    ChatModule,
+    ChatModule
   ],
-  exports: [HeaderComponent],
+  exports: [HeaderComponent]
 })
 export class HeaderModule {}

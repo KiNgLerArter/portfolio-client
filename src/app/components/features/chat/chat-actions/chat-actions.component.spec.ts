@@ -1,14 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ChatActionsComponent } from './chat-actions.component';
+import { ChatActionsComponent } from "./chat-actions.component";
 
-describe('ChatActionsComponent', () => {
+describe("ChatActionsComponent", () => {
   let component: ChatActionsComponent;
   let fixture: ComponentFixture<ChatActionsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ChatActionsComponent],
+      declarations: [ChatActionsComponent]
     }).compileComponents();
   });
 
@@ -18,7 +18,7 @@ describe('ChatActionsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

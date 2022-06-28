@@ -2,28 +2,28 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
-  Input,
-} from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BehaviorSubject, Observable } from 'rxjs';
+  Input
+} from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
+import { BehaviorSubject, Observable } from "rxjs";
 import {
   distinctUntilChanged,
   filter,
   switchMap,
   take,
-  tap,
-} from 'rxjs/operators';
-import { CreateChatComponent } from '../mat-dialogs/create-chat/create-chat.component';
-import { ChatPreview } from '../models/chat.model';
-import { ChatsService } from '../service/chats.service';
+  tap
+} from "rxjs/operators";
+import { CreateChatComponent } from "../mat-dialogs/create-chat/create-chat.component";
+import { ChatPreview } from "../models/chat.model";
+import { ChatsService } from "../service/chats.service";
 
 @UntilDestroy()
 @Component({
-  selector: 'app-chat-header',
-  templateUrl: './chat-header.component.html',
-  styleUrls: ['./chat-header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: "app-chat-header",
+  templateUrl: "./chat-header.component.html",
+  styleUrls: ["./chat-header.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChatHeaderComponent implements OnInit {
   @Input() height: string;
@@ -43,7 +43,7 @@ export class ChatHeaderComponent implements OnInit {
   }
 
   openCreateChatDialog(): void {
-    this.dialog.open(CreateChatComponent, { width: '400px' });
+    this.dialog.open(CreateChatComponent, { width: "400px" });
   }
 
   private initVars(): void {

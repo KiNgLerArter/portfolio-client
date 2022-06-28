@@ -1,8 +1,8 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { WebSocketService } from './web-socket.service';
+import { WebSocketService } from "./web-socket.service";
 
-describe('WebSocketService', () => {
+describe("WebSocketService", () => {
   let service: WebSocketService;
 
   beforeEach(() => {
@@ -10,7 +10,7 @@ describe('WebSocketService', () => {
     service = TestBed.inject(WebSocketService);
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(service).toBeTruthy();
   });
 });

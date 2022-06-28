@@ -1,14 +1,14 @@
-import { SimplifiedUser, User } from '@shared/models/users.model';
+import { SimplifiedUser, User } from "@shared/models/users.model";
 
 export enum ChatEvent {
-  JOIN = 'join chats',
-  LEAVE = 'leave chats',
+  JOIN = "join chats",
+  LEAVE = "leave chats"
 }
 
 export enum MessageEvent {
-  SEND = 'send message',
-  DELETE = 'delete message',
-  RECEIVE = 'receive message',
+  SEND = "send message",
+  DELETE = "delete message",
+  RECEIVE = "receive message"
 }
 
 export namespace message {
@@ -47,7 +47,7 @@ export class ChatPreview {
   id: string;
   name: string;
   lastMessage: {
-    body: message.BE['body'];
+    body: message.BE["body"];
     owner: SimplifiedUser;
   };
 
@@ -57,4 +57,4 @@ export class ChatPreview {
   }
 }
 
-export type Messages = Record<Chat['id'], message.BE[]>;
+export type Messages = Record<Chat["id"], message.BE[]>;

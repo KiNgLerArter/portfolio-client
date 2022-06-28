@@ -1,3 +1,10 @@
+export const hasOwnProperty = (
+  object: Record<string, unknown>,
+  key: string
+): boolean => {
+  return Object.prototype.hasOwnProperty.call(object, key);
+};
+
 export const deepClone = <T>(obj: T): T => {
   return JSON.parse(JSON.stringify(obj));
 };
@@ -9,11 +16,11 @@ export const deepEqual = (firstItem: any, secondItem: any): boolean => {
   if (
     !firstItemType ||
     firstItemType !== secondItemType ||
-    firstItemType === 'string' ||
-    firstItemType === 'number' ||
-    firstItemType === 'bigint' ||
-    firstItemType === 'boolean' ||
-    firstItemType === 'symbol'
+    firstItemType === "string" ||
+    firstItemType === "number" ||
+    firstItemType === "bigint" ||
+    firstItemType === "boolean" ||
+    firstItemType === "symbol"
   ) {
     return firstItem === secondItem;
   }
@@ -27,7 +34,7 @@ export const deepEqual = (firstItem: any, secondItem: any): boolean => {
   let areObjectsEqual = true;
   for (const key in firstItem) {
     if (
-      firstItem.hasOwnProperty(key) &&
+      hasOwnProperty(firstItem, key) &&
       !deepEqual(firstItem[key], secondItem[key])
     ) {
       areObjectsEqual = false;
