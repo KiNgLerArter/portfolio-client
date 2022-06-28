@@ -1,5 +1,5 @@
 name: Client Actions
-on: [push]
+on: [push, pull_request]
 jobs:
   init:
     runs-on: ubuntu-latest
