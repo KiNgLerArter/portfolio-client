@@ -69,11 +69,11 @@ export class ChatBodyComponent implements OnInit, OnDestroy {
     this.chatsService.leaveChats();
   }
 
-  getRandomSmile(): string {
-    return this.chatsService.SMILES[
-      Math.floor(Math.random() * this.chatsService.SMILES.length)
-    ];
-  }
+  // getRandomSmile(): string {
+  //   return this.chatsService.SMILES[
+  //     Math.floor(Math.random() * this.chatsService.SMILES.length)
+  //   ];
+  // }
 
   identifyMessage(index: number, item: message.BE): string {
     return item.id;

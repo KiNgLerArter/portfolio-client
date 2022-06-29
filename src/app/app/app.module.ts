@@ -5,7 +5,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { AuthInterceptor } from "../interceptors/auth.interceptor";
+import { AuthInterceptor } from "../core/interceptors/auth.interceptor";
 import { HeaderModule } from "@components/widgets/header/header.module";
 import { LoaderModule } from "@components/features/loader/loader.module";
 
