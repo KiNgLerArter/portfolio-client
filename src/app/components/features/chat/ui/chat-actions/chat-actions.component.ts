@@ -5,7 +5,7 @@ import {
   OnInit
 } from "@angular/core";
 import { UntypedFormControl, Validators } from "@angular/forms";
-import { ChatsService } from "../../service/chats.service";
+import { ChatsService } from "../../services/chats.service";
 
 @Component({
   selector: "app-chat-actions",

@@ -12,13 +12,13 @@ import {
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { UsersService } from "@services/users/users.service";
 import { filter, map, take, tap } from "rxjs/operators";
-import { message } from "../models/chat.model";
-import { ChatsService } from "../service/chats.service";
 import { BehaviorSubject, Observable } from "rxjs";
 import {
   MatBottomSheet,
   MatBottomSheetRef
 } from "@angular/material/bottom-sheet";
+import { message } from "../../models/chat.model";
+import { ChatsService } from "../../services/chats.service";
 
 @UntilDestroy()
 @Component({
@@ -30,10 +30,10 @@ import {
 export class ChatBodyComponent implements OnInit, OnDestroy {
   @ViewChild("messageOptions") messageOptions: TemplateRef<any>;
   @ViewChild("chatBody")
-  set chat(elem: ElementRef) {
+  set chatBody(elem: ElementRef) {
     this._chatBody = elem.nativeElement;
   }
-  @ViewChild("chatMessages") set chatBody(elem: ElementRef) {
+  @ViewChild("chatMessages") set chatMessages(elem: ElementRef) {
     const htmlElem = elem.nativeElement;
     this._chatBodyMessages = htmlElem;
     htmlElem.scrollIntoView({
@@ -106,7 +106,8 @@ export class ChatBodyComponent implements OnInit, OnDestroy {
   private initVars(): void {
     this.currentChatMessages$ = this.chatsService.currentChat$.pipe(
       untilDestroyed(this),
-      map((chat) => chat?.messages ?? [])
+      map((chat) => chat?.messages ?? []),
+      tap((messages) => console.log("[messages]:", messages))
     );
   }
 

@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
-import { CarComponent } from "@components/pages/car/car.component";
 import { HomeComponent } from "@components/pages/home/home.component";
 import { LoginComponent } from "@components/pages/login/login.component";
 import { RegistrationComponent } from "@components/pages/registration/registration.component";
@@ -21,19 +20,18 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: "cars/:model",
-    component: CarComponent,
-    canActivate: [AuthGuard]
-  },
-  {
     path: "login",
-    component: LoginComponent,
-    canActivate: [NoAuthGuard]
+    loadChildren: () =>
+      import("./login/login.module").then((m) => m.LoginModule),
+    canLoad: [NoAuthGuard]
   },
   {
     path: "registration",
-    component: RegistrationComponent,
-    canActivate: [NoAuthGuard]
+    loadChildren: () =>
+      import("./registration/registration.module").then(
+        (m) => m.RegistrationModule
+      ),
+    canLoad: [NoAuthGuard]
   }
 ];
 
@@ -41,4 +39,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class PagesRoutingModule {}

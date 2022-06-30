@@ -6,12 +6,12 @@ import {
   Validators
 } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { ChatsService } from "@components/features/chat/services/chats.service";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { DialogData } from "@services/dialog/models/dialog.model";
 import { UsersService } from "@services/users/users.service";
 import { User } from "@shared/models/users.model";
 import { tap } from "rxjs/operators";
-import { ChatsService } from "../../service/chats.service";
 
 @UntilDestroy()
 @Component({

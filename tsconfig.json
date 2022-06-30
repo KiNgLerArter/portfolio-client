@@ -18,11 +18,11 @@
     "module": "es2020",
     "lib": ["es2020", "dom"],
     "paths": {
-      "@core/*": ["src/app/app/*"],
       "@components/*": ["./src/app/components/*"],
       "@guards/*": ["./src/app/guards/*"],
       "@shared/*": ["./src/app/shared/*"],
-      "@services/*": ["./src/app/services/*"]
+      "@services/*": ["./src/app/services/*"],
+      "@interceptors/*": ["./src/app/interceptors/*"]
     },
     "noUnusedLocals": false,
     "strictPropertyInitialization": false,

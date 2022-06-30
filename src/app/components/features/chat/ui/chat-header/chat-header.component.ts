@@ -14,9 +14,9 @@ import {
   take,
   tap
 } from "rxjs/operators";
+import { ChatPreview } from "../../models/chat.model";
+import { ChatsService } from "../../services/chats.service";
 import { CreateChatComponent } from "../mat-dialogs/create-chat/create-chat.component";
-import { ChatPreview } from "../models/chat.model";
-import { ChatsService } from "../service/chats.service";
 
 @UntilDestroy()
 @Component({

@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 import { ApiService } from "@services/api/api.service";
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { catchError, finalize, map, pairwise, tap } from "rxjs/operators";
-import { Auth, AuthRes, UserDto } from "../../shared/models/auth.model";
+import { Auth, AuthRes, UserDto } from "@shared/models/auth.model";
 
 @Injectable({
   providedIn: "root"

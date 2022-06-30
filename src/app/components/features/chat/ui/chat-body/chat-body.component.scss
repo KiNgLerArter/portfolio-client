@@ -27,27 +27,6 @@
   padding-top: 50px;
 }
 
-.nickname {
-  font-weight: bold;
-  cursor: pointer;
-  width: fit-content;
-}
-
-.message-divider {
-  height: 1px;
-  border-radius: 6px;
-}
-
-.message {
-  border-radius: 6px;
-  max-width: 240px;
-  min-height: 44px;
-
-  &:last-child {
-    margin-bottom: 12px;
-  }
-}
-
 .message-options-title {
   white-space: nowrap;
   overflow: hidden;
