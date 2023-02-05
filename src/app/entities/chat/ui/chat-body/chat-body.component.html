@@ -1,0 +1,40 @@
+<div class="chat-body w-100 p-6" #chatBody>
+  <div class="chat-messages flex--col--flex-start gap-y-8" #chatMessages>
+    <div
+      *ngFor="
+        let message of currentChatMessages$ | async;
+        trackBy: identifyMessage
+      "
+      [ngStyle]="{
+        'align-self': chatService.isCurrentUserMessage(message)
+          ? 'flex-end'
+          : 'initial'
+      }"
+      (contextmenu)="openMessageOptions($event, message)"
+    >
+      <app-chat-body-message [message]="message"></app-chat-body-message>
+    </div>
+    <ng-template #messageOptions>
+      <app-chat-body-message
+        *ngIf="currentMessage$ | async; let currentMessage"
+        [message]="currentMessage"
+      ></app-chat-body-message>
+      <mat-divider></mat-divider>
+      <div class="flex--col--flex-start">
+        <button
+          class="w-100 flex--flex-start"
+          mat-button
+          (click)="deleteMessage()"
+        >
+          <mat-icon>delete_forever</mat-icon> Delete
+        </button>
+        <button class="w-100 flex--flex-start" mat-button disabled>
+          <mat-icon>edit</mat-icon> Edit
+        </button>
+        <button class="w-100 flex--flex-start" mat-button disabled>
+          <mat-icon>reply</mat-icon> Reply
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>
