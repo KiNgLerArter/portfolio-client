@@ -7,15 +7,16 @@ import { WebSocketService } from "@shared/base-modules/web-socket";
 import { convertDateToDBFormat, deepClone } from "@shared/utils";
 import { BehaviorSubject, EMPTY, mergeWith, Observable, of } from "rxjs";
 import { catchError, map, pairwise, take, tap } from "rxjs/operators";
-import { chatDtos as dtos } from "../models/chat.dtos";
 import {
   Chat,
   ChatEvent,
-  message,
   ChatPreview,
   MessageEvent,
-  WSEvent
-} from "../models/chat.model";
+  Message,
+  WSEvent,
+  CreateChatDTO,
+  SendMessageDTO
+} from "../models";
 
 @Injectable()
 export class ChatService extends WebSocketService {
@@ -65,7 +66,7 @@ export class ChatService extends WebSocketService {
     this._currentChat$.next(chat);
   }
 
-  isCurrentUserMessage(message: message.BE): boolean {
+  isCurrentUserMessage(message: Message): boolean {
     return message.ownerId === this.userService.currentUser.id;
   }
 
@@ -90,7 +91,7 @@ export class ChatService extends WebSocketService {
     );
   }
 
-  createChat(dto: dtos.CreateChat): Observable<Chat> {
+  createChat(dto: CreateChatDTO): Observable<Chat> {
     return this.post<Chat>("create", { body: dto }).pipe(
       tap((chat) => {
         const chats = this._userChats$.value;
@@ -110,8 +111,8 @@ export class ChatService extends WebSocketService {
 
   //============WebSocket============//
 
-  private listenMessagesReceiving(): Observable<WSEvent<message.BE>> {
-    return this.listen<message.BE>(MessageEvent.RECEIVE).pipe(
+  private listenMessagesReceiving(): Observable<WSEvent<Message>> {
+    return this.listen<Message>(MessageEvent.RECEIVE).pipe(
       tap((receivedMessage) => {
         const currentChat = this.getCurrentChat();
         const userChats = deepClone(this._userChats$.value);
@@ -143,8 +144,8 @@ export class ChatService extends WebSocketService {
     );
   }
 
-  private listenMessagesDeletion(): Observable<WSEvent<message.BE>> {
-    return this.listen<message.BE>(MessageEvent.DELETE).pipe(
+  private listenMessagesDeletion(): Observable<WSEvent<Message>> {
+    return this.listen<Message>(MessageEvent.DELETE).pipe(
       tap((receivedMessage) => {
         console.log("[deletedMessage]:", receivedMessage);
         //Didn't use "filter" operator cause this stream may be used outside of the service
@@ -190,7 +191,7 @@ export class ChatService extends WebSocketService {
   }
 
   sendMessage(message: string, repliedOnMessageId?: number): void {
-    const dto: dtos.SendMessage = {
+    const dto: SendMessageDTO = {
       chatId: this._currentChat$.value.id,
       ownerId: this.userService.currentUser.id,
       body: message,
@@ -200,11 +201,11 @@ export class ChatService extends WebSocketService {
     return this.emit(MessageEvent.SEND, dto);
   }
 
-  deleteMessage(message: message.BE): void {
+  deleteMessage(message: Message): void {
     return this.emit(MessageEvent.DELETE, message);
   }
 
-  listenMessages(): Observable<WSEvent<message.BE>> {
+  listenMessages(): Observable<WSEvent<Message>> {
     return EMPTY.pipe(
       mergeWith(this.listenMessagesReceiving(), this.listenMessagesDeletion())
     );

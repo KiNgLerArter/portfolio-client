@@ -1,0 +1,51 @@
+<header
+  [ngClass]="{ opened: isChat, closed: isChat === false }"
+  class="header bg--black"
+  #header
+>
+  <ng-container *ngIf="isChat; else chatMimic">
+    <app-chat></app-chat>
+  </ng-container>
+  <ng-template #chatMimic>
+    <div class="chat-mimic w-100"></div>
+  </ng-template>
+  <div
+    [ngClass]="{
+      'flex--space-between--center': isChat,
+      'flex--center': !isChat
+    }"
+    class="navbar bg--accent-70 p-y-8 p-x-16"
+  >
+    <app-send-message *ngIf="isChat"></app-send-message>
+    <nav class="navbar-actions flex--flex-end--center">
+      <ng-container *ngIf="isLoggedIn; else loggedOut">
+        <button
+          [matTooltip]="isChat ? 'Close chat' : 'Open chat'"
+          (click)="toggleChat()"
+          mat-icon-button
+        >
+          <mat-icon [color]="isChat ? 'warn' : 'primary'"> chat </mat-icon>
+        </button>
+        <button (click)="logout()" matTooltip="Logout" mat-icon-button>
+          <mat-icon color="warn"> logout </mat-icon>
+        </button>
+      </ng-container>
+      <ng-template #loggedOut>
+        <a
+          *ngIf="!isLoggedIn"
+          class="flex--center"
+          [routerLink]="['/registration']"
+        >
+          <button matTooltip="Register" mat-icon-button>
+            <mat-icon color="primary"> supervisor_account </mat-icon>
+          </button>
+        </a>
+        <a *ngIf="!isLoggedIn" class="flex--center" [routerLink]="['/login']">
+          <button matTooltip="Login" mat-icon-button>
+            <mat-icon color="primary">login</mat-icon>
+          </button>
+        </a>
+      </ng-template>
+    </nav>
+  </div>
+</header>

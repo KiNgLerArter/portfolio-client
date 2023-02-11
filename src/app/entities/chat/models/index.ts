@@ -1,2 +1,2 @@
-export * from "./chat.dtos";
+export * from "./chat.dto";
 export * from "./chat.model";

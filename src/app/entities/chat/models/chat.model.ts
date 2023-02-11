@@ -11,31 +11,21 @@ export enum MessageEvent {
   RECEIVE = "receive message"
 }
 
-export namespace message {
-  export interface FE {
-    chatId: string;
-    ownerId: number;
-    repliedMessageId?: string;
-    body: string;
-    created_at: number;
-  }
-
-  export interface BE {
-    id: string;
-    chatId: string;
-    owner: User;
-    ownerId: number;
-    repliedMessageId?: string;
-    body: string;
-    created_at: number;
-  }
-}
-
 export interface Chat {
   id: string;
   name: string;
   users: User[];
-  messages: message.BE[];
+  messages: Message[];
+}
+
+export interface Message {
+  id: string;
+  chatId: string;
+  owner: User;
+  ownerId: number;
+  repliedMessageId?: string;
+  body: string;
+  created_at: number;
 }
 
 export interface WSEvent<T> {
@@ -47,7 +37,7 @@ export class ChatPreview {
   id: string;
   name: string;
   lastMessage: {
-    body: message.BE["body"];
+    body: Message["body"];
     owner: SimplifiedUser;
   };
 
@@ -57,4 +47,4 @@ export class ChatPreview {
   }
 }
 
-export type Messages = Record<Chat["id"], message.BE[]>;
+export type Messages = Record<Chat["id"], Message[]>;

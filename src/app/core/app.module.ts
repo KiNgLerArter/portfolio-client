@@ -4,7 +4,7 @@ import { PagesModule } from "@pages/pages.module";
 import { AppComponent } from "./ui";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { HeaderModule } from "@widgets/header";
+import { HeaderModule } from "@layouts/header";
 import { LoaderModule } from "@features/loader/loader.module";
 import { AuthInterceptor } from "@shared/modules/auth";
 

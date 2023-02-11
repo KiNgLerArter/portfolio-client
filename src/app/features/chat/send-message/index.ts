@@ -1,0 +1,1 @@
+export { SendMessageComponent } from "./ui";

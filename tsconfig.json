@@ -20,6 +20,7 @@
     "paths": {
       "@core/*": ["./src/app/core/*"],
       "@pages/*": ["./src/app/pages/*"],
+      "@layouts/*": ["./src/app/widgets/layouts/*"],
       "@widgets/*": ["./src/app/widgets/*"],
       "@features/*": ["./src/app/features/*"],
       "@entities/*": ["./src/app/entities/*"],
