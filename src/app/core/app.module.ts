@@ -5,8 +5,8 @@ import { AppComponent } from "./ui";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { HeaderModule } from "@layouts/header";
-import { LoaderModule } from "@features/loader/loader.module";
-import { AuthInterceptor } from "@shared/modules/auth";
+import { AuthInterceptor } from "@shared/lib/auth";
+import { LoaderModule } from "@shared/lib/loader";
 
 @NgModule({
   declarations: [AppComponent],

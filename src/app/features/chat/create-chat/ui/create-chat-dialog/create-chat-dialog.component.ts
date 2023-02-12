@@ -9,7 +9,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { tap } from "rxjs/operators";
 import { User, UserService } from "@entities/user";
-import { DialogData } from "@shared/lib/material-design/dialog";
+import { DialogData } from "@shared/lib/dialog";
 import { ChatService } from "@entities/chat";
 
 @UntilDestroy()

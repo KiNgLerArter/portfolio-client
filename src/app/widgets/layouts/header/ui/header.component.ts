@@ -5,7 +5,7 @@ import {
   OnInit
 } from "@angular/core";
 import { UntilDestroy } from "@ngneat/until-destroy";
-import { AuthService } from "@shared/modules/auth";
+import { AuthService } from "@shared/lib/auth";
 import { tap } from "rxjs/operators";
 
 @UntilDestroy()

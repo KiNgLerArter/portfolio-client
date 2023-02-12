@@ -10,9 +10,8 @@ import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
 import { MatBottomSheetModule } from "@angular/material/bottom-sheet";
 import { MatListModule } from "@angular/material/list";
-import { ChatBodyComponent, ChatHeaderComponent } from "./ui";
+import { ChatBodyComponent, ChatHeaderComponent, ChatComponent } from "./ui";
 import { ChatFeaturesModule } from "@features/chat";
-import { ChatComponent } from "./ui";
 
 const declarationsToExport = [
   ChatBodyComponent,

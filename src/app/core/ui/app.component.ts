@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { filter, switchMap, tap } from "rxjs/operators";
 import { Observable } from "rxjs";
-import { Auth, AuthService } from "@shared/modules/auth";
+import { Auth, AuthService } from "@shared/lib/auth";
 import { UserService } from "@entities/user";
-import { GlobalLoaderService } from "@shared/modules/global-loader";
+import { GlobalLoaderService } from "@shared/lib/loader";
 
 @Component({
   selector: "app-root",

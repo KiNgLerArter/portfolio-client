@@ -1,1 +1,0 @@
-export { GlobalLoaderService } from "./services";

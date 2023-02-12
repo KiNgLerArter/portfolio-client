@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
 import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
-import { AuthService } from "@shared/modules/auth";
+import { AuthService } from "@shared/lib/auth";
 
 @Component({
   selector: "app-login",

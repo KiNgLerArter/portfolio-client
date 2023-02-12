@@ -1,9 +1,8 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { MatDialog } from "@angular/material/dialog";
-import { ChatServiceStub } from "../../test";
-import { ChatService } from "../../services";
 import { ChatHeaderComponent } from "./chat-header.component";
-import { MatDialogStub } from "@shared/lib/material-design/dialog";
+import { MatDialogStub } from "@shared/lib/dialog";
+import { ChatService, ChatServiceStub } from "@entities/chat";
 
 describe("ChatHeaderComponent", () => {
   let component: ChatHeaderComponent;

@@ -2,8 +2,8 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
-import { ApiService } from "@shared/base-modules/api";
-import { AuthService } from "@shared/modules/auth";
+import { ApiService } from "@shared/base-lib/api";
+import { AuthService } from "@shared/lib/auth";
 import { User } from "../models";
 
 @Injectable({
