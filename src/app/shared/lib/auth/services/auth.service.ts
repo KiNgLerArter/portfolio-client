@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { catchError, finalize, map, pairwise, tap } from "rxjs/operators";
-import { ApiService } from "@shared/base-lib/api";
+import { ApiService } from "@basic/api";
 import { Auth, AuthRes, UserDto } from "../models";
 
 @Injectable({

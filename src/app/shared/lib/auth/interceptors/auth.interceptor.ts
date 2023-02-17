@@ -5,7 +5,7 @@ import {
   HttpRequest
 } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { IS_LOADER } from "@shared/base-lib/api";
+import { IS_LOADER } from "@basic/api";
 import { GlobalLoaderService } from "@shared/lib/loader";
 import { Observable, throwError } from "rxjs";
 import { catchError, finalize, switchMap } from "rxjs/operators";

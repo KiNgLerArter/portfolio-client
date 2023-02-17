@@ -44,3 +44,11 @@ export const deepEqual = (firstItem: any, secondItem: any): boolean => {
 
   return areObjectsEqual;
 };
+
+export const readonly = (
+  obj: Record<string, any>
+): Record<string, Readonly<any>> => Object.freeze(obj);
+// Object.keys(obj).reduce(
+//   (acc, itemKey) => ({ ...acc, [itemKey]: Object.freeze(obj[itemKey]) }),
+//   {}
+// );

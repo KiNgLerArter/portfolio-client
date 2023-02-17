@@ -24,7 +24,8 @@
       "@widgets/*": ["./src/app/widgets/*"],
       "@features/*": ["./src/app/features/*"],
       "@entities/*": ["./src/app/entities/*"],
-      "@shared/*": ["./src/app/shared/*"]
+      "@shared/*": ["./src/app/shared/*"],
+      "@basic/*": ["./src/app/shared/basic/*"]
     },
     "noUnusedLocals": false,
     "strictPropertyInitialization": false,

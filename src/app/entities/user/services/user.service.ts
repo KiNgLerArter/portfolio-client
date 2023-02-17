@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
-import { ApiService } from "@shared/base-lib/api";
+import { ApiService } from "@basic/api";
 import { AuthService } from "@shared/lib/auth";
 import { User } from "../models";
 
