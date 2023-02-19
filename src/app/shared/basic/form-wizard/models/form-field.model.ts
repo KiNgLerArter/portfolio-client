@@ -24,7 +24,10 @@ export interface FormFieldConfig {
   placeholder?: string;
 }
 
-export type FormFieldValidatorsConfig = Record<string, FormFieldError>;
+export type FormFieldValidatorsConfig = Record<
+  string,
+  FormFieldError & { params?: any }
+>;
 
 export interface FormFieldValidator {
   validator: ValidatorFn;
@@ -32,7 +35,7 @@ export interface FormFieldValidator {
 }
 
 export interface FormFieldError {
-  name: string;
+  errorKey: string;
   priority: ErrorMessagePriority;
   message: string;
 }

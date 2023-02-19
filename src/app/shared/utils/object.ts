@@ -47,8 +47,7 @@ export const deepEqual = (firstItem: any, secondItem: any): boolean => {
 
 export const readonly = (
   obj: Record<string, any>
-): Record<string, Readonly<any>> => Object.freeze(obj);
-// Object.keys(obj).reduce(
-//   (acc, itemKey) => ({ ...acc, [itemKey]: Object.freeze(obj[itemKey]) }),
-//   {}
-// );
+): Readonly<Record<string, any>> => Object.freeze(obj);
+
+export const isUndefined = (value: any): boolean =>
+  typeof value === "undefined";

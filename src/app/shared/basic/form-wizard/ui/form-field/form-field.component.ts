@@ -43,13 +43,13 @@ export class FormFieldComponent<T> implements OnInit {
     const isMorePriorErrors = this.config.validators.some(
       ({ error: configError }) =>
         configError.priority < error.priority &&
-        this.formControl.hasError(configError.name)
+        this.formControl.hasError(configError.errorKey)
     );
-    return !isMorePriorErrors && this.formControl.hasError(error.name);
+    return !isMorePriorErrors && this.formControl.hasError(error.errorKey);
   }
 
-  identifyError(_: number, validator: FormFieldValidator): string {
-    return validator.error.name;
+  identifyError(_: number, { error }: FormFieldValidator): string {
+    return error.errorKey;
   }
 
   private initVariables(): void {

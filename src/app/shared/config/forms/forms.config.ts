@@ -3,7 +3,8 @@ import { fieldsValidatorsConfig } from "./forms-validators.config";
 
 export enum Fields {
   EMAIL = "email",
-  NICK = "nickname"
+  NICK = "nickname",
+  PASS = "password"
 }
 
 export const formFieldsConfigs = {
