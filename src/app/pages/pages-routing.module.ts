@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AuthGuard, NoAuthGuard } from "@shared/lib/auth";
-import { HomeComponent } from "./home";
+import { HomePageComponent } from "./home";
 
 const routes: Routes = [
   {
@@ -11,18 +11,18 @@ const routes: Routes = [
   },
   {
     path: "home",
-    component: HomeComponent,
+    component: HomePageComponent,
     canActivate: [AuthGuard]
   },
   {
     path: "login",
-    loadChildren: () => import("./login").then((m) => m.LoginModule),
+    loadComponent: () => import("./login").then((m) => m.LoginPageComponent),
     canLoad: [NoAuthGuard]
   },
   {
     path: "registration",
-    loadChildren: () =>
-      import("./registration").then((m) => m.RegistrationModule),
+    loadComponent: () =>
+      import("./registration").then((m) => m.RegistrationPageComponent),
     canLoad: [NoAuthGuard]
   }
 ];

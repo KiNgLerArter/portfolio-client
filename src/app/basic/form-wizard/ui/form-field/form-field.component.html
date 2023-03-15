@@ -1,0 +1,17 @@
+<mat-form-field [matTooltip]="CONFIG.tooltip">
+  <mat-label>{{ CONFIG.label }}</mat-label>
+  <ng-container [ngSwitch]="CONFIG.type">
+    <mat-select
+      *ngSwitchCase="FIELD_TYPE.OPTIONS"
+      [formControl]="formControl"
+    ></mat-select>
+    <input *ngSwitchDefault [formControl]="formControl" matInput />
+  </ng-container>
+  <mat-error
+    *ngFor="let validator of CONFIG.validators; trackBy: identifyError"
+  >
+    <mat-error *ngIf="showError(validator)">
+      {{ validator.error.message }}
+    </mat-error>
+  </mat-error>
+</mat-form-field>

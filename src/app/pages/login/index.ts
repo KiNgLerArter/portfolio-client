@@ -1,2 +1,1 @@
-export { LoginModule } from "./login.module";
-export { LoginComponent } from "./ui";
+export { LoginPageComponent } from "./ui";

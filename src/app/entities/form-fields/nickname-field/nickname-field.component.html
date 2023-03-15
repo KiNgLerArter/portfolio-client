@@ -1,7 +1,0 @@
-<mat-form-field *ngIf="control" appearance="outline" color="accent">
-  <mat-label>Nickname</mat-label>
-  <input [formControl]="control" matInput type="text" />
-  <mat-error *ngIf="control.hasError('required')">
-    Nickname is required
-  </mat-error>
-</mat-form-field>

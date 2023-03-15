@@ -1,2 +1,1 @@
-export { RegistrationModule } from "./registration.module";
-export { RegistrationComponent } from "./ui";
+export { RegistrationPageComponent } from "./ui";
