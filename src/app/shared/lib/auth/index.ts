@@ -1,4 +1,4 @@
-export { AuthService } from "./services";
-export { AuthInterceptor } from "./interceptors";
 export { AuthGuard, NoAuthGuard } from "./guards";
+export { AuthInterceptor } from "./interceptors";
 export { Auth } from "./models";
+export { AuthService } from "./services";

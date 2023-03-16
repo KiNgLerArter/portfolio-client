@@ -5,12 +5,13 @@ import {
   UntypedFormGroup,
   Validators
 } from "@angular/forms";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { tap } from "rxjs/operators";
+
+import { ChatService } from "@entities/chat";
 import { User, UserService } from "@entities/user";
 import { DialogData } from "@shared/lib/dialog";
-import { ChatService } from "@entities/chat";
 
 @UntilDestroy()
 @Component({

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+
 import { AuthFeaturesModule } from "@features/auth";
 
 @Component({

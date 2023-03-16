@@ -1,6 +1,7 @@
 import { FieldType, FormWizard } from "@basic/form-wizard";
-import { Fields } from "../models";
+
 import { fieldsValidatorsConfig } from "./forms-validators.config";
+import { Fields } from "../models";
 
 export const formFieldsConfigs = {
   [Fields.EMAIL]: FormWizard.generateField({

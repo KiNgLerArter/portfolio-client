@@ -1,2 +1,2 @@
-export { ManageMessageComponent } from "./ui";
 export { ChatMessageEvent } from "./models";
+export { ManageMessageComponent } from "./ui";

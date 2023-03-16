@@ -1,17 +1,19 @@
-import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { MatIconModule } from "@angular/material/icon";
-import { MatTooltipModule } from "@angular/material/tooltip";
+import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { MatBottomSheetModule } from "@angular/material/bottom-sheet";
+import { MatButtonModule } from "@angular/material/button";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatSelectModule } from "@angular/material/select";
+import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
-import { MatButtonModule } from "@angular/material/button";
-import { MatBottomSheetModule } from "@angular/material/bottom-sheet";
 import { MatListModule } from "@angular/material/list";
-import { ChatBodyComponent, ChatHeaderComponent, ChatComponent } from "./ui";
+import { MatSelectModule } from "@angular/material/select";
+import { MatTooltipModule } from "@angular/material/tooltip";
+
 import { ChatFeaturesModule } from "@features/chat";
+
+import { ChatBodyComponent, ChatComponent, ChatHeaderComponent } from "./ui";
 
 const declarationsToExport = [
   ChatBodyComponent,

@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+
 import { FormFieldComponent } from "@basic/form-wizard/ui";
+
 import { formFieldsConfigs } from "../../config";
 import { Fields } from "../../models";
 

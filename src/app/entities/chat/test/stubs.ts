@@ -1,4 +1,5 @@
 import { BehaviorSubject } from "rxjs";
+
 import { Chat, ChatPreview } from "../models";
 
 export class ChatServiceStub {

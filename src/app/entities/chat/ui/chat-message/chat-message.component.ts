@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+
 import { Message } from "../../models";
 
 @Component({

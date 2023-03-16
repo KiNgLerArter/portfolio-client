@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
@@ -9,17 +8,16 @@ import {
   TemplateRef,
   ViewChild
 } from "@angular/core";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
-import { filter, map, take, tap } from "rxjs/operators";
-import { BehaviorSubject, Observable } from "rxjs";
 import {
   MatBottomSheet,
   MatBottomSheetRef
 } from "@angular/material/bottom-sheet";
-import { ChatService } from "@entities/chat/services";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
+import { BehaviorSubject, Observable } from "rxjs";
+import { filter, map, take, tap } from "rxjs/operators";
+
+import { ChatService, Message } from "@entities/chat";
 import { UserService } from "@entities/user";
-import { Message } from "@entities/chat";
-import { ChatMessageEvent } from "@features/chat/manage-message";
 
 @UntilDestroy()
 @Component({
@@ -98,7 +96,7 @@ export class ChatBodyComponent implements OnInit, OnDestroy {
     }
   }
 
-  onCallMessageEvent(msgEvent: ChatMessageEvent): void {
+  onCallMessageEvent(): void {
     this._bottomSheetRef.dismiss();
   }
 

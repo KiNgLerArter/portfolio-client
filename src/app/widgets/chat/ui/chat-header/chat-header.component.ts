@@ -1,10 +1,8 @@
 import {
-  Component,
-  OnInit,
   ChangeDetectionStrategy,
-  Input
-} from "@angular/core";
-import { ChatPreview, ChatService } from "@entities/chat";
+  Component,
+  Input,
+  OnInit } from "@angular/core";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { BehaviorSubject, Observable } from "rxjs";
 import {
@@ -14,6 +12,8 @@ import {
   take,
   tap
 } from "rxjs/operators";
+
+import { ChatPreview, ChatService } from "@entities/chat";
 
 @UntilDestroy()
 @Component({

@@ -1,4 +1,4 @@
-export { ChatMessageComponent } from "./ui";
+export { ChatPreview, Message } from "./models";
 export { ChatService } from "./services";
-export { Message, ChatPreview } from "./models";
 export { ChatServiceStub } from "./test";
+export { ChatMessageComponent } from "./ui";

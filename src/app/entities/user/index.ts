@@ -1,2 +1,2 @@
+export { SimplifiedUser, User } from "./models";
 export { UserService } from "./services";
-export { User, SimplifiedUser } from "./models";

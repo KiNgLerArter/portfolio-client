@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ManageMessageComponent } from './manage-message.component';
+import { ManageMessageComponent } from "./manage-message.component";
 
-describe('ManageMessageComponent', () => {
+describe("ManageMessageComponent", () => {
   let component: ManageMessageComponent;
   let fixture: ComponentFixture<ManageMessageComponent>;
 
@@ -17,7 +17,7 @@ describe('ManageMessageComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

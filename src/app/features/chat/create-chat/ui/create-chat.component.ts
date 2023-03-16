@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
+
 import { CreateChatDialogComponent } from "./create-chat-dialog";
 
 @Component({

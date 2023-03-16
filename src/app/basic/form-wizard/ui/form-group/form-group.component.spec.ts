@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { FormGroupComponent } from './form-group.component';
+import { FormGroupComponent } from "./form-group.component";
 
-describe('FormGroupComponent', () => {
+describe("FormGroupComponent", () => {
   let component: FormGroupComponent;
   let fixture: ComponentFixture<FormGroupComponent>;
 
@@ -17,7 +17,7 @@ describe('FormGroupComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

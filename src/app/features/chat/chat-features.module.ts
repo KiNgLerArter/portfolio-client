@@ -1,17 +1,18 @@
-import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { MatButtonModule } from "@angular/material/button";
+import { MatDividerModule } from "@angular/material/divider";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
-import { ChatEntityModule } from "@entities/chat/chat-entity.module";
-import { SendMessageComponent } from "./send-message";
-import { CreateChatComponent } from "./create-chat";
-import { ManageMessageComponent } from "./manage-message";
-import { MatDividerModule } from "@angular/material/divider";
-import { MatSelectModule } from "@angular/material/select";
-import { CreateChatDialogComponent } from "./create-chat";
 import { MatInputModule } from "@angular/material/input";
-import { MatButtonModule } from "@angular/material/button";
+import { MatSelectModule } from "@angular/material/select";
+
+import { ChatEntityModule } from "@entities/chat/chat-entity.module";
+
+import { CreateChatComponent, CreateChatDialogComponent } from "./create-chat";
+import { ManageMessageComponent } from "./manage-message";
+import { SendMessageComponent } from "./send-message";
 
 const declarationsToExport = [
   SendMessageComponent,

@@ -1,5 +1,5 @@
-import { FormFieldConfig } from "../models";
 import { FormFieldBuilder } from ".";
+import { FormFieldConfig } from "../models";
 
 export class FormWizard {
   static generateField(

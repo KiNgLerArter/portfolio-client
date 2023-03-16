@@ -1,22 +1,23 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { UntypedFormControl } from "@angular/forms";
-import { User, UserService } from "@entities/user";
-import { setLoader } from "@basic/api";
-import { WebSocketService } from "@basic/web-socket";
-import { convertDateToDBFormat, deepClone } from "@shared/utils";
 import { BehaviorSubject, EMPTY, mergeWith, Observable, of } from "rxjs";
 import { catchError, map, pairwise, take, tap } from "rxjs/operators";
+
+import { setLoader } from "@basic/api";
+import { WebSocketService } from "@basic/web-socket";
+import { User, UserService } from "@entities/user";
+import { convertDateToDBFormat, deepClone } from "@shared/utils";
+
 import {
   Chat,
   ChatEvent,
   ChatPreview,
-  MessageEvent,
-  Message,
-  WSEvent,
   CreateChatDTO,
-  SendMessageDTO
-} from "../models";
+  Message,
+  MessageEvent,
+  SendMessageDTO,
+  WSEvent } from "../models";
 
 @Injectable()
 export class ChatService extends WebSocketService {

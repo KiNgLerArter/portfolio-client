@@ -6,7 +6,9 @@ import {
   OnInit,
   Output
 } from "@angular/core";
+
 import { ChatService, Message } from "@entities/chat";
+
 import { ChatMessageEvent } from "../models";
 
 @Component({

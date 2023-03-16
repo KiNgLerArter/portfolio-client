@@ -1,6 +1,7 @@
 {
   "root": true,
   "ignorePatterns": ["projects/**/*"],
+  "plugins": ["import"],
   "overrides": [
     {
       "files": ["*.ts"],
@@ -9,12 +10,12 @@
         "createDefaultProgram": true
       },
       "extends": [
-        "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates",
-        "airbnb-typescript/base",
         "eslint:recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@angular-eslint/recommended",
+        "airbnb-typescript/base"
       ],
+      "plugins": ["simple-import-sort"],
       "rules": {
         "@angular-eslint/directive-selector": [
           "error",
@@ -56,14 +57,53 @@
         ],
         "@typescript-eslint/no-namespace": "off",
         "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/indent": "off"
+        "@typescript-eslint/indent": "off",
+        /** imports linting */
+        "simple-import-sort/imports": [
+          "error",
+          {
+            "groups": [
+              ["^@angular", "^@?\\w", "^\\u0000"],
+              [
+                "^(@basic|@shared|@entities|@features|@widgets|@page|@processes|@core)(/.*|$)"
+              ],
+              [
+                "^\\./(?=.*/)(?!/?$)",
+                "^\\.(?!/?$)",
+                "^\\./?$",
+                "^\\.\\.(?!/?$)",
+                "^\\.\\./?$"
+              ]
+            ]
+          }
+        ],
+        "simple-import-sort/exports": "error",
+        "import/first": "error",
+        "import/newline-after-import": "error",
+        "import/no-duplicates": "error"
       }
     },
     {
-      "files": ["*.html"],
+      "files": ["*.component.html"],
+      "plugins": ["@angular-eslint/eslint-plugin-template"],
       "extends": ["plugin:@angular-eslint/template/recommended"],
-      "rules": {}
+      "rules": {
+        /** html attributes sorting */
+        "@angular-eslint/template/attributes-order": [
+          "error",
+          {
+            "alphabetical": true,
+            "order": [
+              "STRUCTURAL_DIRECTIVE",
+              "TEMPLATE_REFERENCE",
+              "ATTRIBUTE_BINDING",
+              "INPUT_BINDING",
+              "TWO_WAY_BINDING",
+              "OUTPUT_BINDING"
+            ]
+          }
+        ]
+      }
     }
-  ],
-  "plugins": ["import"]
+  ]
 }
