@@ -1,27 +1,15 @@
 # AngularNestClient
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.0.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Key-words for state update functions
+* To create smth:
+  - Local state - create
+  - Server state - init
+* To delete smth:
+  - Local state - delete
+  - Server state - remove
+* To edit smth:
+  - Local state - edit
+  - Server state - update
+* To retrieve smth:
+  - Local state - get
+  - Server state - load
