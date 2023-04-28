@@ -1,16 +1,13 @@
 <div class="chat-body w-100 p-6" #chatBody>
   <div class="chat-messages flex--col--flex-start gap-y-8" #chatMessages>
     <div
-      *ngFor="
-        let message of currentChatMessages$ | async;
-        trackBy: identifyMessage
-      "
-      (contextmenu)="openMessageOptions($event, message)"
+      *ngFor="let message of currentChatMessages; trackBy: identifyMessage"
       [ngStyle]="{
         'align-self': chatService.isCurrentUserMessage(message)
           ? 'flex-end'
           : 'initial'
       }"
+      (contextmenu)="openMessageOptions($event, message)"
     >
       <app-chat-message [message]="message"></app-chat-message>
     </div>

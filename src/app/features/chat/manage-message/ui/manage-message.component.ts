@@ -3,7 +3,6 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output
 } from "@angular/core";
 
@@ -28,4 +27,6 @@ export class ManageMessageComponent {
     this.chatService.deleteMessage(this.message);
     this.messageEvent.emit(ChatMessageEvent.DELETE);
   }
+
+  startMessageEditing(): void {}
 }

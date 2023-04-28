@@ -4,15 +4,15 @@ import { MatDialog } from "@angular/material/dialog";
 import { ChatService, ChatServiceStub } from "@entities/chat";
 import { MatDialogStub } from "@shared/lib/dialog";
 
-import { ChatHeaderComponent } from "./chat-header.component";
+import { DropdownChatHeaderComponent } from "./dropdown-chat-header.component";
 
-describe("ChatHeaderComponent", () => {
-  let component: ChatHeaderComponent;
-  let fixture: ComponentFixture<ChatHeaderComponent>;
+describe("DropdownChatHeaderComponent", () => {
+  let component: DropdownChatHeaderComponent;
+  let fixture: ComponentFixture<DropdownChatHeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ChatHeaderComponent],
+      declarations: [DropdownChatHeaderComponent],
       providers: [
         { provide: ChatService, useValue: ChatServiceStub },
         { provide: MatDialog, useValue: MatDialogStub }
@@ -21,7 +21,7 @@ describe("ChatHeaderComponent", () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ChatHeaderComponent);
+    fixture = TestBed.createComponent(DropdownChatHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

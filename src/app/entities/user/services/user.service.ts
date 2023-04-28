@@ -4,7 +4,6 @@ import { BehaviorSubject, Observable, of } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
 
 import { ApiService } from "@basic/api";
-import { AuthService } from "@shared/lib/auth";
 
 import { User } from "../models";
 
@@ -24,7 +23,7 @@ export class UserService extends ApiService {
     return this._allUsers$.asObservable();
   }
 
-  constructor(protected http: HttpClient, private authService: AuthService) {
+  constructor(protected http: HttpClient) {
     super(http, "users");
 
     this.initSubs();

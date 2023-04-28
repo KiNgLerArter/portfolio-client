@@ -2,6 +2,13 @@
   "root": true,
   "ignorePatterns": ["projects/**/*"],
   "plugins": ["import"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".ts"]
+      }
+    }
+  },
   "overrides": [
     {
       "files": ["*.ts"],
@@ -77,6 +84,26 @@
             ]
           }
         ],
+        // "import/no-restricted-paths": [
+        //   "error",
+        //   {
+        //     "zones": [
+        //       {
+        //         "target": ["./src/app/basic"],
+        //         "from": [
+        //           "./src/app/shared",
+        //           ".*/(?:(?!features)|(?!xxx))/.*",
+        //           "./src/app/entities",
+        //           "./src/app/widgets",
+        //           "./src/app/pages",
+        //           "./src/app/processes",
+        //           "./src/app/core"
+        //         ],
+        //         "message": "Import the site-specific Link component instead."
+        //       }
+        //     ]
+        //   }
+        // ],
         "simple-import-sort/exports": "error",
         "import/first": "error",
         "import/newline-after-import": "error",
@@ -86,24 +113,7 @@
     {
       "files": ["*.component.html"],
       "plugins": ["@angular-eslint/eslint-plugin-template"],
-      "extends": ["plugin:@angular-eslint/template/recommended"],
-      "rules": {
-        /** html attributes sorting */
-        "@angular-eslint/template/attributes-order": [
-          "error",
-          {
-            "alphabetical": true,
-            "order": [
-              "STRUCTURAL_DIRECTIVE",
-              "TEMPLATE_REFERENCE",
-              "ATTRIBUTE_BINDING",
-              "INPUT_BINDING",
-              "TWO_WAY_BINDING",
-              "OUTPUT_BINDING"
-            ]
-          }
-        ]
-      }
+      "extends": ["plugin:@angular-eslint/template/recommended"]
     }
   ]
 }

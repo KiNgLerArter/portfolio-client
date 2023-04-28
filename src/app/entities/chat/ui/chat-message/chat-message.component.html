@@ -3,5 +3,6 @@
     {{ message.owner.nickname }}
     <mat-divider class="message-divider bg--accent m-b-2"></mat-divider>
   </div>
-  <div>{{ message.body }}</div>
+  <div class="body"><ng-content></ng-content></div>
+  <div class="default-body">{{ message.body }}</div>
 </div>

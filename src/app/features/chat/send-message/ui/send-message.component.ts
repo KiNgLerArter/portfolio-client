@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit
-} from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 
 import { ChatService } from "@entities/chat/services";
 
@@ -14,23 +8,15 @@ import { ChatService } from "@entities/chat/services";
   styleUrls: ["./send-message.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SendMessageComponent implements OnInit {
+export class SendMessageComponent {
   @Input() height: string;
 
-  chatControl = new FormControl("", [Validators.maxLength(250)]);
+  chatControl = this.chatService.getInput();
 
   constructor(private chatService: ChatService) {}
 
-  ngOnInit(): void {
-    this.chatService.init(this.chatControl);
-  }
-
   sendMessage(event?: Event): void {
     event?.preventDefault();
-    console.log({
-      valid: this.chatControl.valid,
-      length: this.chatControl.value?.length
-    });
     if (this.chatControl.valid || !this.chatControl.value?.length) {
       this.chatService.sendMessage(this.chatControl.value);
     }

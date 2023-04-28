@@ -1,1 +1,2 @@
-export { ChatMessageComponent } from "./chat-message";
+export * from "./chat-message";
+export * from "./chat-preview";

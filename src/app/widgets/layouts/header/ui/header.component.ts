@@ -2,12 +2,16 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit
+  OnInit,
+  ViewContainerRef
 } from "@angular/core";
 import { UntilDestroy } from "@ngneat/until-destroy";
 import { tap } from "rxjs/operators";
 
+import { ChatService } from "@entities/chat";
+import { ChatViewType } from "@entities/chat/models";
 import { AuthService } from "@shared/lib/auth";
+import { FullscreenChatComponent } from "@widgets/chat";
 
 @UntilDestroy()
 @Component({
@@ -22,7 +26,9 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private chatService: ChatService,
+    private viewContainerRef: ViewContainerRef
   ) {}
 
   ngOnInit(): void {
@@ -36,6 +42,14 @@ export class HeaderComponent implements OnInit {
   toggleChat(): void {
     this.isChat = !this.isChat;
     this.cdr.markForCheck();
+  }
+
+  //Rename widget chat to dropdown-chat and create new fullscreen-chat
+  openFullscreenChat(): void {
+    this.chatService.setView<FullscreenChatComponent>({
+      type: ChatViewType.FULL,
+      component: this.viewContainerRef.createComponent(FullscreenChatComponent)
+    });
   }
 
   private initSubs(): void {

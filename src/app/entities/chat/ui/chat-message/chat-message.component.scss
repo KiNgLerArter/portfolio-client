@@ -19,3 +19,7 @@
     margin-bottom: 12px;
   }
 }
+
+.body:not(:empty) + .default-body {
+  display: none;
+}

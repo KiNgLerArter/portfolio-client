@@ -3,5 +3,17 @@
   "tabWidth": 2,
   "semi": true,
   "singleQuote": false,
-  "bracketSpacing": true
+  "bracketSpacing": true,
+  "attributeGroups": [
+    "$ANGULAR_STRUCTURAL_DIRECTIVE",
+    "^(id|name)$",
+    "^class$",
+    "^mat",
+    "$ANGULAR_TEMPLATE_REFERENCE",
+    "$ANGULAR_ATTRIBUTE",
+    "$ANGULAR_INPUT",
+    "$ANGULAR_TWO_WAY_BINDING",
+    "$DEFAULT",
+    "$ANGULAR_OUTPUT"
+  ]
 }

@@ -1,51 +1,130 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { UntypedFormControl } from "@angular/forms";
+import { FormControl, Validators } from "@angular/forms";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { BehaviorSubject, EMPTY, mergeWith, Observable, of } from "rxjs";
-import { catchError, map, pairwise, take, tap } from "rxjs/operators";
+import {
+  catchError,
+  filter,
+  map,
+  pairwise,
+  switchMap,
+  take,
+  tap
+} from "rxjs/operators";
 
 import { setLoader } from "@basic/api";
+import { DomService } from "@basic/dom";
 import { WebSocketService } from "@basic/web-socket";
-import { User, UserService } from "@entities/user";
+import { User } from "@entities/user";
+import { AuthService } from "@shared/lib/auth";
 import { convertDateToDBFormat, deepClone } from "@shared/utils";
 
 import {
   Chat,
   ChatEvent,
   ChatPreview,
+  ChatView,
+  ChatViewType,
   CreateChatDTO,
   Message,
   MessageEvent,
   SendMessageDTO,
-  WSEvent } from "../models";
+  WSEvent
+} from "../models";
 
+@UntilDestroy()
 @Injectable()
 export class ChatService extends WebSocketService {
-  private _userChats$ = new BehaviorSubject<ChatPreview[]>([]);
+  private _userChats$ = new BehaviorSubject<{
+    chats?: ChatPreview[];
+    modifiedChat?: ChatPreview;
+  }>({});
   private _currentChat$ = new BehaviorSubject<Chat>(null);
+  private _view$ = new BehaviorSubject<ChatView<any>>({
+    type: ChatViewType.DROP
+  });
 
-  private _messagesInput: UntypedFormControl;
+  private _messagesInput: FormControl<string>;
 
   userChats$ = this._userChats$.asObservable();
   currentChat$ = this._currentChat$.asObservable();
+  view$ = this._view$.asObservable();
 
   readonly SMILES = ["😶‍🌫️", "🥸", "😈", "🤠", "🥶", "😎", "👹", "☠️"];
 
-  constructor(protected http: HttpClient, private userService: UserService) {
+  constructor(
+    protected http: HttpClient,
+    private authService: AuthService,
+    private domService: DomService
+  ) {
     super(http, "chats");
+
+    this.initSubs();
+  }
+
+  isCurrentUserMessage(message: Message): boolean {
+    return message.ownerId === this.authService.getCurrentUserId();
+  }
+
+  getInput(): FormControl<string> {
+    return (
+      this._messagesInput ??
+      this.init(new FormControl("", [Validators.maxLength(250)]))
+    );
+  }
+
+  setCurrentChat(chat: Chat): void {
+    console.log("[chat]:", chat);
+    this._currentChat$.next(chat);
+  }
+
+  setView<T>(view: ChatView<T>): void {
+    this.domService.removeComponentFromBody(this.getView().component);
+    this.domService.appendComponentToBody(view.component);
+
+    this._view$.next(view);
+  }
+
+  private initSubs(): void {
+    this.authService.currentUserId$
+      .pipe(
+        untilDestroyed(this),
+        filter(Boolean),
+        take(1),
+        switchMap(() =>
+          this.loadChatsPreviews(this.authService.getCurrentUserId())
+        ),
+        //TODO
+        //Should save last opened chat and read message and retrieve it from localStorage
+        switchMap((chats) => this.loadChatById(chats[0].id))
+      )
+      .subscribe((chat) => {
+        this.setCurrentChat(chat);
+      });
+
     this._userChats$
       .pipe(
+        untilDestroyed(this),
+        map(({ chats }) => chats),
         pairwise(),
-        take(1),
-        tap(([prev, curr]) => {
-          if (prev.length) {
-            this.leaveChats(prev.map((chat) => chat.id));
-          }
-
-          this.joinChats(curr.map((chat) => chat.id));
-        })
+        take(1)
       )
-      .subscribe();
+      .subscribe(([prev, curr]) => {
+        if (prev?.length) {
+          this.leaveChats(prev.map((chat) => chat.id));
+        }
+
+        this.joinChats(curr.map((chat) => chat.id));
+      });
+  }
+
+  private init(input: FormControl<string>): FormControl<string> {
+    if (this._messagesInput) {
+      throw new Error("ChatService was already inited");
+    }
+    this._messagesInput = input;
+    return input;
   }
 
   private getCurrentChat(): Chat {
@@ -53,40 +132,59 @@ export class ChatService extends WebSocketService {
   }
 
   private getUserChats(): ChatPreview[] {
-    return deepClone(this._userChats$.value);
+    return deepClone(this._userChats$.value.chats);
   }
 
-  init(input: UntypedFormControl): void {
-    if (this._messagesInput) {
-      throw new Error("Chat Service was already inited");
+  private getView(): ChatView<any> {
+    return this._view$.value;
+  }
+
+  private editChat(updatedChat: Chat): void {
+    const userChats = this.getUserChats();
+
+    const updatedChatPreview = new ChatPreview(updatedChat);
+
+    const chatToUpdateIndex = userChats.findIndex(
+      (chat) => updatedChat.id === chat.id
+    );
+    userChats[chatToUpdateIndex] = updatedChatPreview;
+
+    this._userChats$.next({
+      chats: userChats,
+      modifiedChat: updatedChatPreview
+    });
+
+    if (this._currentChat$.value.id === updatedChat.id) {
+      this.setCurrentChat(updatedChat);
     }
-    this._messagesInput = input;
   }
 
-  setCurrentChat(chat: Chat) {
-    this._currentChat$.next(chat);
-  }
+  private initChat(newChat: Chat): void {
+    const newChatPreview = new ChatPreview(newChat);
+    const chats = this.getUserChats();
 
-  isCurrentUserMessage(message: Message): boolean {
-    return message.ownerId === this.userService.currentUser.id;
+    chats.push(newChatPreview);
+
+    this._userChats$.next({ chats, modifiedChat: newChatPreview });
+    this.setCurrentChat(newChat);
   }
 
   //============HTTP============//
 
-  getChatById(chatId: Chat["id"]): Observable<Chat> {
+  loadChatById(chatId: Chat["id"]): Observable<Chat> {
     return this.get<Chat>(chatId, { context: setLoader(false) });
   }
 
-  getChatsPreviews(userId: User["id"]): Observable<ChatPreview[]> {
-    return this.get<ChatPreview[]>(`${userId}/chats-previews`, {
+  loadChatsPreviews(userId: User["id"]): Observable<ChatPreview[]> {
+    return this.get<ChatPreview[]>(`${userId}/chats/previews`, {
       rootUrl: "users",
       context: setLoader(false)
     }).pipe(
       tap((chats) => {
-        this._userChats$.next(chats);
+        this._userChats$.next({ chats });
       }),
       catchError((error) => {
-        console.log("[getUserChats error]:", error);
+        console.log("[loadChatsPreviews error]:", error);
         return of([]);
       })
     );
@@ -95,11 +193,7 @@ export class ChatService extends WebSocketService {
   createChat(dto: CreateChatDTO): Observable<Chat> {
     return this.post<Chat>("create", { body: dto }).pipe(
       tap((chat) => {
-        const chats = this._userChats$.value;
-        chats.push(new ChatPreview(chat));
-
-        this._userChats$.next(chats);
-        this._currentChat$.next(chat);
+        this.initChat(chat);
 
         this.joinChats(chat.id);
       }),
@@ -115,24 +209,20 @@ export class ChatService extends WebSocketService {
   private listenMessagesReceiving(): Observable<WSEvent<Message>> {
     return this.listen<Message>(MessageEvent.RECEIVE).pipe(
       tap((receivedMessage) => {
+        const chats = this.getUserChats();
         const currentChat = this.getCurrentChat();
-        const userChats = deepClone(this._userChats$.value);
 
-        if (receivedMessage.chatId !== currentChat.id) {
-          userChats.find(
-            (chat) => chat.id === receivedMessage.chatId
-          ).lastMessage = {
-            body: receivedMessage.body,
-            owner: {
-              id: receivedMessage.owner.id,
-              nickname: receivedMessage.owner.nickname
-            }
-          };
-          this._userChats$.next(userChats);
+        let modifiedChat;
+        if (currentChat.id === receivedMessage.chatId) {
+          modifiedChat = currentChat;
+          modifiedChat.messages.push(receivedMessage);
         } else {
-          currentChat.messages.push(receivedMessage);
-          this._currentChat$.next(currentChat);
+          modifiedChat = chats.find(
+            (chat) => chat.id === receivedMessage.chatId
+          );
+          modifiedChat.addMessage(receivedMessage);
         }
+        this.editChat(modifiedChat);
 
         if (this.isCurrentUserMessage(receivedMessage)) {
           this._messagesInput.setValue("");
@@ -148,18 +238,23 @@ export class ChatService extends WebSocketService {
   private listenMessagesDeletion(): Observable<WSEvent<Message>> {
     return this.listen<Message>(MessageEvent.DELETE).pipe(
       tap((receivedMessage) => {
-        console.log("[deletedMessage]:", receivedMessage);
-        //Didn't use "filter" operator cause this stream may be used outside of the service
-        if (receivedMessage.chatId !== this._currentChat$.value.id) {
-          return;
-        }
+        const chats = this.getUserChats();
         const currentChat = this.getCurrentChat();
-        const indexToDelete = currentChat.messages.findIndex(
-          (message) => message.id === receivedMessage.id
-        );
-        currentChat.messages.splice(indexToDelete, 1);
 
-        this._currentChat$.next(currentChat);
+        let modifiedChat;
+        if (currentChat.id === receivedMessage.chatId) {
+          modifiedChat = currentChat;
+          const indexToDelete = modifiedChat.messages.findIndex(
+            (message) => message.id === receivedMessage.id
+          );
+          modifiedChat.messages.splice(indexToDelete, 1);
+        } else {
+          modifiedChat = chats.find(
+            (chat) => chat.id === receivedMessage.chatId
+          );
+          modifiedChat.deleteMessage(receivedMessage.id);
+        }
+        this.editChat(modifiedChat);
       }),
       map((receivedMessage) => ({
         type: MessageEvent.DELETE,
@@ -194,7 +289,7 @@ export class ChatService extends WebSocketService {
   sendMessage(message: string, repliedOnMessageId?: number): void {
     const dto: SendMessageDTO = {
       chatId: this._currentChat$.value.id,
-      ownerId: this.userService.currentUser.id,
+      ownerId: this.authService.getCurrentUserId(),
       body: message,
       sentDate: convertDateToDBFormat(new Date()),
       ...(repliedOnMessageId && { repliedOnMessageId })

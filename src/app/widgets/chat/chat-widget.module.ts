@@ -13,16 +13,21 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 
 import { ChatFeaturesModule } from "@features/chat";
 
-import { ChatBodyComponent, ChatComponent, ChatHeaderComponent } from "./ui";
-
-const declarationsToExport = [
+import {
   ChatBodyComponent,
-  ChatHeaderComponent,
-  ChatComponent
-];
+  DropdownChatComponent,
+  DropdownChatHeaderComponent,
+  FullscreenChatComponent
+} from "./ui";
+
+const declarationsToExport = [DropdownChatComponent, FullscreenChatComponent];
 
 @NgModule({
-  declarations: [...declarationsToExport],
+  declarations: [
+    ...declarationsToExport,
+    ChatBodyComponent,
+    DropdownChatHeaderComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
