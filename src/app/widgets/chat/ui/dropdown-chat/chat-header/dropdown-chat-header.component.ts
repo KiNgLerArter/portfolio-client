@@ -57,12 +57,8 @@ export class DropdownChatHeaderComponent implements OnInit {
         filter<string>(Boolean),
         skip(1),
         distinctUntilChanged(),
-        tap((id) => {
-          console.log("[id]:", id);
-        }),
         switchMap((id) => this.chatService.loadChatById(id)),
         tap((chat) => {
-          console.log("[currentChatId$]");
           this.chatService.setCurrentChat(chat);
         })
       )

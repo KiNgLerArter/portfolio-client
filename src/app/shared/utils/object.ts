@@ -5,8 +5,31 @@ export const hasOwnProperty = (
   return Object.prototype.hasOwnProperty.call(object, key);
 };
 
-export const deepClone = <T>(obj: T): T => {
-  return JSON.parse(JSON.stringify(obj));
+export const deepClone = (obj: any): any => {
+  if (obj === null || typeof obj !== "object") {
+    return obj;
+  } else if (Array.isArray(obj)) {
+    return obj.map((item) => deepClone(item));
+  }
+
+  const clonedObj = Object.create(Object.getPrototypeOf(obj));
+
+  for (const key of Object.keys(obj)) {
+    const descriptor = Object.getOwnPropertyDescriptor(obj, key);
+
+    if (descriptor.get || descriptor.set) {
+      Object.defineProperty(clonedObj, key, {
+        get: descriptor.get,
+        set: descriptor.set,
+        enumerable: descriptor.enumerable,
+        configurable: descriptor.configurable
+      });
+    } else {
+      clonedObj[key] = deepClone(obj[key]);
+    }
+  }
+
+  return clonedObj;
 };
 
 export const deepEqual = (firstItem: any, secondItem: any): boolean => {

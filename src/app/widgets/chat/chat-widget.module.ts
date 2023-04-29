@@ -15,6 +15,7 @@ import { ChatFeaturesModule } from "@features/chat";
 
 import {
   ChatBodyComponent,
+  ChatPreviewComponent,
   DropdownChatComponent,
   DropdownChatHeaderComponent,
   FullscreenChatComponent
@@ -26,6 +27,7 @@ const declarationsToExport = [DropdownChatComponent, FullscreenChatComponent];
   declarations: [
     ...declarationsToExport,
     ChatBodyComponent,
+    ChatPreviewComponent,
     DropdownChatHeaderComponent
   ],
   imports: [

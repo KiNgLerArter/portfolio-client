@@ -67,6 +67,10 @@ export class ChatService extends WebSocketService {
     return message.ownerId === this.authService.getCurrentUserId();
   }
 
+  isCurrentChat(id: Chat["id"]): boolean {
+    return id === this._currentChat$.value.id;
+  }
+
   getInput(): FormControl<string> {
     return (
       this._messagesInput ??
@@ -132,6 +136,10 @@ export class ChatService extends WebSocketService {
   }
 
   private getUserChats(): ChatPreview[] {
+    console.log(
+      "[getUserChats messages]:",
+      this._userChats$.value.chats[0].messages
+    );
     return deepClone(this._userChats$.value.chats);
   }
 
@@ -181,7 +189,10 @@ export class ChatService extends WebSocketService {
       context: setLoader(false)
     }).pipe(
       tap((chats) => {
-        this._userChats$.next({ chats });
+        console.log("[chats]:", chats);
+        this._userChats$.next({
+          chats: chats.map((chat) => new ChatPreview(chat))
+        });
       }),
       catchError((error) => {
         console.log("[loadChatsPreviews error]:", error);

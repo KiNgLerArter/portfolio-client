@@ -1,3 +1,8 @@
-<div class="fullscreen-chat">
-  <app-chat-body></app-chat-body>
+<div class="fullscreen-chat flex--col--center p-40 w-100 h-100">
+  <div class="chat-previews">
+    <app-chat-preview
+      *ngFor="let chat of (chatService.userChats$ | async).chats"
+      [chat]="chat"
+    ></app-chat-preview>
+  </div>
 </div>

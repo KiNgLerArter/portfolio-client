@@ -1,7 +1,7 @@
 <div class="chat-body w-100 p-6" #chatBody>
-  <div class="chat-messages flex--col--flex-start gap-y-8" #chatMessages>
+  <div class="chat-messages flex--col--flex-start gap-y-8" #chatMessagesElem>
     <div
-      *ngFor="let message of currentChatMessages; trackBy: identifyMessage"
+      *ngFor="let message of chatMessages; trackBy: identifyMessage"
       [ngStyle]="{
         'align-self': chatService.isCurrentUserMessage(message)
           ? 'flex-end'

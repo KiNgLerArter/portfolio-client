@@ -14,10 +14,10 @@ import {
   MatBottomSheetRef
 } from "@angular/material/bottom-sheet";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { filter, map, take, tap } from "rxjs/operators";
 
-import { ChatService, Message } from "@entities/chat";
+import { Chat, ChatService, Message } from "@entities/chat";
 
 @UntilDestroy()
 @Component({
@@ -32,7 +32,7 @@ export class ChatBodyComponent implements OnInit, OnDestroy {
   set chatBody(elem: ElementRef) {
     this._chatBody = elem.nativeElement;
   }
-  @ViewChild("chatMessages") set chatMessages(elem: ElementRef) {
+  @ViewChild("chatMessagesElem") set chatMessagesElem(elem: ElementRef) {
     const htmlElem = elem.nativeElement;
     this._chatBodyMessages = htmlElem;
     htmlElem.scrollIntoView({
@@ -41,26 +41,26 @@ export class ChatBodyComponent implements OnInit, OnDestroy {
     });
   }
 
+  @Input() chat$: Observable<Chat>;
   @Input() openAnimationDuration: number;
+  @Input() host?: string;
 
   private _chatBody: any;
   private _chatBodyMessages: any;
   private _bottomSheetRef: MatBottomSheetRef;
-  private _currentChatMessages$ = this.chatService.currentChat$.pipe(
-    untilDestroyed(this),
-    map((chat) => chat?.messages ?? [])
-  );
+  private _chatMessages$: Observable<Message[]>;
 
   currentMessage$ = new BehaviorSubject<Message>(null);
-  currentChatMessages: Message[];
+  chatMessages: Message[];
 
   constructor(
-    public chatService: ChatService,
+    protected chatService: ChatService,
     private bottomSheet: MatBottomSheet,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+    this.initVars();
     this.initSubs();
   }
 
@@ -95,12 +95,20 @@ export class ChatBodyComponent implements OnInit, OnDestroy {
     this._bottomSheetRef.dismiss();
   }
 
+  private initVars(): void {
+    this._chatMessages$ = this.chat$.pipe(
+      untilDestroyed(this),
+      tap((chat) => console.log("[chat.messages]:", chat.messages)),
+      map((chat) => chat?.messages ?? [])
+    );
+  }
+
   private initSubs(): void {
     //scroll to the bottom of the chat if the user sent a message
-    this._currentChatMessages$
+    this._chatMessages$
       .pipe(
         tap((messages) => {
-          this.currentChatMessages = messages;
+          this.chatMessages = messages;
           this.cdr.markForCheck();
         }),
         map((messages) => messages.slice(-1)[0]),

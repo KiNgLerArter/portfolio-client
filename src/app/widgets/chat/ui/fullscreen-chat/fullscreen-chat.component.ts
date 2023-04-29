@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+
+import { ChatService } from "@entities/chat";
 
 @Component({
   selector: "app-fullscreen-chat",
@@ -6,8 +8,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
   styleUrls: ["./fullscreen-chat.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FullscreenChatComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
+export class FullscreenChatComponent {
+  constructor(protected chatService: ChatService) {}
 }

@@ -46,6 +46,8 @@ export class HeaderComponent implements OnInit {
 
   //Rename widget chat to dropdown-chat and create new fullscreen-chat
   openFullscreenChat(): void {
+    console.log("[openFullscreenChat]");
+    this.toggleChat();
     this.chatService.setView<FullscreenChatComponent>({
       type: ChatViewType.FULL,
       component: this.viewContainerRef.createComponent(FullscreenChatComponent)

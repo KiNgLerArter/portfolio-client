@@ -10,8 +10,8 @@ export class DomService {
   constructor(private appRef: ApplicationRef) {}
 
   appendComponentToBody<T>(componentRef: ComponentRef<T>) {
-    // Attach component to the appRef so that it's inside the ng component tree
-    this.appRef.attachView(componentRef.hostView);
+    // // Attach component to the appRef so that it's inside the ng component tree
+    // this.appRef.attachView(componentRef.hostView);
 
     const domElem = (componentRef.hostView as EmbeddedViewRef<any>)
       .rootNodes[0] as HTMLElement;

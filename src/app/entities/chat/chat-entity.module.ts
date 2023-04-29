@@ -3,9 +3,9 @@ import { NgModule } from "@angular/core";
 import { MatDividerModule } from "@angular/material/divider";
 
 import { ChatService } from "./services";
-import { ChatMessageComponent, ChatPreviewComponent } from "./ui";
+import { ChatMessageComponent } from "./ui";
 
-const declarationsToExport = [ChatMessageComponent, ChatPreviewComponent];
+const declarationsToExport = [ChatMessageComponent];
 
 @NgModule({
   declarations: [...declarationsToExport],
