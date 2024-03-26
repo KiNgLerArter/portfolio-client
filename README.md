@@ -23,7 +23,10 @@
 1. Open the console
 2. Run `npm i`
 3. Run `npm start`
-4. Setup and run backend repo to make the app work
+4. Setup backend repo
+5. Uncomment the ```onApplicationBootstrap``` in the MockServer and run the BE
+6. Stop the server, comment it back and run again
+7. You can authorize into different accounts from a different browsers and check how the chat works
 
 ---
 
